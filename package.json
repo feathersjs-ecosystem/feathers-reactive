@@ -41,8 +41,8 @@
     "lib": "lib"
   },
   "dependencies": {
-    "babel-polyfill": "^6.3.14",
     "debug": "^2.2.0",
+    "feathers-commons": "^0.7.1",
     "rx": "^4.0.7"
   },
   "devDependencies": {
@@ -50,8 +50,8 @@
     "babel-core": "^6.4.5",
     "babel-plugin-add-module-exports": "^0.1.2",
     "babel-preset-es2015": "^6.3.13",
-    "feathers": "^2.0.0-pre.4",
-    "feathers-memory": "^0.6.3",
+    "feathers": "^2.0.0",
+    "feathers-memory": "^0.7.0",
     "jshint": "^2.9.1",
     "mocha": "^2.3.4"
   }

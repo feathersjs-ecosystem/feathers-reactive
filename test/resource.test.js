@@ -9,17 +9,22 @@ describe('reactive resources', () => {
 
   beforeEach(done => {
     app = feathers()
-      .configure(rx({
-        id: 'id'
-      }))
+      .configure(rx())
       .use('/messages', memory());
 
     service = app.service('messages');
 
     service.create({
       text: 'A test message'
-    }).first().toPromise().then(message => {
+    }).then(message => {
       id = message.id;
+      done();
+    });
+  });
+
+  it('methods are still Promise compatible', done => {
+    service.get(id).then(message => {
+      assert.deepEqual(message, { id, text: 'A test message' });
       done();
     });
   });
@@ -32,26 +37,26 @@ describe('reactive resources', () => {
   });
 
   it('.update and .patch update existing stream', done => {
-    let counter = 0;
+    // TODO investigate why `debounce` is necessary
+    const result = service.get(id).debounce(0);
 
-    service.get(id).debounce(0).subscribe(message => {
-      switch(++counter) {
-        case 1:
-          assert.deepEqual(message, { id, text: 'A test message' });
-          service.update(id, { text: 'Updated', prop: true });
-          break;
-        case 2:
-          assert.deepEqual(message, {
-            id, text: 'Updated', prop: true
-          });
-          service.patch(id, { text: 'Updated again' });
-          break;
-        case 3:
-          assert.deepEqual(message, {
-            id, text: 'Updated again', prop: true
-          });
-          done();
-      }
+    result.first().subscribe(message => {
+      assert.deepEqual(message, { id, text: 'A test message' });
+      service.update(id, { text: 'Updated', prop: true });
+    });
+
+    result.skip(1).first().subscribe(message => {
+      assert.deepEqual(message, {
+        id, text: 'Updated', prop: true
+      });
+      service.patch(id, { text: 'Updated again' });
+    });
+
+    result.skip(2).first().subscribe(message => {
+      assert.deepEqual(message, {
+        id, text: 'Updated again', prop: true
+      });
+      done();
     });
   });
 

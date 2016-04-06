@@ -1,4 +1,5 @@
-const Rx = require('rx');
+import Rx from 'rx';
+import { promisify } from './utils';
 
 export default function(events, options) {
   return function() {
@@ -10,8 +11,7 @@ export default function(events, options) {
     }
 
     const source = Rx.Observable.fromPromise(result);
-
-    return source.concat(source.flatMapFirst(data => {
+    const stream = source.concat(source.flatMapFirst(data => {
       // Filter only data with the same id
       const filter = current => current[options.id] === data[options.id];
       // `removed` events get special treatment
@@ -25,10 +25,14 @@ export default function(events, options) {
 
       return Rx.Observable.merge(
         // Map to a callback that merges old and new data
-        filteredEvents.map(newItem => oldItem => options.merge(oldItem, newItem)),
+        filteredEvents.map(newItem =>
+          oldItem => options.merge(oldItem, newItem)
+        ),
         // filtered `removed` events always map to a function that returns `null`
         filteredRemoves.map(() => () => null)
       ).scan((current, callback) => callback(current), data);
     }));
+
+    return promisify(stream, result);
   };
 }

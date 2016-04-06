@@ -6,9 +6,10 @@ const debug = require('debug')('feathers-rx');
 
 export default function(options) {
   options = Object.assign({
+    id: 'id',
     // The merging strategy
     merge(current, eventData) {
-      return Object.assign(current, eventData);
+      return Object.assign({}, current, eventData);
     }
   }, options);
 
