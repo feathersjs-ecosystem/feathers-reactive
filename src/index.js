@@ -5,9 +5,11 @@ import reactiveList from './list';
 
 const debug = require('debug')('feathers-rx');
 
-export default function(options) {
+function FeathersRx(options) {
   options = Object.assign({
     id: 'id',
+    // Whether to requery service when a change is detected
+    strategy: reactiveList.strategy.never,
     // The merging strategy
     merge(current, eventData) {
       return Object.assign({}, current, eventData);
@@ -46,3 +48,7 @@ export default function(options) {
     app.mixins.push(mixin);
   };
 }
+
+FeathersRx.strategy = reactiveList.strategy;
+
+export default FeathersRx;
