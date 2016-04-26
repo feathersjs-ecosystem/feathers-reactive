@@ -55,7 +55,12 @@ function List (events, options) {
           events.removed,
           updaters
         ).flatMap(() => {
-          return Rx.Observable.fromPromise(this.find.apply(this, inputArgs)).map((result) => {
+          const result = this.find.apply(this, inputArgs);
+          const source = Rx.Observable.fromPromise(result);
+          if(typeof result.then !== 'function') {
+            return Rx.Observable.of(result);
+          }
+          return source.map((result) => {
             return sorter ? result.sort(sorter) : result;
           });
         })
