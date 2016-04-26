@@ -1,4 +1,5 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
+
 import reactiveResource from './resource';
 import reactiveList from './list';
 

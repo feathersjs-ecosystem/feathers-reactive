@@ -1,4 +1,6 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
+import 'rxjs/add/operator/exhaustMap';
+
 import { promisify } from './utils';
 import { sorter as createSorter, matcher } from 'feathers-commons/lib/utils';
 
@@ -19,7 +21,7 @@ export default function(events, options) {
     // The sort function (if $sort is set)
     const sorter = query.$sort ? createSorter(query.$sort) : null;
 
-    const stream = source.concat(source.flatMapFirst(data =>
+    const stream = source.concat(source.exhaustMap(data =>
       Rx.Observable.merge(
         events.created.filter(matches).map(eventData =>
           items => items.concat(eventData)
