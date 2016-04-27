@@ -8,7 +8,7 @@ const debug = require('debug')('feathers-rx');
 function FeathersRx(options) {
 
   options = Object.assign({
-    id: 'id',
+    idField: 'id',
     // Whether to requery service when a change is detected
     strategy: reactiveList.strategy.never,
     // The merging strategy

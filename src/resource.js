@@ -26,7 +26,7 @@ export default function(events, method, options) {
     const source = Rx.Observable.fromPromise(result);
     const stream = source.concat(source.exhaustMap(data => {
       // Filter only data with the same id
-      const filter = current => current[options.id] === data[options.id];
+      const filter = current => current[options.idField] === data[options.idField];
       // `removed` events get special treatment
       const filteredRemoves = events.removed.filter(filter);
       // `created`, `updated` and `patched`

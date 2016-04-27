@@ -35,11 +35,11 @@ function List (events, options) {
             items => items.concat(eventData)
           ),
           events.removed.map(eventData =>
-            items => items.filter(current => eventData[options.id] !== current[options.id])
+            items => items.filter(current => eventData[options.idField] !== current[options.idField])
           ),
           updaters.map(eventData =>
             items => items.map(current => {
-              if(eventData[options.id] === current[options.id]) {
+              if(eventData[options.idField] === current[options.idField]) {
                 return options.merge(current, eventData);
               }
 

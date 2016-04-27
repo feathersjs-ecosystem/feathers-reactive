@@ -14,7 +14,7 @@ describe('reactive resources', () => {
         .configure(rx())
         .use('/messages', memory());
 
-      service = app.service('messages').rx({id: 'customId'});
+      service = app.service('messages').rx({idField: 'customId'});
 
       service.create({
         text: 'A test message'
@@ -32,7 +32,7 @@ describe('reactive resources', () => {
         .configure(rx())
         .use('/messages', memory({ idField: 'customId' }));
 
-      service = app.service('messages').rx({id: 'customId'});
+      service = app.service('messages').rx({idField: 'customId'});
 
       service.create({
         text: 'A test message'
@@ -53,7 +53,7 @@ describe('reactive resources', () => {
         .use('/messages', memory({ idField: 'customId' }));
 
       service = app.service('messages').rx().before({
-        all: [function (hook) { hook.params.rx = { id: 'customID' }; }]
+        all: [function (hook) { hook.params.rx = { idField: 'customID' }; }]
       });
 
       service.create({

@@ -45,7 +45,7 @@ describe('reactive lists', () => {
         .configure(rx({ strategy: rx.strategy.never }))
         .use('/messages', memory({ idField: 'customId' }));
 
-      service = app.service('messages').rx({id: 'customId'});
+      service = app.service('messages').rx({idField: 'customId'});
 
       service.create({
         text: 'A test message'
