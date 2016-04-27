@@ -3,9 +3,20 @@ import 'rxjs/add/operator/exhaustMap';
 
 import { promisify } from './utils';
 
-export default function(events, options) {
+// The position of the params parameters for a service method so that we can extend them
+// default is 1
+export const paramsPositions = {
+  update: 2,
+  patch: 2
+};
+
+export default function(events, method, options) {
   return function() {
     const result = this._super.apply(this, arguments);
+    let position = typeof paramsPositions[method] !== 'undefined' ?
+      paramsPositions[method] : 1;
+    let params = arguments[position] || {};
+    options = Object.assign(options, this._rx, params.rx);
 
     // We only support promises
     if(typeof result.then !== 'function') {

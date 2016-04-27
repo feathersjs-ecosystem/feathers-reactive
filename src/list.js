@@ -7,9 +7,12 @@ import { sorter as createSorter, matcher } from 'feathers-commons/lib/utils';
 function List (events, options) {
 
   return function (params) {
+
     const query = Object.assign({}, params.query);
     const result = this._super.apply(this, arguments);
     const inputArgs = arguments;
+    params = params ? params : {}; // No params
+    options = Object.assign(options, this._rx, params.rx);
 
     if(typeof result.then !== 'function') {
       return result;
