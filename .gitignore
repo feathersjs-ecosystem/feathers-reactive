@@ -30,3 +30,6 @@ node_modules
 # The compiled/babelified modules
 lib/
 tmp/
+
+# VSCode config
+.vscode

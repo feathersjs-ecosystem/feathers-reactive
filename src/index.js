@@ -9,6 +9,7 @@ function FeathersRx(options) {
 
   options = Object.assign({
     idField: 'id',
+    dataField: 'data',
     // Whether to requery service when a change is detected
     strategy: reactiveList.strategy.never,
     // The merging strategy
