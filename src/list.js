@@ -4,12 +4,10 @@ import 'rxjs/add/operator/exhaustMap';
 import { promisify } from './utils';
 import { sorter as createSorter, matcher } from 'feathers-commons/lib/utils';
 
-function List (events, options) {
-
-  return function (params) {
+export default function(events, options) {
+  return function(params) {
     const query = Object.assign({}, params.query);
     const result = this._super.apply(this, arguments);
-    const inputArgs = arguments;
 
     if(typeof result.then !== 'function') {
       return result;
@@ -23,61 +21,30 @@ function List (events, options) {
     // The sort function (if $sort is set)
     const sorter = query.$sort ? createSorter(query.$sort) : null;
 
-    let stream;
+    const stream = source.concat(source.exhaustMap(data =>
+      Rx.Observable.merge(
+        events.created.filter(matches).map(eventData =>
+          items => items.concat(eventData)
+        ),
+        events.removed.map(eventData =>
+          items => items.filter(current => eventData[options.id] !== current[options.id])
+        ),
+        updaters.map(eventData =>
+          items => items.map(current => {
+            if(eventData[options.id] === current[options.id]) {
+              return options.merge(current, eventData);
+            }
 
-    if (options.strategy === List.strategy.never) {
-      stream = source.concat(source.exhaustMap(data =>
-        Rx.Observable.merge(
-          events.created.filter(matches).map(eventData =>
-            items => items.concat(eventData)
-          ),
-          events.removed.map(eventData =>
-            items => items.filter(current => eventData[options.id] !== current[options.id])
-          ),
-          updaters.map(eventData =>
-            items => items.map(current => {
-              if(eventData[options.id] === current[options.id]) {
-                return options.merge(current, eventData);
-              }
+            return current;
+          }).filter(matches)
+        )
+      ).scan((current, callback) => {
+        const result = callback(current);
 
-              return current;
-            }).filter(matches)
-          )
-        ).scan((current, callback) => {
-          const result = callback(current);
-          return sorter ? result.sort(sorter) : result;
-        }, data)
-      ));
-    } else if (options.strategy === List.strategy.always) {
-      stream = source.concat(source.exhaustMap(() =>
-        Rx.Observable.merge(
-          events.created.filter(matches),
-          events.removed,
-          updaters
-        ).flatMap(() => {
-          const result = this.find.apply(this, inputArgs);
-          const source = Rx.Observable.fromPromise(result);
-          if(typeof result.then !== 'function') {
-            return Rx.Observable.of(result);
-          }
-          return source.map((result) => {
-            return sorter ? result.sort(sorter) : result;
-          });
-        })
-      ));
-    } else {
-      throw 'Unsupported feathers-rx strategy type.';
-    }
+        return sorter ? result.sort(sorter) : result;
+      }, data)
+    ));
 
     return promisify(stream, result);
   };
 }
-
-List.strategy = {
-  always: {},
-  never: {},
-  // TODO: Jack
-  // smart: {}
-};
-
-export default List;
