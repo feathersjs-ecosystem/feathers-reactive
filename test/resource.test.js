@@ -37,8 +37,7 @@ describe('reactive resources', () => {
   });
 
   it('.update and .patch update existing stream', done => {
-    // TODO investigate why `debounce` is necessary
-    const result = service.get(id).debounce(0);
+    const result = service.get(id);
 
     result.first().subscribe(message => {
       assert.deepEqual(message, { id, text: 'A test message' });

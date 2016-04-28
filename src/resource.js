@@ -1,4 +1,6 @@
-import Rx from 'rx';
+import Rx from 'rxjs/Rx';
+import 'rxjs/add/operator/exhaustMap';
+
 import { promisify } from './utils';
 
 export default function(events, options) {
@@ -11,7 +13,7 @@ export default function(events, options) {
     }
 
     const source = Rx.Observable.fromPromise(result);
-    const stream = source.concat(source.flatMapFirst(data => {
+    const stream = source.concat(source.exhaustMap(data => {
       // Filter only data with the same id
       const filter = current => current[options.id] === data[options.id];
       // `removed` events get special treatment
