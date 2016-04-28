@@ -3,9 +3,20 @@ import 'rxjs/add/operator/exhaustMap';
 
 import { promisify } from './utils';
 
-export default function(events, options) {
+// The position of the params parameters for a service method so that we can extend them
+// default is 1
+export const paramsPositions = {
+  update: 2,
+  patch: 2
+};
+
+export default function(events, method, options) {
   return function() {
     const result = this._super.apply(this, arguments);
+    let position = typeof paramsPositions[method] !== 'undefined' ?
+      paramsPositions[method] : 1;
+    let params = arguments[position] || {};
+    options = Object.assign(options, this._rx, params.rx);
 
     // We only support promises
     if(typeof result.then !== 'function') {
@@ -15,7 +26,7 @@ export default function(events, options) {
     const source = Rx.Observable.fromPromise(result);
     const stream = source.concat(source.exhaustMap(data => {
       // Filter only data with the same id
-      const filter = current => current[options.id] === data[options.id];
+      const filter = current => current[options.idField] === data[options.idField];
       // `removed` events get special treatment
       const filteredRemoves = events.removed.filter(filter);
       // `created`, `updated` and `patched`

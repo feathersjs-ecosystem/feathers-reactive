@@ -13,14 +13,14 @@ describe('reactive lists', () => {
         .configure(rx({ strategy: rx.strategy.never }))
         .use('/messages', memory());
 
-      service = app.service('messages');
+      service = app.service('messages').rx();
 
       service.create({
         text: 'A test message'
       }).then(() => done());
     });
 
-    baseTests();
+    baseTests('id');
   });
 
   describe('strategy.always', function () {
@@ -29,28 +29,43 @@ describe('reactive lists', () => {
         .configure(rx({ strategy: rx.strategy.always }))
         .use('/messages', memory());
 
-      service = app.service('messages');
+      service = app.service('messages').rx();
 
       service.create({
         text: 'A test message'
       }).then(() => done());
     });
 
-    baseTests();
+    baseTests('id');
   });
 
-  function baseTests () {
+  describe('strategy.never custom id', function () {
+    beforeEach(done => {
+      app = feathers()
+        .configure(rx({ strategy: rx.strategy.never }))
+        .use('/messages', memory({ idField: 'customId' }));
 
+      service = app.service('messages').rx({idField: 'customId'});
+
+      service.create({
+        text: 'A test message'
+      }).then(() => done());
+    });
+
+    baseTests('customId');
+  });
+
+  function baseTests (id) {
     it('.find is promise compatible', done => {
       service.find().then(messages => {
-        assert.deepEqual(messages, [ { text: 'A test message', id: 0 } ]);
+        assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
         done();
       });
     });
 
     it('.find as an observable', done => {
       service.find().first().subscribe(messages => {
-        assert.deepEqual(messages, [ { text: 'A test message', id: 0 } ]);
+        assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
         done();
       });
     });
@@ -58,8 +73,8 @@ describe('reactive lists', () => {
     it('.create and .find', done => {
       service.find().skip(1).subscribe(messages => {
         assert.deepEqual(messages, [
-          { text: 'A test message', id: 0 },
-          { text: 'Another message', id: 1 }
+          { text: 'A test message', [id]: 0 },
+          { text: 'Another message', [id]: 1 }
         ]);
         done();
       });
@@ -70,7 +85,7 @@ describe('reactive lists', () => {
     it('.update and .find', done => {
       service.find().skip(1).subscribe(messages => {
         assert.deepEqual(messages, [
-          { text: 'An updated test message', id: 0 }
+          { text: 'An updated test message', [id]: 0 }
         ]);
         done();
       });
@@ -81,7 +96,7 @@ describe('reactive lists', () => {
     it('.patch and .find', done => {
       service.find().skip(1).subscribe(messages => {
         assert.deepEqual(messages, [
-          { text: 'A patched test message', id: 0 }
+          { text: 'A patched test message', [id]: 0 }
         ]);
         done();
       });
@@ -105,7 +120,7 @@ describe('reactive lists', () => {
 
       result.skip(1).subscribe(messages => {
         assert.deepEqual(messages, [{
-          id: 1,
+          [id]: 1,
           text: 'New message',
           counter: 1
         }]);
@@ -128,20 +143,20 @@ describe('reactive lists', () => {
 
       result.skip(1).first().subscribe(messages => {
         assert.deepEqual(messages, [{
-          id: 1,
+          [id]: 1,
           text: 'B test message'
         }, {
-          id: 0,
+          [id]: 0,
           text: 'A test message'
         }]);
       });
 
       result.skip(2).first().subscribe(messages => {
         assert.deepEqual(messages, [{
-          id: 0,
+          [id]: 0,
           text: 'Updated test message'
         }, {
-          id: 1,
+          [id]: 1,
           text: 'B test message'
         }]);
 
@@ -174,7 +189,7 @@ describe('reactive lists', () => {
           assert.deepEqual(messages, [{
             text: 'second',
             counter: 1,
-            id: 2
+            [id]: 2
           }]);
           done();
         });

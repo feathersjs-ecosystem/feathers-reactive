@@ -7,9 +7,12 @@ import { sorter as createSorter, matcher } from 'feathers-commons/lib/utils';
 function List (events, options) {
 
   return function (params) {
+
     const query = Object.assign({}, params.query);
     const result = this._super.apply(this, arguments);
     const inputArgs = arguments;
+    params = params ? params : {}; // No params
+    options = Object.assign(options, this._rx, params.rx);
 
     if(typeof result.then !== 'function') {
       return result;
@@ -32,11 +35,11 @@ function List (events, options) {
             items => items.concat(eventData)
           ),
           events.removed.map(eventData =>
-            items => items.filter(current => eventData[options.id] !== current[options.id])
+            items => items.filter(current => eventData[options.idField] !== current[options.idField])
           ),
           updaters.map(eventData =>
             items => items.map(current => {
-              if(eventData[options.id] === current[options.id]) {
+              if(eventData[options.idField] === current[options.idField]) {
                 return options.merge(current, eventData);
               }
 

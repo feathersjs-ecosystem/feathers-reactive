@@ -6,8 +6,9 @@ import reactiveList from './list';
 const debug = require('debug')('feathers-rx');
 
 function FeathersRx(options) {
+
   options = Object.assign({
-    id: 'id',
+    idField: 'id',
     // Whether to requery service when a change is detected
     strategy: reactiveList.strategy.never,
     // The merging strategy
@@ -25,10 +26,10 @@ function FeathersRx(options) {
       patched: Rx.Observable.fromEvent(service, 'patched'),
       removed: Rx.Observable.fromEvent(service, 'removed')
     };
-    const resourceMethod = reactiveResource(events, options);
 
     app.methods.forEach(method => {
       if(method !== 'find' && typeof service[method] === 'function') {
+        const resourceMethod = reactiveResource(events, method, options);
         mixin[method] = resourceMethod;
       }
     });
@@ -40,12 +41,22 @@ function FeathersRx(options) {
     service.mixin(mixin);
   };
 
+  const serviceMixin = function (service) {
+    const mixin = {};
+    mixin.rx = (options) => {
+      service._rx = options? options: {};
+      return service;
+    };
+    service.mixin(mixin);
+  };
+
   return function() {
     debug('Initializing feathers-rx plugin');
 
     const app = this;
 
     app.mixins.push(mixin);
+    app.mixins.push(serviceMixin);
   };
 }
 
