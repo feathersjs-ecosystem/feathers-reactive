@@ -28,7 +28,18 @@ function List (events, options) {
 
     let stream;
 
+    const sortAndTrim = (result) => {
+      const isPaginated = !!result[options.dataField];
+      if (isPaginated) {
+        result.data = (sorter ? result.data.sort(sorter) : result.data).slice(0,result.limit);
+      } else {
+        result = (sorter ? result.sort(sorter) : result).slice(0,result.limit);
+      }
+      return result;
+    };
+
     if (options.strategy === List.strategy.never) {
+
       stream = source.concat(source.exhaustMap(data =>
         Rx.Observable.merge(
           events.created.filter(matches).map(eventData =>
@@ -47,11 +58,18 @@ function List (events, options) {
             }).filter(matches)
           )
         ).scan((current, callback) => {
-          const result = callback(current);
-          return sorter ? result.sort(sorter) : result;
+          const isPaginated = !!current[options.dataField];
+          if (isPaginated) {
+            current.data = callback(current.data);
+          } else {
+            current = callback(current);
+          }
+          return sortAndTrim(current);
         }, data)
       ));
+
     } else if (options.strategy === List.strategy.always) {
+
       stream = source.concat(source.exhaustMap(() =>
         Rx.Observable.merge(
           events.created.filter(matches),
@@ -63,11 +81,13 @@ function List (events, options) {
           if(typeof result.then !== 'function') {
             return Rx.Observable.of(result);
           }
+
           return source.map((result) => {
-            return sorter ? result.sort(sorter) : result;
+            return sortAndTrim(result);
           });
         })
       ));
+
     } else {
       throw 'Unsupported feathers-rx strategy type.';
     }

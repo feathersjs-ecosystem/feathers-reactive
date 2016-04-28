@@ -55,6 +55,38 @@ describe('reactive lists', () => {
     baseTests('customId');
   });
 
+  describe('strategy.never pagination', function () {
+    beforeEach(done => {
+      app = feathers()
+        .configure(rx())
+        .use('/messages', memory({ paginate: { default: 3 }}));
+
+      service = app.service('messages').rx();
+
+      service.create({
+        text: 'A test message'
+      }).then(() => done());
+    });
+
+    paginationTests('id');
+  });
+
+  describe('strategy.always pagination', function () {
+    beforeEach(done => {
+      app = feathers()
+        .configure(rx())
+        .use('/messages', memory({ paginate: { default: 3 } }));
+
+      service = app.service('messages').rx({ strategy: rx.strategy.always });
+
+      service.create({
+        text: 'A test message'
+      }).then(() => done());
+    });
+
+    paginationTests('id');
+  });
+
   function baseTests (id) {
     it('.find is promise compatible', done => {
       service.find().then(messages => {
@@ -200,6 +232,30 @@ describe('reactive lists', () => {
       });
     });
 
+  }
+
+  function paginationTests (id) {
+    it('removes items if the data length is past the limit', done => {
+      Promise.all([
+        service.create({ text: 'first' }),
+        service.create({ text: 'second' }),
+      ]).then(() => {
+        const expect = [
+          {text: 'A test message', [id]: 0},
+          {text: 'first', [id]: 1},
+          {text: 'second', [id]: 2}
+        ];
+        const result = service.find();
+
+        result.take(2).subscribe(messages => {
+          assert.deepEqual(messages.data, expect);
+        }, () => {}, () => done());
+
+        setTimeout(() => {
+          service.create({text: 'third'});
+        }, 20);
+      });
+    });
   }
 
 });
