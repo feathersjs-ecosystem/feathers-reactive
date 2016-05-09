@@ -32,7 +32,7 @@ describe('reactive resources', () => {
         .configure(rx())
         .use('/messages', memory({ idField: 'customId' }));
 
-      service = app.service('messages').rx({idField: 'customId'});
+      service = app.service('messages').rx({ idField: 'customId' });
 
       service.create({
         text: 'A test message'
@@ -114,8 +114,7 @@ describe('reactive resources', () => {
         }
       });
 
-      // TODO investigate why setTimeout is necessary
-      setTimeout(() => service.remove(id), 20);
+      service.remove(id);
     });
   }
 

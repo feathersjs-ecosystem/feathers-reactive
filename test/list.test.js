@@ -7,84 +7,110 @@ import rx from '../src';
 describe('reactive lists', () => {
   let app, service;
 
-  describe('strategy.never', function () {
-    beforeEach(done => {
-      app = feathers()
-        .configure(rx({ strategy: rx.strategy.never }))
-        .use('/messages', memory());
+  describe('strategy.smart', function() {
+    describe('default', function () {
+      beforeEach(done => {
+        app = feathers()
+          .configure(rx())
+          .use('/messages', memory());
 
-      service = app.service('messages').rx();
+        service = app.service('messages').rx();
 
-      service.create({
-        text: 'A test message'
-      }).then(() => done());
+        service.create({
+          text: 'A test message'
+        }).then(() => done());
+      });
+
+      baseTests('id');
     });
 
-    baseTests('id');
+    describe('custom id', function () {
+      beforeEach(done => {
+        app = feathers()
+          .configure(rx())
+          .use('/messages', memory({ idField: 'customId' }));
+
+        service = app.service('messages').rx({idField: 'customId'});
+
+        service.create({
+          text: 'A test message'
+        }).then(() => done());
+      });
+
+      baseTests('customId');
+    });
+
+    describe('pagination', function () {
+      beforeEach(done => {
+        app = feathers()
+          .configure(rx())
+          .use('/messages', memory({ paginate: { default: 3 }}));
+
+        service = app.service('messages').rx();
+
+        service.create({
+          text: 'A test message'
+        }).then(() => done());
+      });
+
+      paginationTests('id');
+    });
   });
 
-  describe('strategy.always', function () {
-    beforeEach(done => {
-      app = feathers()
-        .configure(rx({ strategy: rx.strategy.always }))
-        .use('/messages', memory());
+  describe('strategy.always', function() {
+    describe('default', function () {
+      beforeEach(done => {
+        app = feathers()
+          .configure(rx({
+            listStrategy: rx.strategy.always
+          }))
+          .use('/messages', memory());
 
-      service = app.service('messages').rx();
+        service = app.service('messages').rx();
 
-      service.create({
-        text: 'A test message'
-      }).then(() => done());
+        service.create({
+          text: 'A test message'
+        }).then(() => done());
+      });
+
+      baseTests('id');
     });
 
-    baseTests('id');
-  });
+    describe('custom id', function () {
+      beforeEach(done => {
+        app = feathers()
+          .configure(rx({
+            listStrategy: rx.strategy.always
+          }))
+          .use('/messages', memory({ idField: 'customId' }));
 
-  describe('strategy.never custom id', function () {
-    beforeEach(done => {
-      app = feathers()
-        .configure(rx({ strategy: rx.strategy.never }))
-        .use('/messages', memory({ idField: 'customId' }));
+        service = app.service('messages').rx({idField: 'customId'});
 
-      service = app.service('messages').rx({idField: 'customId'});
+        service.create({
+          text: 'A test message'
+        }).then(() => done());
+      });
 
-      service.create({
-        text: 'A test message'
-      }).then(() => done());
+      baseTests('customId');
     });
 
-    baseTests('customId');
-  });
+    describe('pagination', function () {
+      beforeEach(done => {
+        app = feathers()
+          .configure(rx({
+            listStrategy: rx.strategy.always
+          }))
+          .use('/messages', memory({ paginate: { default: 3 }}));
 
-  describe('strategy.never pagination', function () {
-    beforeEach(done => {
-      app = feathers()
-        .configure(rx())
-        .use('/messages', memory({ paginate: { default: 3 }}));
+        service = app.service('messages').rx();
 
-      service = app.service('messages').rx();
+        service.create({
+          text: 'A test message'
+        }).then(() => done());
+      });
 
-      service.create({
-        text: 'A test message'
-      }).then(() => done());
+      paginationTests('id');
     });
-
-    paginationTests('id');
-  });
-
-  describe('strategy.always pagination', function () {
-    beforeEach(done => {
-      app = feathers()
-        .configure(rx())
-        .use('/messages', memory({ paginate: { default: 3 } }));
-
-      service = app.service('messages').rx({ strategy: rx.strategy.always });
-
-      service.create({
-        text: 'A test message'
-      }).then(() => done());
-    });
-
-    paginationTests('id');
   });
 
   function baseTests (id) {
@@ -181,7 +207,7 @@ describe('reactive lists', () => {
           [id]: 0,
           text: 'A test message'
         }]);
-      });
+      }, done);
 
       result.skip(2).first().subscribe(messages => {
         assert.deepEqual(messages, [{
@@ -193,7 +219,7 @@ describe('reactive lists', () => {
         }]);
 
         done();
-      });
+      }, done);
 
       setTimeout(() => {
         service.create({
@@ -231,7 +257,6 @@ describe('reactive lists', () => {
         }, 20);
       });
     });
-
   }
 
   function paginationTests (id) {
@@ -257,5 +282,4 @@ describe('reactive lists', () => {
       });
     });
   }
-
 });
