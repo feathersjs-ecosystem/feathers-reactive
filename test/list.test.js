@@ -228,7 +228,7 @@ describe('reactive lists', () => {
           setTimeout(() => {
             service.patch(0, {
               text: 'Updated test message'
-            })
+            });
           }, 20);
         });
       }, 20);
