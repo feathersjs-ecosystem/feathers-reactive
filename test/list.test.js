@@ -224,11 +224,13 @@ describe('reactive lists', () => {
       setTimeout(() => {
         service.create({
           text: 'B test message'
-        }).then(() =>
-          service.patch(0, {
-            text: 'Updated test message'
-          })
-        );
+        }).then(() => {
+          setTimeout(() => {
+            service.patch(0, {
+              text: 'Updated test message'
+            })
+          }, 20);
+        });
       }, 20);
     });
 
