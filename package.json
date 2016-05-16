@@ -28,7 +28,7 @@
   "scripts": {
     "prepublish": "npm run compile && npm run browserify",
     "publish": "git push origin && git push origin --tags",
-    "browserify": "browserify --full-paths src/index.js -t babelify --standalone feathers.rx --outfile dist/feathers-rx.js",
+    "browserify": "mkdir -p dist/ && browserify src/index.js -t babelify --standalone feathers.rx --outfile dist/feathers-rx.js",
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
