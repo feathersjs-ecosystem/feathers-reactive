@@ -10,19 +10,19 @@ export const paramsPositions = {
   patch: 2
 };
 
-export default function(events, method, options) {
+export default function(events, settings, method) {
   return function() {
     const result = this._super.apply(this, arguments);
+
     let position = typeof paramsPositions[method] !== 'undefined' ?
       paramsPositions[method] : 1;
     let params = arguments[position] || {};
-    options = Object.assign(options, this._rx, params.rx);
 
-    // We only support promises
-    if(typeof result.then !== 'function') {
+    if(this._rx === false || params.rx === false || typeof result.then !== 'function') {
       return result;
     }
 
+    const options = Object.assign({}, settings, this._rx, params.rx);
     const source = Rx.Observable.fromPromise(result);
     const stream = source.concat(source.exhaustMap(data => {
       // Filter only data with the same id

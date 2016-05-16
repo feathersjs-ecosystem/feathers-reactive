@@ -1,106 +1,28 @@
 import Rx from 'rxjs/Rx';
 import 'rxjs/add/operator/exhaustMap';
-
 import { promisify } from './utils';
-import { sorter as createSorter, matcher } from 'feathers-commons/lib/utils';
 
-function List (events, options) {
-
-  return function (params) {
-
+export default function(events, options) {
+  return function (params = {}) {
     const query = Object.assign({}, params.query);
     const result = this._super.apply(this, arguments);
-    const inputArgs = arguments;
-    params = params ? params : {}; // No params
+    const args = arguments;
+
+    // Hack because feathers-query-params deletes stuff from `params.query`
+    // Will be fixed in the next version
+    params.query = query;
+
+    if(this._rx === false || params.rx === false || typeof result.then !== 'function') {
+      return result;
+    }
+
     options = Object.assign(options, this._rx, params.rx);
 
-    if(typeof result.then !== 'function') {
-      return result;
-    }
-
     const source = Rx.Observable.fromPromise(result);
-    // `updated` and `patched` behave the same
-    const updaters = Rx.Observable.merge(events.updated, events.patched);
-    // A function that returns if an item matches the query
-    const matches = matcher(query);
-    // The sort function (if $sort is set)
-    const sorter = query.$sort ? createSorter(query.$sort) : null;
 
-    let stream;
-
-    const sortAndTrim = (result) => {
-      const isPaginated = !!result[options.dataField];
-      if (isPaginated) {
-        result.data = (sorter ? result.data.sort(sorter) : result.data).slice(0,result.limit);
-      } else {
-        result = (sorter ? result.sort(sorter) : result).slice(0,result.limit);
-      }
-      return result;
-    };
-
-    if (options.strategy === List.strategy.never) {
-
-      stream = source.concat(source.exhaustMap(data =>
-        Rx.Observable.merge(
-          events.created.filter(matches).map(eventData =>
-            items => items.concat(eventData)
-          ),
-          events.removed.map(eventData =>
-            items => items.filter(current => eventData[options.idField] !== current[options.idField])
-          ),
-          updaters.map(eventData =>
-            items => items.map(current => {
-              if(eventData[options.idField] === current[options.idField]) {
-                return options.merge(current, eventData);
-              }
-
-              return current;
-            }).filter(matches)
-          )
-        ).scan((current, callback) => {
-          const isPaginated = !!current[options.dataField];
-          if (isPaginated) {
-            current.data = callback(current.data);
-          } else {
-            current = callback(current);
-          }
-          return sortAndTrim(current);
-        }, data)
-      ));
-
-    } else if (options.strategy === List.strategy.always) {
-
-      stream = source.concat(source.exhaustMap(() =>
-        Rx.Observable.merge(
-          events.created.filter(matches),
-          events.removed,
-          updaters
-        ).flatMap(() => {
-          const result = this.find.apply(this, inputArgs);
-          const source = Rx.Observable.fromPromise(result);
-          if(typeof result.then !== 'function') {
-            return Rx.Observable.of(result);
-          }
-
-          return source.map((result) => {
-            return sortAndTrim(result);
-          });
-        })
-      ));
-
-    } else {
-      throw 'Unsupported feathers-rx strategy type.';
-    }
-
-    return promisify(stream, result);
+    return promisify(
+      options.listStrategy.call(this, source, events, options, args),
+      result
+    );
   };
 }
-
-List.strategy = {
-  always: {},
-  never: {},
-  // TODO: Jack
-  // smart: {}
-};
-
-export default List;
