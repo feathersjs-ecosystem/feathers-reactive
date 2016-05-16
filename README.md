@@ -24,7 +24,7 @@ const messages = app.service('messages');
 messages.create({
   text: 'A test message'
 }).then(() => {
-  // Get a specific message with id 10. Emit the message data once it resolves
+  // Get a specific message with id 0. Emit the message data once it resolves
   // and every time it changes e.g. through an updated or patched event
   messages.get(0).subscribe(message => console.log('My message', message));
 
