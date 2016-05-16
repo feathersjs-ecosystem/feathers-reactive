@@ -1,7 +1,7 @@
 {
   "name": "feathers-rx",
   "description": "Reactive API extensions for Feathers services",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "homepage": "https://github.com/feathersjs/feathers-rx",
   "main": "lib/",
   "keywords": [
