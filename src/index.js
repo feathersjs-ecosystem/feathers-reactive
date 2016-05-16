@@ -50,6 +50,7 @@ function FeathersRx(options) {
   };
 }
 
+FeathersRx.Rx = Rx;
 FeathersRx.strategy = strategies;
 
 export default FeathersRx;

@@ -28,6 +28,7 @@
   "scripts": {
     "prepublish": "npm run compile",
     "publish": "git push origin && git push origin --tags",
+    "browserify": "browserify --full-paths src/index.js -t babelify --standalone feathers.rx --outfile dist/feathers-rx.js",
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
@@ -52,6 +53,8 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.7.7",
     "babel-plugin-transform-function-bind": "^6.5.2",
     "babel-preset-es2015": "^6.3.13",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
     "feathers": "^2.0.0",
     "feathers-hooks": "^1.5.2",
     "feathers-memory": "^0.7.0",

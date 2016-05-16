@@ -8,7 +8,7 @@
 
 `feathers-rx` turns a [Feathers service](http://docs.feathersjs.com/services/readme.html) call into an [RxJS](https://github.com/Reactive-Extensions/RxJS) observables that automatically updates on [real-time events](http://docs.feathersjs.com/real-time/events.html).
 
-## Example
+## Simple example
 
 ```js
 const feathers = require('feathers');
@@ -23,7 +23,7 @@ const messages = app.service('messages');
 
 messages.create({
   text: 'A test message'
-}).debounce(0).first().subscribe(() => {
+}).then(() => {
   // Get a specific message with id 10. Emit the message data once it resolves
   // and every time it changes e.g. through an updated or patched event
   messages.get(0).subscribe(message => console.log('My message', message));
