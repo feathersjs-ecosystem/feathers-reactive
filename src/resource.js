@@ -1,6 +1,3 @@
-import Rx from 'rxjs/Rx';
-import 'rxjs/add/operator/exhaustMap';
-
 import { promisify } from './utils';
 
 // The position of the params parameters for a service method so that we can extend them
@@ -10,7 +7,7 @@ export const paramsPositions = {
   patch: 2
 };
 
-export default function(events, settings, method) {
+export default function(Rx, events, settings, method) {
   return function() {
     const result = this._super.apply(this, arguments);
 

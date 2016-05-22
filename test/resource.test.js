@@ -1,3 +1,4 @@
+import Rx from 'rxjs/Rx';
 import assert from 'assert';
 import feathers from 'feathers';
 import memory from 'feathers-memory';
@@ -11,7 +12,7 @@ describe('reactive resources', () => {
   describe('standard id', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx())
+        .configure(rx(Rx))
         .use('/messages', memory());
 
       service = app.service('messages').rx({idField: 'customId'});
@@ -29,7 +30,7 @@ describe('reactive resources', () => {
   describe('custom id on service', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx())
+        .configure(rx(Rx))
         .use('/messages', memory({ idField: 'customId' }));
 
       service = app.service('messages').rx({ idField: 'customId' });
@@ -48,7 +49,7 @@ describe('reactive resources', () => {
   describe('custom id on params', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx())
+        .configure(rx(Rx))
         .configure(hooks())
         .use('/messages', memory({ idField: 'customId' }));
 

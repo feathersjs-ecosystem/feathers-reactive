@@ -1,8 +1,6 @@
-import Rx from 'rxjs/Rx';
-import 'rxjs/add/operator/exhaustMap';
 import { promisify } from './utils';
 
-export default function(events, options) {
+export default function(Rx, events, options) {
   return function (params = {}) {
     const query = Object.assign({}, params.query);
     const result = this._super.apply(this, arguments);
