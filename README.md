@@ -14,9 +14,10 @@
 const feathers = require('feathers');
 const memory = require('feathers-memory');
 const rx = require('feathers-rx');
+const RxJS = require('rxjs');
 
 const app = feathers()
-  .configure(rx())
+  .configure(rx(RxJS))
   .use('/messages', memory());
 
 const messages = app.service('messages');

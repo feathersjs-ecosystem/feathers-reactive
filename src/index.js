@@ -1,22 +1,36 @@
-import Rx from 'rxjs/Rx';
-
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
+import { makeSorter } from './utils';
 
 const debug = require('debug')('feathers-rx');
 
-function FeathersRx(options) {
+function FeathersRx(Rx, options) {
+  if(!Rx) {
+    throw new Error('You have to pass an instance of RxJS as the first paramter.');
+  }
+
+  if(!Rx.Observable) {
+    throw new Error('The RxJS instance does not seem to provide an `Observable` type.');
+  }
+
+  const listStrategies = strategies(Rx);
+
   options = Object.assign({
     idField: 'id',
     dataField: 'data',
     // Whether to requery service when a change is detected
-    listStrategy: strategies.smart,
+    listStrategy: 'smart',
     // The merging strategy
     merge(current, eventData) {
       return Object.assign({}, current, eventData);
-    }
+    },
+    sorter: makeSorter
   }, options);
+
+  if(typeof options.listStrategy === 'string') {
+    options.listStrategy = listStrategies[options.listStrategy];
+  }
 
   const mixin = function(service) {
     const app = this;
@@ -35,8 +49,8 @@ function FeathersRx(options) {
 
     app.methods.forEach(method => {
       if(typeof service[method] === 'function') {
-        mixin[method] = method === 'find' ? reactiveList(events, options) :
-          reactiveResource(events, options, method);
+        mixin[method] = method === 'find' ? reactiveList(Rx, events, options) :
+          reactiveResource(Rx, events, options, method);
       }
     });
 
@@ -50,7 +64,6 @@ function FeathersRx(options) {
   };
 }
 
-FeathersRx.Rx = Rx;
 FeathersRx.strategy = strategies;
 
 export default FeathersRx;
