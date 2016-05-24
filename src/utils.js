@@ -16,7 +16,9 @@ export function promisify(obj, promise) {
 
 export function makeSorter(query, options) {
   // The sort function (if $sort is set)
-  const sorter = query.$sort ? createSorter(query.$sort) : null;
+  const sorter = query.$sort ? createSorter(query.$sort) : createSorter({
+    [options.idField]: 1
+  });
 
   return function(result) {
     const isPaginated = !!result[options.dataField];
@@ -26,8 +28,16 @@ export function makeSorter(query, options) {
       data = data.sort(sorter);
     }
 
-    if(typeof result.limit !== 'undefined') {
-      data = data.slice(0, result.limit);
+    let limit = null;
+
+    if(typeof result.limit === 'number') {
+      limit = result.limit;
+    } else if(query.$limit) {
+      limit = parseInt(query.$limit, 10);
+    }
+
+    if(limit && !isNaN(limit)) {
+      data = data.slice(0, limit);
     }
 
     if(isPaginated) {

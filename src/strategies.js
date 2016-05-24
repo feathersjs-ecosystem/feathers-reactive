@@ -21,7 +21,8 @@ export default function(Rx) {
         Rx.Observable.merge(
           events.created.filter(matches),
           events.removed,
-          Rx.Observable.merge(events.updated, events.patched)
+          events.updated,
+          events.patched
         ).flatMap(() => {
           const result = _super(...args);
           const source = Rx.Observable.fromPromise(result);
@@ -50,13 +51,9 @@ export default function(Rx) {
             )
           ),
           Rx.Observable.merge(events.updated, events.patched).map(eventData =>
-            items => items.map(current => {
-              if(eventData[options.idField] === current[options.idField]) {
-                return options.merge(current, eventData);
-              }
-
-              return current;
-            }).filter(matches)
+            items => items.filter(current =>
+              eventData[options.idField] !== current[options.idField]
+            ).concat(eventData).filter(matches)
           )
         ).scan((current, callback) => {
           const isPaginated = !!current[options.dataField];

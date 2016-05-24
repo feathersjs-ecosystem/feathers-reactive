@@ -260,6 +260,38 @@ describe('reactive lists', () => {
         }, 20);
       });
     });
+
+    it('adds item back after .update/.patch if it matches again', done => {
+      Promise.all([
+        service.create({ text: 'first', counter: 1 }),
+        service.create({ text: 'second', counter: 1 })
+      ]).then(createdMessages => {
+        const result = service.find({ query: { counter: 1 } });
+
+        result.first().subscribe(messages =>
+          assert.deepEqual(messages, createdMessages)
+        );
+
+        result.skip(2).subscribe(messages => {
+          assert.deepEqual(messages, [{
+            text: 'first',
+            counter: 1,
+            [id]: 1
+          }, {
+            text: 'second',
+            counter: 1,
+            [id]: 2
+          }]);
+          done();
+        });
+
+        setTimeout(() => {
+          service.patch(1, { counter: 2 }).then(
+            () => service.patch(1, { counter: 1 })
+          );
+        }, 20);
+      });
+    });
   }
 
   function paginationTests (id) {

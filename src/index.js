@@ -1,7 +1,6 @@
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
-import { makeSorter } from './utils';
 
 const debug = require('debug')('feathers-rx');
 
@@ -24,8 +23,7 @@ function FeathersRx(Rx, options) {
     // The merging strategy
     merge(current, eventData) {
       return Object.assign({}, current, eventData);
-    },
-    sorter: makeSorter
+    }
   }, options);
 
   if(typeof options.listStrategy === 'string') {
