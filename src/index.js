@@ -2,7 +2,7 @@ import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
 
-const debug = require('debug')('feathers-rx');
+const debug = require('debug')('feathers-reactive');
 
 function FeathersRx(Rx, options) {
   if(!Rx) {
@@ -56,7 +56,7 @@ function FeathersRx(Rx, options) {
   };
 
   return function() {
-    debug('Initializing feathers-rx plugin');
+    debug('Initializing feathers-reactive plugin');
 
     this.mixins.push(mixin);
   };

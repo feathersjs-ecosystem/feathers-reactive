@@ -1,19 +1,19 @@
-# feathers-rx
+# feathers-reactive
 
-[![Build Status](https://travis-ci.org/feathersjs/feathers-rx.png?branch=master)](https://travis-ci.org/feathersjs/feathers-rx)
+[![Build Status](https://travis-ci.org/feathersjs/feathers-reactive.png?branch=master)](https://travis-ci.org/feathersjs/feathers-reactive)
 
 > Reactive API extensions for Feathers
 
 ## About
 
-`feathers-rx` turns a [Feathers service](http://docs.feathersjs.com/services/readme.html) call into an [RxJS](https://github.com/Reactive-Extensions/RxJS) observables that automatically updates on [real-time events](http://docs.feathersjs.com/real-time/events.html).
+`feathers-reactive` turns a [Feathers service](http://docs.feathersjs.com/services/readme.html) call into an [RxJS](https://github.com/Reactive-Extensions/RxJS) observables that automatically updates on [real-time events](http://docs.feathersjs.com/real-time/events.html).
 
 ## Simple example
 
 ```js
 const feathers = require('feathers');
 const memory = require('feathers-memory');
-const rx = require('feathers-rx');
+const rx = require('feathers-reactive');
 const RxJS = require('rxjs');
 
 const app = feathers()

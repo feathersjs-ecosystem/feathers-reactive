@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-describe('feathers-rx', () => {
+describe('feathers-reactive', () => {
   it('is CommonJS compatible', () => {
     assert.equal(typeof require('../lib'), 'function');
   });
