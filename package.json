@@ -1,8 +1,8 @@
 {
-  "name": "feathers-rx",
+  "name": "feathers-reactive",
   "description": "Reactive API extensions for Feathers services",
   "version": "0.1.1",
-  "homepage": "https://github.com/feathersjs/feathers-rx",
+  "homepage": "https://github.com/feathersjs/feathers-reactive",
   "main": "lib/index",
   "keywords": [
     "feathers",
@@ -11,7 +11,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/feathersjs/feathers-rx.git"
+    "url": "git://github.com/feathersjs/feathers-reactive.git"
   },
   "author": {
     "name": "Feathers contributors",
@@ -20,7 +20,7 @@
   },
   "contributors": [],
   "bugs": {
-    "url": "https://github.com/feathersjs/feathers-rx/issues"
+    "url": "https://github.com/feathersjs/feathers-reactive/issues"
   },
   "engines": {
     "node": ">= 0.12.0"
@@ -28,7 +28,7 @@
   "scripts": {
     "prepublish": "npm run compile && npm run browserify",
     "publish": "git push origin && git push origin --tags",
-    "browserify": "mkdir -p dist/ && browserify src/index.js -t babelify --standalone feathers.rx --outfile dist/feathers-rx.js",
+    "browserify": "mkdir -p dist/ && browserify src/index.js -t babelify --standalone feathers.rx --outfile dist/feathers-reactive.js",
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
