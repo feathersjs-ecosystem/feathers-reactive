@@ -52,12 +52,6 @@ Message list [ { text: 'Updated message', id: 0 },
   { text: 'Another message', id: 1 } ]
 ```
 
-## Changelog
-
-__0.1.0__
-
-- Initial release
-
 ## License
 
 Copyright (c) 2016
