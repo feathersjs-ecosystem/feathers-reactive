@@ -20,7 +20,11 @@ const TodoApp = React.createClass({
   },
 
   componentDidMount() {
-    todos.find().subscribe(todos => this.setState({ todos }));
+    this.todos = todos.find().subscribe(todos => this.setState({ todos }));
+  },
+
+  componentWillUnmount() {
+    this.todos.unsubscribe();
   },
 
   updateText(ev) {
