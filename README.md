@@ -25,7 +25,7 @@ An instance of RxJS has to be passed as the first parameter when configuring the
 
 ```js
 const feathers = require('feathers');
-const reactive = require('');
+const reactive = require('feathers-reactive');
 const RxJS = require('rxjs');
 
 const app = feathers().configure(reactive(RxJS, options));
