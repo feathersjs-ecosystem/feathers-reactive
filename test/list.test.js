@@ -129,6 +129,26 @@ describe('reactive lists', () => {
       });
     });
 
+    it('queries on subscription rather than creation', done => {
+      let trigger$ = new Rx.Subject();
+
+      let result;
+
+      service.find()
+        .delayWhen(() => Rx.Observable.of(0), trigger$) // delay subscription until trigger$ emits
+        .subscribe(messages => {
+          result = messages;
+          assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
+
+          done();
+        });
+
+      setTimeout(() => {
+        assert.equal(result, undefined);
+        trigger$.next(null);
+      }, 20);
+    });
+
     it('.create and .find', done => {
       service.find().skip(1).subscribe(messages => {
         assert.deepEqual(messages, [
