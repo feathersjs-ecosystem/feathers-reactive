@@ -28,13 +28,8 @@ export function makeSorter(query, options) {
       data = data.sort(sorter);
     }
 
-    let limit = null;
-
-    if(typeof result.limit === 'number') {
-      limit = result.limit;
-    } else if(query.$limit) {
-      limit = parseInt(query.$limit, 10);
-    }
+    const limit = typeof result.limit === 'number' ?
+      result.limit : parseInt(query.$limit, 10);
 
     if(limit && !isNaN(limit)) {
       data = data.slice(0, limit);

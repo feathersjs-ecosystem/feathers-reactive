@@ -45,7 +45,7 @@ describe('reactive lists', () => {
       beforeEach(done => {
         app = feathers()
           .configure(rx(Rx))
-          .use('/messages', memory({ paginate: { default: 3 }}));
+          .use('/messages', memory({ paginate: { default: 3 } }));
 
         service = app.service('messages').rx();
 
