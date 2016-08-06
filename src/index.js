@@ -23,11 +23,7 @@ function FeathersRx(Rx, options) {
     sorter: makeSorter,
     matcher,
     // Whether to requery service when a change is detected
-    listStrategy: 'smart',
-    // The merging strategy
-    merge(current, eventData) {
-      return Object.assign({}, current, eventData);
-    }
+    listStrategy: 'smart'
   }, options);
 
   if(typeof options.listStrategy === 'string') {

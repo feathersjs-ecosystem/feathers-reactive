@@ -28,19 +28,17 @@ export default function(Rx, events, settings, method) {
       const filteredRemoves = events.removed.filter(filter);
       // `created`, `updated` and `patched`
       const filteredEvents = Rx.Observable.merge(
-          events.created,
-          events.updated,
-          events.patched
-        ).filter(filter);
+        events.created,
+        events.updated,
+        events.patched
+      ).filter(filter);
 
       return Rx.Observable.merge(
         // Map to a callback that merges old and new data
-        filteredEvents.map(newItem =>
-          oldItem => options.merge(oldItem, newItem)
-        ),
+        filteredEvents,
         // filtered `removed` events always map to a function that returns `null`
-        filteredRemoves.map(() => () => null)
-      ).scan((current, callback) => callback(current), data);
+        filteredRemoves.map(() => null)
+      );
     }));
 
     return promisify(stream, result);

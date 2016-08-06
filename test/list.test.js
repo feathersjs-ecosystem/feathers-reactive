@@ -126,7 +126,7 @@ describe('reactive lists', () => {
       service.find().first().subscribe(messages => {
         assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
         done();
-      });
+      }, done);
     });
 
     it('queries on subscription rather than creation', done => {
@@ -141,7 +141,7 @@ describe('reactive lists', () => {
           assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
 
           done();
-        });
+        }, done);
 
       setTimeout(() => {
         assert.equal(result, undefined);
@@ -156,7 +156,7 @@ describe('reactive lists', () => {
           { text: 'Another message', [id]: 1 }
         ]);
         done();
-      });
+      }, done);
 
       setTimeout(() => service.create({ text: 'Another message' }), 20);
     });
@@ -167,7 +167,7 @@ describe('reactive lists', () => {
           { text: 'An updated test message', [id]: 0 }
         ]);
         done();
-      });
+      }, done);
 
       setTimeout(() => service.update(0, { text: 'An updated test message' }), 20);
     });
@@ -178,7 +178,7 @@ describe('reactive lists', () => {
           { text: 'A patched test message', [id]: 0 }
         ]);
         done();
-      });
+      }, done);
 
       setTimeout(() => service.patch(0, { text: 'A patched test message' }), 20);
     });
@@ -187,7 +187,7 @@ describe('reactive lists', () => {
       service.find().skip(1).subscribe(messages => {
         assert.deepEqual(messages, []);
         done();
-      });
+      }, done);
 
       setTimeout(() => service.remove(0), 20);
     });
@@ -195,7 +195,7 @@ describe('reactive lists', () => {
     it('.find with .create that matches', done => {
       const result = service.find({ query: { counter: 1 } });
 
-      result.first().subscribe(messages => assert.deepEqual(messages, []));
+      result.first().subscribe(messages => assert.deepEqual(messages, []), done);
 
       result.skip(1).subscribe(messages => {
         assert.deepEqual(messages, [{
@@ -204,7 +204,7 @@ describe('reactive lists', () => {
           counter: 1
         }]);
         done();
-      });
+      }, done);
 
       setTimeout(() => {
         service.create([{
@@ -263,8 +263,8 @@ describe('reactive lists', () => {
         const result = service.find({ query: { counter: 1 } });
 
         result.first().subscribe(messages =>
-          assert.deepEqual(messages, createdMessages)
-        );
+          assert.deepEqual(messages, createdMessages),
+        done);
 
         result.skip(1).subscribe(messages => {
           assert.deepEqual(messages, [{
@@ -273,7 +273,7 @@ describe('reactive lists', () => {
             [id]: 2
           }]);
           done();
-        });
+        }, done);
 
         setTimeout(() => {
           service.patch(1, { counter: 2 });
@@ -289,8 +289,8 @@ describe('reactive lists', () => {
         const result = service.find({ query: { counter: 1 } });
 
         result.first().subscribe(messages =>
-          assert.deepEqual(messages, createdMessages)
-        );
+          assert.deepEqual(messages, createdMessages),
+        done);
 
         result.skip(2).subscribe(messages => {
           assert.deepEqual(messages, [{
@@ -303,7 +303,7 @@ describe('reactive lists', () => {
             [id]: 2
           }]);
           done();
-        });
+        }, done);
 
         setTimeout(() => {
           service.patch(1, { counter: 2 }).then(
