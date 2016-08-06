@@ -1,5 +1,24 @@
 # Change Log
 
+## [v0.3.0](https://github.com/feathersjs/feathers-reactive/tree/v0.3.0) (2016-08-06)
+[Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.2.0...v0.3.0)
+
+**Closed issues:**
+
+- find\(\) shouldn't be executed before subscribing [\#20](https://github.com/feathersjs/feathers-reactive/issues/20)
+- Merge doesn't work? [\#19](https://github.com/feathersjs/feathers-reactive/issues/19)
+- Several issues on 'update' [\#18](https://github.com/feathersjs/feathers-reactive/issues/18)
+- Problems with React Native [\#16](https://github.com/feathersjs/feathers-reactive/issues/16)
+- React example missing componentWillUnmount [\#14](https://github.com/feathersjs/feathers-reactive/issues/14)
+
+**Merged pull requests:**
+
+- Remove data merging option [\#23](https://github.com/feathersjs/feathers-reactive/pull/23) ([daffl](https://github.com/daffl))
+- Customize sorter and matcher [\#22](https://github.com/feathersjs/feathers-reactive/pull/22) ([daffl](https://github.com/daffl))
+- make find\(\) query on subscription [\#21](https://github.com/feathersjs/feathers-reactive/pull/21) ([j2L4e](https://github.com/j2L4e))
+- Update README.md [\#17](https://github.com/feathersjs/feathers-reactive/pull/17) ([aminmeyghani](https://github.com/aminmeyghani))
+- missed reference npm in react-todos [\#15](https://github.com/feathersjs/feathers-reactive/pull/15) ([johnny4young](https://github.com/johnny4young))
+
 ## [v0.2.0](https://github.com/feathersjs/feathers-reactive/tree/v0.2.0) (2016-05-24)
 [Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.1.1...v0.2.0)
 
