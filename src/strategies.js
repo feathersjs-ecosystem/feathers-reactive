@@ -1,6 +1,3 @@
-import { matcher } from 'feathers-commons/lib/utils';
-import { makeSorter } from './utils';
-
 export default function(Rx) {
   return {
     never(source) {
@@ -13,9 +10,9 @@ export default function(Rx) {
       const _super = this._super.bind(this);
 
       // A function that returns if an item matches the query
-      const matches = matcher(query);
+      const matches = options.matcher(query);
       // A function that sorts a limits a result (paginated or not)
-      const sortAndTrim = makeSorter(query, options);
+      const sortAndTrim = options.sorter(query, options);
 
       return source.concat(source.exhaustMap(() =>
         Rx.Observable.merge(
@@ -36,29 +33,36 @@ export default function(Rx) {
       const params = args[0] || {};
       const query = Object.assign({}, params.query);
       // A function that returns if an item matches the query
-      const matches = matcher(query);
+      const matches = options.matcher(query);
       // A function that sorts a limits a result (paginated or not)
-      const sortAndTrim = makeSorter(query, options);
+      const sortAndTrim = options.sorter(query, options);
+      const onCreated = eventData => {
+        return items => {
+          const result = items.concat(eventData);
+          // result.total = 1;
+          return result;
+        };
+      };
+      const onRemoved = eventData => {
+        return items => items.filter(current =>
+          eventData[options.idField] !== current[options.idField]
+        );
+      };
+      const onUpdated = eventData => {
+        return items => items.filter(current =>
+          eventData[options.idField] !== current[options.idField]
+        ).concat(eventData).filter(matches);
+      };
 
       return source.concat(source.exhaustMap(data =>
         Rx.Observable.merge(
-          events.created.filter(matches).map(eventData =>
-            items => items.concat(eventData)
-          ),
-          events.removed.map(eventData =>
-            items => items.filter(current =>
-              eventData[options.idField] !== current[options.idField]
-            )
-          ),
-          Rx.Observable.merge(events.updated, events.patched).map(eventData =>
-            items => items.filter(current =>
-              eventData[options.idField] !== current[options.idField]
-            ).concat(eventData).filter(matches)
-          )
+          events.created.filter(matches).map(onCreated),
+          events.removed.map(onRemoved),
+          Rx.Observable.merge(events.updated, events.patched).map(onUpdated)
         ).scan((current, callback) => {
           const isPaginated = !!current[options.dataField];
           if (isPaginated) {
-            current[options.dataField] = callback(current.data);
+            current[options.dataField] = callback(current[options.dataField]);
           } else {
             current = callback(current);
           }
