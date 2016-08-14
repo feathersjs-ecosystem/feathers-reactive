@@ -1,5 +1,18 @@
 # Change Log
 
+## [v0.3.1](https://github.com/feathersjs/feathers-reactive/tree/v0.3.1) (2016-08-14)
+[Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.3.0...v0.3.1)
+
+**Closed issues:**
+
+- listStrategy doesn't work as mentioned in readme [\#26](https://github.com/feathersjs/feathers-reactive/issues/26)
+- find\(\) with query [\#25](https://github.com/feathersjs/feathers-reactive/issues/25)
+- Outstanding issues [\#11](https://github.com/feathersjs/feathers-reactive/issues/11)
+
+**Merged pull requests:**
+
+- Update the list strategy for any kind of options [\#27](https://github.com/feathersjs/feathers-reactive/pull/27) ([daffl](https://github.com/daffl))
+
 ## [v0.3.0](https://github.com/feathersjs/feathers-reactive/tree/v0.3.0) (2016-08-06)
 [Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.2.0...v0.3.0)
 
