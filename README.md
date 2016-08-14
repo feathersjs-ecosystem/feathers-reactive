@@ -51,7 +51,11 @@ Each method call can also pass its own options via `params.rx`:
 // Disable the reactive extensions for this call
 app.service('todos').find({ rx: false });
 // Always fetch fresh data for this method call
-app.service('todos').find({ listStrategy: 'always' });
+app.service('todos').find({
+  rx: {
+    listStrategy: 'always'
+  }
+});
 ```
 
 ### List strategies
