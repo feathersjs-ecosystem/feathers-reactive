@@ -1,6 +1,6 @@
-import { promisify } from './utils';
+import { promisify, getOptions } from './utils';
 
-export default function(Rx, events, options) {
+export default function(Rx, events, settings) {
   return function (params = {}) {
     const query = Object.assign({}, params.query);
     const args = arguments;
@@ -24,7 +24,7 @@ export default function(Rx, events, options) {
     // Will be fixed in the next version
     params.query = query;
 
-    options = Object.assign(options, this._rx, params.rx);
+    const options = getOptions(settings, this._rx, params.rx);
 
     return promisify(options.listStrategy.call(this, source, events, options, args), source.toPromise());
   };

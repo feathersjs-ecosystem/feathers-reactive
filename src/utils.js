@@ -44,3 +44,13 @@ export function makeSorter(query, options) {
     return result;
   };
 }
+
+export function getOptions(base, ...others) {
+  const options = Object.assign({}, base, ... others);
+
+  if(typeof options.listStrategy === 'string') {
+    options.listStrategy = options.listStrategies[options.listStrategy];
+  }
+
+  return options;
+}

@@ -23,12 +23,9 @@ function FeathersRx(Rx, options) {
     sorter: makeSorter,
     matcher,
     // Whether to requery service when a change is detected
-    listStrategy: 'smart'
+    listStrategy: 'smart',
+    listStrategies
   }, options);
-
-  if(typeof options.listStrategy === 'string') {
-    options.listStrategy = listStrategies[options.listStrategy];
-  }
 
   const mixin = function(service) {
     const app = this;
