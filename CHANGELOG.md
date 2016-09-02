@@ -1,5 +1,17 @@
 # Change Log
 
+## [v0.3.2](https://github.com/feathersjs/feathers-reactive/tree/v0.3.2) (2016-09-02)
+[Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.3.1...v0.3.2)
+
+**Closed issues:**
+
+- requests performed multiple times [\#29](https://github.com/feathersjs/feathers-reactive/issues/29)
+
+**Merged pull requests:**
+
+- Test and fix for find being called only once [\#30](https://github.com/feathersjs/feathers-reactive/pull/30) ([daffl](https://github.com/daffl))
+- Update README.md [\#28](https://github.com/feathersjs/feathers-reactive/pull/28) ([danielang](https://github.com/danielang))
+
 ## [v0.3.1](https://github.com/feathersjs/feathers-reactive/tree/v0.3.1) (2016-08-14)
 [Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.3.0...v0.3.1)
 
