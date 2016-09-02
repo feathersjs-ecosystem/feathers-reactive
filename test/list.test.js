@@ -115,6 +115,23 @@ describe('reactive lists', () => {
   });
 
   function baseTests (id) {
+    it('.find is only called once', done => {
+      let counter = 0;
+
+      app.use('/test', {
+        find() {
+          counter++;
+          return Promise.resolve([]);
+        }
+      });
+
+      app.service('test').find().take(1).subscribe(data => {
+        assert.equal(counter, 1);
+        assert.deepEqual(data, []);
+        done();
+      }, done);
+    });
+
     it('.find is promise compatible', done => {
       service.find().then(messages => {
         assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
@@ -135,10 +152,13 @@ describe('reactive lists', () => {
       let result;
 
       service.find()
-        .delayWhen(() => Rx.Observable.of(0), trigger$) // delay subscription until trigger$ emits
+        // delay subscription until trigger$ emits
+        .delayWhen(() => Rx.Observable.of(0), trigger$)
         .subscribe(messages => {
           result = messages;
-          assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
+          assert.deepEqual(messages, [
+            { text: 'A test message', [id]: 0 }
+          ]);
 
           done();
         }, done);
