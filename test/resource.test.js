@@ -83,6 +83,29 @@ describe('reactive resources', () => {
       }, done);
     });
 
+    it('queries on subscription rather than creation', done => {
+      let trigger$ = new Rx.Subject();
+      let result;
+
+      service.get(id)
+        // delay subscription until trigger$ emits
+        .delayWhen(() => Rx.Observable.of(0), trigger$)
+        .subscribe(message => {
+          result = message;
+          assert.deepEqual(message, {
+            text: 'A test message',
+            [customId]: 0
+          });
+
+          done();
+        }, done);
+
+      setTimeout(() => {
+        assert.equal(result, undefined);
+        trigger$.next(null);
+      }, 50);
+    });
+
     it('.update and .patch update existing stream', done => {
       const result = service.get(id);
 
