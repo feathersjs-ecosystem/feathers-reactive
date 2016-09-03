@@ -336,25 +336,112 @@ describe('reactive lists', () => {
 
   function paginationTests (id) {
     it('removes items if the data length is past the limit', done => {
-      Promise.all([
-        service.create({ text: 'first' }),
-        service.create({ text: 'second' }),
-      ]).then(() => {
-        const expect = [
-          {text: 'A test message', [id]: 0},
-          {text: 'first', [id]: 1},
-          {text: 'second', [id]: 2}
-        ];
-        const result = service.find();
+      const expect = [
+        { text: 'A test message', [id]: 0 },
+        { text: 'first', [id]: 1 },
+        { text: 'second', [id]: 2 }
+      ];
+      const result = service.find();
 
-        result.take(2).subscribe(messages => {
-          assert.deepEqual(messages.data, expect);
-        }, () => {}, () => done());
+      result.skip(3).subscribe(messages => {
+        assert.deepEqual(messages.data, expect);
+        done();
+      }, done);
 
-        setTimeout(() => {
-          service.create({text: 'third'});
-        }, 20);
-      });
+      setTimeout(() => {
+        service.create({ text: 'first' });
+        service.create({ text: 'second' });
+        service.create({text: 'third'});
+      }, 20);
+    });
+
+    it('.create updates total', done => {
+      service.find().first().subscribe(data => {
+        assert.deepEqual(data, {
+          total: 1,
+          limit: 3,
+          skip: 0,
+          data: [
+            { text: 'A test message', id: 0 }
+          ]
+        });
+      }, done);
+
+      service.find().skip(2).subscribe(data => {
+        assert.deepEqual(data, {
+          total: 3,
+          limit: 3,
+          skip: 0,
+          data: [
+            { text: 'A test message', [id]: 0 },
+            { text: 'first', [id]: 1 },
+            { text: 'second', [id]: 2 }
+          ]
+        });
+        done();
+      }, done);
+
+      setTimeout(() => {
+        service.create({ text: 'first' });
+        service.create({ text: 'second' });
+      }, 20);
+    });
+
+    it('.remove updates total', done => {
+      service.find().first().subscribe(data => {
+        assert.deepEqual(data, {
+          total: 1,
+          limit: 3,
+          skip: 0,
+          data: [
+            { text: 'A test message', id: 0 }
+          ]
+        });
+      }, done);
+
+      service.find().skip(1).subscribe(data => {
+        assert.deepEqual(data, {
+          total: 0,
+          limit: 3,
+          skip: 0,
+          data: []
+        });
+        done();
+      }, done);
+
+      setTimeout(() => service.remove(0), 20);
+    });
+
+    it('update to matching query updates total', done => {
+      const empty = {
+        total: 0,
+        limit: 3,
+        skip: 0,
+        data: []
+      };
+      const text = 'updated text';
+
+      service.find({ query: { text } }).first()
+        .subscribe(data => assert.deepEqual(data, empty), done);
+
+      service.find({ query: { text } }).skip(1).first().subscribe(data => {
+        assert.deepEqual(data, {
+          total: 1,
+          limit: 3,
+          skip: 0,
+          data: [
+            { [id]: 0, text: 'updated text' }
+          ]
+        });
+        setTimeout(() => service.patch(0, { text: 'changed again' }));
+      }, done);
+
+      service.find({ query: { text } }).skip(2).first().subscribe(data => {
+        assert.deepEqual(data, empty);
+        done();
+      }, done);
+
+      setTimeout(() => service.patch(0, { text }));
     });
   }
 });
