@@ -1,20 +1,28 @@
 import assert from 'assert';
-import * as utils from '../src/utils';
+import Rx from 'rxjs';
+import { promisify } from '../src/utils';
 
 describe('feathers-reactive utils', () => {
-  it('promisify', done => {
-    let promise = Promise.resolve('Hi');
-    let obj = { test: 'me' };
+  it('promisify .then', done => {
+    const stream = promisify(Rx.Observable.from([ 'test' ]));
 
-    obj = utils.promisify(obj, promise);
-
-    assert.equal(typeof obj.then, 'function');
-    assert.equal(typeof obj.catch, 'function');
-    assert.deepEqual(obj, { test: 'me' });
-
-    obj.then(result => {
-      assert.equal(result, 'Hi');
+    stream.then(result => {
+      assert.equal(result, 'test');
       done();
     }).catch(done);
+  });
+
+  it('promisify .catch', done => {
+    const source = Rx.Observable.create(
+      observer => observer.error(new Error('Something went wrong'))
+    );
+    const stream = promisify(source);
+
+    stream.then(() => done(new Error('Should never get here')))
+      .catch(error => {
+        assert.equal(error.message, 'Something went wrong');
+        done();
+      })
+      .catch(done);
   });
 });

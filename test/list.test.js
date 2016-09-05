@@ -15,11 +15,11 @@ describe('reactive lists', () => {
           .configure(rx(Rx))
           .use('/messages', memory());
 
-        service = app.service('messages').rx();
+        service = app.service('messages');
 
         service.create({
           text: 'A test message'
-        }).then(() => done());
+        }).then(() => done()).catch(e => console.log('!!!', e));
       });
 
       baseTests('id');
@@ -148,7 +148,6 @@ describe('reactive lists', () => {
 
     it('queries on subscription rather than creation', done => {
       let trigger$ = new Rx.Subject();
-
       let result;
 
       service.find()
@@ -166,7 +165,7 @@ describe('reactive lists', () => {
       setTimeout(() => {
         assert.equal(result, undefined);
         trigger$.next(null);
-      }, 20);
+      }, 50);
     });
 
     it('.create and .find', done => {
