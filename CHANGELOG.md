@@ -1,5 +1,19 @@
 # Change Log
 
+## [v0.4.0](https://github.com/feathersjs/feathers-reactive/tree/v0.4.0) (2016-09-05)
+[Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.3.2...v0.4.0)
+
+**Closed issues:**
+
+- Other methods should delay until subscription as well [\#31](https://github.com/feathersjs/feathers-reactive/issues/31)
+- Paginated metadata should be updated [\#24](https://github.com/feathersjs/feathers-reactive/issues/24)
+- find\(\) shouldn't be executed before subscribing [\#20](https://github.com/feathersjs/feathers-reactive/issues/20)
+
+**Merged pull requests:**
+
+- Implement lazy subscription mode [\#34](https://github.com/feathersjs/feathers-reactive/pull/34) ([daffl](https://github.com/daffl))
+- Smart list strategy updates paginated metadata [\#33](https://github.com/feathersjs/feathers-reactive/pull/33) ([daffl](https://github.com/daffl))
+
 ## [v0.3.2](https://github.com/feathersjs/feathers-reactive/tree/v0.3.2) (2016-09-02)
 [Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.3.1...v0.3.2)
 
@@ -30,7 +44,6 @@
 
 **Closed issues:**
 
-- find\(\) shouldn't be executed before subscribing [\#20](https://github.com/feathersjs/feathers-reactive/issues/20)
 - Merge doesn't work? [\#19](https://github.com/feathersjs/feathers-reactive/issues/19)
 - Several issues on 'update' [\#18](https://github.com/feathersjs/feathers-reactive/issues/18)
 - Problems with React Native [\#16](https://github.com/feathersjs/feathers-reactive/issues/16)
