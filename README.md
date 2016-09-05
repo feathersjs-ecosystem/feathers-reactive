@@ -17,6 +17,7 @@ The following options are supported:
 - `listStrategy` (default: `smart`): The strategy to use for streaming the data. Can be `smart`, `always` or `never`
 - `sorter` (`function(query, options) {}`): A function that returns a sorting function for the given query and option including pagination and limiting. Does not need to be customized unless there is a sorting mechanism other than Feathers standard in place.
 - `matcher` (`function(query)`): A function that returns a function which returns whether an item matches the original query or not.
+- `lazy` (default: `false`): Run the query on first subscription instead of immediately.
 
 ### Setting options and RxJS
 

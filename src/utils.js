@@ -1,17 +1,43 @@
-const promiseMethods = ['then', 'catch'];
 import { sorter as createSorter } from 'feathers-commons/lib/utils';
 
-export function promisify(obj, promise) {
-  promiseMethods.forEach(method => {
-    Object.defineProperty(obj, method, {
-      enumerable: false,
-      value: function(... args) {
-        return promise.then(... args);
-      }
-    });
-  });
+export function getSource(Rx, lazy, __super, args) {
+  if(lazy === true) {
+    let result = null;
 
-  return obj;
+    return Rx.Observable.create(observer => {
+      const _observer = observer;
+
+      if(!result) {
+        result = __super(... args);
+      }
+
+      if(!result || typeof result.then !== 'function' ||
+        typeof result.catch !== 'function'
+      ) {
+        throw new Error(`feathers-reactive only works with services that return a Promise`);
+      }
+
+      result.then(res => {
+        _observer.next(res);
+        _observer.complete();
+      })
+      .catch(e => _observer.error(e));
+    });
+  }
+
+  return Rx.Observable.fromPromise(__super(... args));
+}
+
+export function promisify(stream) {
+  return Object.assign(stream, {
+    then(... args) {
+      return this.first().toPromise().then(... args);
+    },
+
+    catch(... args) {
+      return this.first().toPromise().catch(... args);
+    }
+  });
 }
 
 export function makeSorter(query, options) {
