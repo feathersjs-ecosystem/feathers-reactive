@@ -1,4 +1,4 @@
-import { promisify, getOptions } from './utils';
+import { promisify, getOptions, getSource } from './utils';
 
 // The position of the params parameters for a service method so that we can extend them
 // default is 1
@@ -9,18 +9,17 @@ export const paramsPositions = {
 
 export default function(Rx, events, settings, method) {
   return function() {
-    const result = this._super.apply(this, arguments);
-
+    const args = arguments;
     let position = typeof paramsPositions[method] !== 'undefined' ?
       paramsPositions[method] : 1;
     let params = arguments[position] || {};
 
-    if(this._rx === false || params.rx === false || typeof result.then !== 'function') {
-      return result;
+    if(this._rx === false || params.rx === false ) {
+      return this._super(... args);
     }
 
     const options = getOptions(settings, this._rx, params.rx);
-    const source = Rx.Observable.fromPromise(result);
+    const source = getSource(Rx, options.lazy, this._super.bind(this), args);
     const stream = source.concat(source.exhaustMap(data => {
       // Filter only data with the same id
       const filter = current => current[options.idField] === data[options.idField];
@@ -41,6 +40,6 @@ export default function(Rx, events, settings, method) {
       );
     }));
 
-    return promisify(stream, result);
+    return promisify(stream);
   };
 }

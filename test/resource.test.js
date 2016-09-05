@@ -83,6 +83,35 @@ describe('reactive resources', () => {
       }, done);
     });
 
+    it('lazy execution on subscription', done => {
+      let ran = false;
+
+      app.use('/dummy', {
+        get(id) {
+          ran = true;
+
+          return Promise.resolve({
+            id, description: `Do ${id}!`
+          });
+        }
+      });
+
+      const source = app.service('dummy').get('dishes', {
+        rx: { lazy: true }
+      });
+
+      assert.ok(!ran);
+
+      source.subscribe(data => {
+        assert.deepEqual(data, {
+          id: 'dishes',
+          description: 'Do dishes!'
+        });
+        assert.ok(ran);
+        done();
+      }, done);
+    });
+
     it('.update and .patch update existing stream', done => {
       const result = service.get(id);
 

@@ -115,23 +115,6 @@ describe('reactive lists', () => {
   });
 
   function baseTests (id) {
-    it('.find is only called once', done => {
-      let counter = 0;
-
-      app.use('/test', {
-        find() {
-          counter++;
-          return Promise.resolve([]);
-        }
-      });
-
-      app.service('test').find().take(1).subscribe(data => {
-        assert.equal(counter, 1);
-        assert.deepEqual(data, []);
-        done();
-      }, done);
-    });
-
     it('.find is promise compatible', done => {
       service.find().then(messages => {
         assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
@@ -139,34 +122,40 @@ describe('reactive lists', () => {
       });
     });
 
+    it('lazy execution on subscription', done => {
+      const fixture = [
+        { id: 0, text: 'first' },
+        { id: 1, text: 'second' }
+      ];
+
+      let ran = false;
+
+      app.use('/dummy', {
+        find() {
+          ran = true;
+
+          return Promise.resolve(fixture);
+        }
+      });
+
+      const source = app.service('dummy').find({
+        rx: { lazy: true }
+      });
+
+      assert.ok(!ran);
+
+      source.subscribe(data => {
+        assert.deepEqual(data, fixture);
+        assert.ok(ran);
+        done();
+      }, done);
+    });
+
     it('.find as an observable', done => {
       service.find().first().subscribe(messages => {
         assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
         done();
       }, done);
-    });
-
-    it('queries on subscription rather than creation', done => {
-      let trigger$ = new Rx.Subject();
-
-      let result;
-
-      service.find()
-        // delay subscription until trigger$ emits
-        .delayWhen(() => Rx.Observable.of(0), trigger$)
-        .subscribe(messages => {
-          result = messages;
-          assert.deepEqual(messages, [
-            { text: 'A test message', [id]: 0 }
-          ]);
-
-          done();
-        }, done);
-
-      setTimeout(() => {
-        assert.equal(result, undefined);
-        trigger$.next(null);
-      }, 20);
     });
 
     it('.create and .find', done => {
