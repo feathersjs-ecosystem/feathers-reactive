@@ -34,3 +34,6 @@ dist/
 
 # VSCode config
 .vscode
+
+# IntelliJ, WebStorm ...
+.idea
