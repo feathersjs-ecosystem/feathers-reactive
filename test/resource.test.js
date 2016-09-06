@@ -73,14 +73,43 @@ describe('reactive resources', () => {
       service.get(id).then(message => {
         assert.deepEqual(message, { [customId]: id, text: 'A test message' });
         done();
-      });
+      }, done);
     });
 
     it('.get as an observable', done => {
       service.get(id).first().subscribe(message => {
         assert.deepEqual(message, { [customId]: id, text: 'A test message' });
         done();
+      }, done);
+    });
+
+    it('lazy execution on subscription', done => {
+      let ran = false;
+
+      app.use('/dummy', {
+        get(id) {
+          ran = true;
+
+          return Promise.resolve({
+            id, description: `Do ${id}!`
+          });
+        }
       });
+
+      const source = app.service('dummy').get('dishes', {
+        rx: { lazy: true }
+      });
+
+      assert.ok(!ran);
+
+      source.subscribe(data => {
+        assert.deepEqual(data, {
+          id: 'dishes',
+          description: 'Do dishes!'
+        });
+        assert.ok(ran);
+        done();
+      }, done);
     });
 
     it('.update and .patch update existing stream', done => {
@@ -89,21 +118,21 @@ describe('reactive resources', () => {
       result.first().subscribe(message => {
         assert.deepEqual(message, { [customId]: id, text: 'A test message' });
         service.update(id, { text: 'Updated', prop: true });
-      });
+      }, done);
 
       result.skip(1).first().subscribe(message => {
         assert.deepEqual(message, {
           [customId]: id, text: 'Updated', prop: true
         });
         service.patch(id, { text: 'Updated again' });
-      });
+      }, done);
 
       result.skip(2).first().subscribe(message => {
         assert.deepEqual(message, {
           [customId]: id, text: 'Updated again', prop: true
         });
         done();
-      });
+      }, done);
     });
 
     it('.remove emits null', done => {
@@ -113,7 +142,7 @@ describe('reactive resources', () => {
         } else {
           assert.deepEqual(message, { [customId]: id, text: 'A test message' });
         }
-      });
+      }, done);
 
       service.remove(id);
     });

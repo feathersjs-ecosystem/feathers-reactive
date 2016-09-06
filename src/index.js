@@ -1,6 +1,8 @@
+import { matcher } from 'feathers-commons/lib/utils';
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
+import { makeSorter } from './utils';
 
 const debug = require('debug')('feathers-reactive');
 
@@ -18,17 +20,13 @@ function FeathersRx(Rx, options) {
   options = Object.assign({
     idField: 'id',
     dataField: 'data',
+    sorter: makeSorter,
+    lazy: false,
+    matcher,
     // Whether to requery service when a change is detected
     listStrategy: 'smart',
-    // The merging strategy
-    merge(current, eventData) {
-      return Object.assign({}, current, eventData);
-    }
+    listStrategies
   }, options);
-
-  if(typeof options.listStrategy === 'string') {
-    options.listStrategy = listStrategies[options.listStrategy];
-  }
 
   const mixin = function(service) {
     const app = this;

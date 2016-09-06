@@ -5,8 +5,8 @@ import socketio from 'feathers-socketio/client';
 import rx from 'feathers-reactive';
 import RxJS from 'rxjs';
 
-const socket = io();
-const app = feathers()
+const socket = window.socket = io();
+const app = window.app = feathers()
   .configure(socketio(socket))
   .configure(rx(RxJS));
 const todos = app.service('todos');

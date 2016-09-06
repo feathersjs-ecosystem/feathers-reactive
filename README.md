@@ -15,7 +15,9 @@ The following options are supported:
 - `idField` (default: `id`): The id property field of your services
 - `dataField` (default: `data`): The data property field in paginated responses
 - `listStrategy` (default: `smart`): The strategy to use for streaming the data. Can be `smart`, `always` or `never`
-- `merge` (`function(current, data){}`): A function that merges the current and new data
+- `sorter` (`function(query, options) {}`): A function that returns a sorting function for the given query and option including pagination and limiting. Does not need to be customized unless there is a sorting mechanism other than Feathers standard in place.
+- `matcher` (`function(query)`): A function that returns a function which returns whether an item matches the original query or not.
+- `lazy` (default: `false`): Run the query on first subscription instead of immediately.
 
 ### Setting options and RxJS
 
@@ -50,7 +52,11 @@ Each method call can also pass its own options via `params.rx`:
 // Disable the reactive extensions for this call
 app.service('todos').find({ rx: false });
 // Always fetch fresh data for this method call
-app.service('todos').find({ listStrategy: 'always' });
+app.service('todos').find({
+  rx: {
+    listStrategy: 'always'
+  }
+});
 ```
 
 ### List strategies

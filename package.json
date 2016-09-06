@@ -1,7 +1,7 @@
 {
   "name": "feathers-reactive",
   "description": "Reactive API extensions for Feathers services",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "homepage": "https://github.com/feathersjs/feathers-reactive",
   "main": "lib/index",
   "keywords": [
@@ -27,11 +27,12 @@
   },
   "scripts": {
     "prepublish": "npm run compile && npm run browserify",
-    "publish": "git push origin && git push origin --tags",
+    "publish": "git push origin --tags && npm run changelog && git push origin",
     "browserify": "mkdir -p dist/ && browserify src/index.js -t babelify --standalone feathers.rx --outfile dist/feathers-reactive.js",
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
+    "changelog": "github_changelog_generator && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
     "compile": "rimraf lib/ && babel -d lib/ src/",
     "watch": "babel --watch -d lib/ src/",
     "jshint": "jshint src/. test/. --config",
