@@ -1,10 +1,10 @@
-export default function(Rx) {
+export default function (Rx) {
   return {
-    never(source) {
+    never (source) {
       return source;
     },
 
-    always(source, events, options, args) {
+    always (source, events, options, args) {
       const params = args[0] || {};
       const query = Object.assign({}, params.query);
       const _super = this._super.bind(this);
@@ -28,7 +28,7 @@ export default function(Rx) {
       ));
     },
 
-    smart(source, events, options, args) {
+    smart (source, events, options, args) {
       const params = args[0] || {};
       const query = Object.assign({}, params.query);
       // A function that returns if an item matches the query
@@ -40,7 +40,7 @@ export default function(Rx) {
           const isPaginated = !!page[options.dataField];
           const process = data => data.concat(eventData);
 
-          if(isPaginated) {
+          if (isPaginated) {
             return Object.assign({}, page, {
               total: page.total + 1,
               [options.dataField]: process(page[options.dataField])
@@ -57,7 +57,7 @@ export default function(Rx) {
             eventData[options.idField] !== current[options.idField]
           );
 
-          if(isPaginated) {
+          if (isPaginated) {
             return Object.assign({}, page, {
               total: matches(eventData) ? page.total - 1 : page.total,
               [options.dataField]: process(page[options.dataField])
@@ -70,14 +70,13 @@ export default function(Rx) {
       const onUpdated = eventData => {
         return page => {
           const isPaginated = !!page[options.dataField];
-          const length = isPaginated ? page[options.dataField].length :
-            page.length;
+          const length = isPaginated ? page[options.dataField].length : page.length;
           const process = data =>
             data.filter(current =>
               eventData[options.idField] !== current[options.idField]
             ).concat(eventData).filter(matches);
 
-          if(isPaginated) {
+          if (isPaginated) {
             const processed = process(page[options.dataField]);
             return Object.assign({}, page, {
               // Total can be either decreased or increased based

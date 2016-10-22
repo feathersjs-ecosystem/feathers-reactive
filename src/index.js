@@ -1,17 +1,17 @@
-import { matcher } from 'feathers-commons/lib/utils';
+import {matcher} from 'feathers-commons/lib/utils';
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
-import { makeSorter } from './utils';
+import {makeSorter} from './utils';
 
 const debug = require('debug')('feathers-reactive');
 
-function FeathersRx(Rx, options) {
-  if(!Rx) {
+function FeathersRx (Rx, options) {
+  if (!Rx) {
     throw new Error('You have to pass an instance of RxJS as the first paramter.');
   }
 
-  if(!Rx.Observable) {
+  if (!Rx.Observable) {
     throw new Error('The RxJS instance does not seem to provide an `Observable` type.');
   }
 
@@ -28,10 +28,10 @@ function FeathersRx(Rx, options) {
     listStrategies
   }, options);
 
-  const mixin = function(service) {
+  const mixin = function (service) {
     const app = this;
     const mixin = {
-      rx(options = {}) {
+      rx (options = {}) {
         this._rx = options;
         return this;
       }
@@ -44,16 +44,16 @@ function FeathersRx(Rx, options) {
     };
 
     app.methods.forEach(method => {
-      if(typeof service[method] === 'function') {
-        mixin[method] = method === 'find' ? reactiveList(Rx, events, options) :
-          reactiveResource(Rx, events, options, method);
+      if (typeof service[method] === 'function') {
+        mixin[method] = method === 'find' ? reactiveList(Rx, events, options)
+          : reactiveResource(Rx, events, options, method);
       }
     });
 
     service.mixin(mixin);
   };
 
-  return function() {
+  return function () {
     debug('Initializing feathers-reactive plugin');
 
     this.mixins.push(mixin);
