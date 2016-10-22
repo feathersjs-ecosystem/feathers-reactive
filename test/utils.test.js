@@ -3,7 +3,7 @@ import Rx from 'rxjs';
 import { promisify } from '../src/utils';
 
 describe('feathers-reactive utils', () => {
-it('promisify .then', done => {
+  it('promisify .then', done => {
     const stream = promisify(Rx.Observable.from([ 'test' ]));
 
     stream.then(result => {

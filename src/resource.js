@@ -7,15 +7,14 @@ export const paramsPositions = {
   patch: 2
 };
 
-export default function(Rx, events, settings, method) {
-  return function() {
+export default function (Rx, events, settings, method) {
+  return function () {
     const args = arguments;
-    let position = typeof paramsPositions[method] !== 'undefined' ?
-      paramsPositions[method] : 1;
+    let position = typeof paramsPositions[method] !== 'undefined' ? paramsPositions[method] : 1;
     let params = arguments[position] || {};
 
-    if(this._rx === false || params.rx === false ) {
-      return this._super(... args);
+    if (this._rx === false || params.rx === false) {
+      return this._super(...args);
     }
 
     const options = getOptions(settings, this._rx, params.rx);

@@ -45,7 +45,6 @@ describe('reactive resources', () => {
     baseTests('customId');
   });
 
-
   describe('custom id on params', function () {
     beforeEach(done => {
       app = feathers()
@@ -67,7 +66,6 @@ describe('reactive resources', () => {
     baseTests('customId');
   });
 
-
   function baseTests (customId) {
     it('methods are still Promise compatible', done => {
       service.get(id).then(message => {
@@ -87,7 +85,7 @@ describe('reactive resources', () => {
       let ran = false;
 
       app.use('/dummy', {
-        get(id) {
+        get (id) {
           ran = true;
 
           return Promise.resolve({
@@ -137,7 +135,7 @@ describe('reactive resources', () => {
 
     it('.remove emits null', done => {
       service.get(id).subscribe(message => {
-        if(message === null) {
+        if (message === null) {
           done();
         } else {
           assert.deepEqual(message, { [customId]: id, text: 'A test message' });
@@ -147,5 +145,4 @@ describe('reactive resources', () => {
       service.remove(id);
     });
   }
-
 });

@@ -8,7 +8,7 @@ import rx from '../src';
 describe('reactive lists', () => {
   let app, service;
 
-  describe('strategy.smart', function() {
+  describe('strategy.smart', function () {
     describe('default', function () {
       beforeEach(done => {
         app = feathers()
@@ -58,7 +58,7 @@ describe('reactive lists', () => {
     });
   });
 
-  describe('strategy.always', function() {
+  describe('strategy.always', function () {
     describe('default', function () {
       beforeEach(done => {
         app = feathers()
@@ -101,7 +101,7 @@ describe('reactive lists', () => {
           .configure(rx(Rx, {
             listStrategy: 'always'
           }))
-          .use('/messages', memory({ paginate: { default: 3 }}));
+          .use('/messages', memory({ paginate: { default: 3 } }));
 
         service = app.service('messages').rx();
 
@@ -131,7 +131,7 @@ describe('reactive lists', () => {
       let ran = false;
 
       app.use('/dummy', {
-        find() {
+        find () {
           ran = true;
 
           return Promise.resolve(fixture);
