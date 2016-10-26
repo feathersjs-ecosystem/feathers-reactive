@@ -7,3 +7,5 @@ test/
 !lib/
 !dist/
 .github/
+coverage
+.istanbul.yml
