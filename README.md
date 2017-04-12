@@ -1,5 +1,7 @@
 # feathers-reactive
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/feathersjs/feathers-reactive.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/feathersjs/feathers-reactive.png?branch=master)](https://travis-ci.org/feathersjs/feathers-reactive)
 [![Code Climate](https://codeclimate.com/github/feathersjs/feathers-reactive.png)](https://codeclimate.com/github/feathersjs/feathers-reactive)
 [![Test Coverage](https://codeclimate.com/github/feathersjs/feathers-reactive/badges/coverage.svg)](https://codeclimate.com/github/feathersjs/feathers-reactive/coverage)
