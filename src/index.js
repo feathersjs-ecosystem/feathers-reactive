@@ -3,8 +3,16 @@ import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
 import {makeSorter} from './utils';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/merge';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/operator/mapTo';
+import 'rxjs/add/operator/exhaustMap';
+import 'rxjs/add/operator/concat';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/scan';
 
 const debug = require('debug')('feathers-reactive');
 

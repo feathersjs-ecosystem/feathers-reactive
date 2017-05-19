@@ -1,6 +1,5 @@
 import { sorter as createSorter } from 'feathers-commons/lib/utils';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromPromise';
 
 export function getSource (lazy, __super, args) {
   if (lazy === true) {
