@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/exhaustMap';
+import 'rxjs/add/operator/concat';
 
 // The position of the params parameters for a service method so that we can extend them
 // default is 1
