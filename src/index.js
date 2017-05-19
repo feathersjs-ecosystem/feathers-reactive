@@ -18,9 +18,9 @@ function FeathersRx (Rx, options) {
   if (!options.idField) {
     console.warn('feathers-reactive: options.idField is not configured and will be set to \'id\' by default. If your db uses a different field like \'_id\', make sure to set idField properly.');
   }
-  
+
   const listStrategies = strategies(Rx);
-  
+
   options = Object.assign({
     idField: 'id',
     dataField: 'data',
