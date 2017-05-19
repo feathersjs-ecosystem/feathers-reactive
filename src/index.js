@@ -15,7 +15,7 @@ function FeathersRx (options) {
     idField: 'id',
     dataField: 'data',
     sorter: makeSorter,
-    lazy: false,
+    lazy: true,
     matcher,
     // Whether to requery service when a change is detected
     listStrategy: 'smart',
