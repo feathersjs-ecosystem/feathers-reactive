@@ -1,7 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/concat';
 
 export default function () {
   return {
