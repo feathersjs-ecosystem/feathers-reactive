@@ -1,10 +1,12 @@
 import { sorter as createSorter } from 'feathers-commons/lib/utils';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
 
-export function getSource (Rx, lazy, __super, args) {
+export function getSource (lazy, __super, args) {
   if (lazy === true) {
     let result = null;
 
-    return Rx.Observable.create(observer => {
+    return Observable.create(observer => {
       const _observer = observer;
 
       if (!result) {
@@ -25,7 +27,7 @@ export function getSource (Rx, lazy, __super, args) {
     });
   }
 
-  return Rx.Observable.fromPromise(__super(...args));
+  return Observable.fromPromise(__super(...args));
 }
 
 export function promisify (stream) {

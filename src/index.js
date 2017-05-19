@@ -3,19 +3,13 @@ import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
 import {makeSorter} from './utils';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
 
 const debug = require('debug')('feathers-reactive');
 
-function FeathersRx (Rx, options) {
-  if (!Rx) {
-    throw new Error('You have to pass an instance of RxJS as the first paramter.');
-  }
-
-  if (!Rx.Observable) {
-    throw new Error('The RxJS instance does not seem to provide an `Observable` type.');
-  }
-
-  const listStrategies = strategies(Rx);
+function FeathersRx (options) {
+  const listStrategies = strategies();
 
   options = Object.assign({
     idField: 'id',
@@ -37,20 +31,29 @@ function FeathersRx (Rx, options) {
       }
     };
     const events = {
-      created: Rx.Observable.fromEvent(service, 'created'),
-      updated: Rx.Observable.fromEvent(service, 'updated'),
-      patched: Rx.Observable.fromEvent(service, 'patched'),
-      removed: Rx.Observable.fromEvent(service, 'removed')
+      created: Observable.fromEvent(service, 'created'),
+      updated: Observable.fromEvent(service, 'updated'),
+      patched: Observable.fromEvent(service, 'patched'),
+      removed: Observable.fromEvent(service, 'removed')
     };
+
+    const reactiveMethods = {};
 
     app.methods.forEach(method => {
       if (typeof service[method] === 'function') {
-        mixin[method] = method === 'find' ? reactiveList(Rx, events, options)
-          : reactiveResource(Rx, events, options, method);
+        reactiveMethods[method] = method === 'find'
+          ? reactiveList(events, options)
+          : reactiveResource(events, options, method);
       }
     });
 
-    service.mixin(mixin);
+    mixin.watch = () => reactiveMethods;
+
+    const newThis = service.mixin(mixin);
+
+    for (let m in reactiveMethods) {
+      reactiveMethods[m] = reactiveMethods[m].bind(newThis);
+    }
   };
 
   return function () {

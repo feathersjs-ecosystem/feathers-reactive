@@ -68,14 +68,14 @@ describe('reactive resources', () => {
 
   function baseTests (customId) {
     it('methods are still Promise compatible', done => {
-      service.get(id).then(message => {
+      service.watch().get(id).then(message => {
         assert.deepEqual(message, { [customId]: id, text: 'A test message' });
         done();
       }, done);
     });
 
     it('.get as an observable', done => {
-      service.get(id).first().subscribe(message => {
+      service.watch().get(id).first().subscribe(message => {
         assert.deepEqual(message, { [customId]: id, text: 'A test message' });
         done();
       }, done);
@@ -94,7 +94,7 @@ describe('reactive resources', () => {
         }
       });
 
-      const source = app.service('dummy').get('dishes', {
+      const source = app.service('dummy').watch().get('dishes', {
         rx: { lazy: true }
       });
 
@@ -111,7 +111,7 @@ describe('reactive resources', () => {
     });
 
     it('.update and .patch update existing stream', done => {
-      const result = service.get(id);
+      const result = service.watch().get(id);
 
       result.first().subscribe(message => {
         assert.deepEqual(message, { [customId]: id, text: 'A test message' });
@@ -134,7 +134,7 @@ describe('reactive resources', () => {
     });
 
     it('.remove emits null', done => {
-      service.get(id).subscribe(message => {
+      service.watch().get(id).subscribe(message => {
         if (message === null) {
           done();
         } else {

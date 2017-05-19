@@ -1,4 +1,6 @@
 import { promisify, getOptions, getSource } from './utils';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/merge';
 
 // The position of the params parameters for a service method so that we can extend them
 // default is 1
@@ -7,7 +9,7 @@ export const paramsPositions = {
   patch: 2
 };
 
-export default function (Rx, events, settings, method) {
+export default function (events, settings, method) {
   return function () {
     const args = arguments;
     let position = typeof paramsPositions[method] !== 'undefined' ? paramsPositions[method] : 1;
@@ -18,20 +20,20 @@ export default function (Rx, events, settings, method) {
     }
 
     const options = getOptions(settings, this._rx, params.rx);
-    const source = getSource(Rx, options.lazy, this._super.bind(this), args);
+    const source = getSource(options.lazy, this[method].bind(this), args);
     const stream = source.concat(source.exhaustMap(data => {
       // Filter only data with the same id
       const filter = current => current[options.idField] === data[options.idField];
       // `removed` events get special treatment
       const filteredRemoves = events.removed.filter(filter);
       // `created`, `updated` and `patched`
-      const filteredEvents = Rx.Observable.merge(
+      const filteredEvents = Observable.merge(
         events.created,
         events.updated,
         events.patched
       ).filter(filter);
 
-      return Rx.Observable.merge(
+      return Observable.merge(
         // Map to a callback that merges old and new data
         filteredEvents,
         // filtered `removed` events always map to a function that returns `null`

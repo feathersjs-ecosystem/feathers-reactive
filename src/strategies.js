@@ -1,4 +1,8 @@
-export default function (Rx) {
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/merge';
+import 'rxjs/add/observable/fromPromise';
+
+export default function () {
   return {
     never (source) {
       return source;
@@ -15,13 +19,13 @@ export default function (Rx) {
       const sortAndTrim = options.sorter(query, options);
 
       return source.concat(source.exhaustMap(() =>
-        Rx.Observable.merge(
+        Observable.merge(
           events.created.filter(matches),
           events.removed,
           events.updated,
           events.patched
         ).flatMap(() => {
-          const source = Rx.Observable.fromPromise(_super(...args));
+          const source = Observable.fromPromise(_super(...args));
 
           return source.map(sortAndTrim);
         })
@@ -91,10 +95,10 @@ export default function (Rx) {
       };
 
       return source.concat(source.exhaustMap(data =>
-        Rx.Observable.merge(
+        Observable.merge(
           events.created.filter(matches).map(onCreated),
           events.removed.map(onRemoved),
-          Rx.Observable.merge(events.updated, events.patched).map(onUpdated)
+          Observable.merge(events.updated, events.patched).map(onUpdated)
         ).scan((current, callback) => sortAndTrim(callback(current)), data)
       ));
     }

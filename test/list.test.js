@@ -138,7 +138,7 @@ describe('reactive lists', () => {
         }
       });
 
-      const source = app.service('dummy').find({
+      const source = app.service('dummy').watch().find({
         rx: { lazy: true }
       });
 
@@ -152,14 +152,14 @@ describe('reactive lists', () => {
     });
 
     it('.find as an observable', done => {
-      service.find().first().subscribe(messages => {
+      service.watch().find().first().subscribe(messages => {
         assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
         done();
       }, done);
     });
 
     it('.create and .find', done => {
-      service.find().skip(1).subscribe(messages => {
+      service.watch().find().skip(1).subscribe(messages => {
         assert.deepEqual(messages, [
           { text: 'A test message', [id]: 0 },
           { text: 'Another message', [id]: 1 }
@@ -171,7 +171,7 @@ describe('reactive lists', () => {
     });
 
     it('.update and .find', done => {
-      service.find().skip(1).subscribe(messages => {
+      service.watch().find().skip(1).subscribe(messages => {
         assert.deepEqual(messages, [
           { text: 'An updated test message', [id]: 0 }
         ]);
@@ -182,7 +182,7 @@ describe('reactive lists', () => {
     });
 
     it('.patch and .find', done => {
-      service.find().skip(1).subscribe(messages => {
+      service.watch().find().skip(1).subscribe(messages => {
         assert.deepEqual(messages, [
           { text: 'A patched test message', [id]: 0 }
         ]);
@@ -193,7 +193,7 @@ describe('reactive lists', () => {
     });
 
     it('.remove and .find', done => {
-      service.find().skip(1).subscribe(messages => {
+      service.watch().find().skip(1).subscribe(messages => {
         assert.deepEqual(messages, []);
         done();
       }, done);
@@ -202,7 +202,7 @@ describe('reactive lists', () => {
     });
 
     it('.find with .create that matches', done => {
-      const result = service.find({ query: { counter: 1 } });
+      const result = service.watch().find({ query: { counter: 1 } });
 
       result.first().subscribe(messages => assert.deepEqual(messages, []), done);
 
@@ -227,7 +227,7 @@ describe('reactive lists', () => {
     });
 
     it('.find with $sort, .create and .patch', done => {
-      const result = service.find({ query: { $sort: { text: -1 } } });
+      const result = service.watch().find({ query: { $sort: { text: -1 } } });
 
       result.skip(1).first().subscribe(messages => {
         assert.deepEqual(messages, [{
@@ -269,7 +269,7 @@ describe('reactive lists', () => {
         service.create({ text: 'first', counter: 1 }),
         service.create({ text: 'second', counter: 1 })
       ]).then(createdMessages => {
-        const result = service.find({ query: { counter: 1 } });
+        const result = service.watch().find({ query: { counter: 1 } });
 
         result.first().subscribe(messages =>
           assert.deepEqual(messages, createdMessages),
@@ -295,7 +295,7 @@ describe('reactive lists', () => {
         service.create({ text: 'first', counter: 1 }),
         service.create({ text: 'second', counter: 1 })
       ]).then(createdMessages => {
-        const result = service.find({ query: { counter: 1 } });
+        const result = service.watch().find({ query: { counter: 1 } });
 
         result.first().subscribe(messages =>
           assert.deepEqual(messages, createdMessages),
@@ -330,7 +330,7 @@ describe('reactive lists', () => {
         { text: 'first', [id]: 1 },
         { text: 'second', [id]: 2 }
       ];
-      const result = service.find();
+      const result = service.watch().find();
 
       result.skip(3).subscribe(messages => {
         assert.deepEqual(messages.data, expect);
@@ -345,7 +345,7 @@ describe('reactive lists', () => {
     });
 
     it('.create updates total', done => {
-      service.find().first().subscribe(data => {
+      service.watch().find().first().subscribe(data => {
         assert.deepEqual(data, {
           total: 1,
           limit: 3,
@@ -356,7 +356,7 @@ describe('reactive lists', () => {
         });
       }, done);
 
-      service.find().skip(2).subscribe(data => {
+      service.watch().find().skip(2).subscribe(data => {
         assert.deepEqual(data, {
           total: 3,
           limit: 3,
@@ -377,7 +377,7 @@ describe('reactive lists', () => {
     });
 
     it('.remove updates total', done => {
-      service.find().first().subscribe(data => {
+      service.watch().find().first().subscribe(data => {
         assert.deepEqual(data, {
           total: 1,
           limit: 3,
@@ -388,7 +388,7 @@ describe('reactive lists', () => {
         });
       }, done);
 
-      service.find().skip(1).subscribe(data => {
+      service.watch().find().skip(1).subscribe(data => {
         assert.deepEqual(data, {
           total: 0,
           limit: 3,
@@ -410,10 +410,10 @@ describe('reactive lists', () => {
       };
       const text = 'updated text';
 
-      service.find({ query: { text } }).first()
+      service.watch().find({ query: { text } }).first()
         .subscribe(data => assert.deepEqual(data, empty), done);
 
-      service.find({ query: { text } }).skip(1).first().subscribe(data => {
+      service.watch().find({ query: { text } }).skip(1).first().subscribe(data => {
         assert.deepEqual(data, {
           total: 1,
           limit: 3,
@@ -425,7 +425,7 @@ describe('reactive lists', () => {
         setTimeout(() => service.patch(0, { text: 'changed again' }));
       }, done);
 
-      service.find({ query: { text } }).skip(2).first().subscribe(data => {
+      service.watch().find({ query: { text } }).skip(2).first().subscribe(data => {
         assert.deepEqual(data, empty);
         done();
       }, done);
