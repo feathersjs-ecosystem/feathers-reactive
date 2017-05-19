@@ -1,4 +1,3 @@
-import Rx from 'rxjs/Rx';
 import assert from 'assert';
 import feathers from 'feathers';
 import memory from 'feathers-memory';
@@ -12,11 +11,10 @@ describe('reactive resources', () => {
   describe('standard id', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx(Rx))
+        .configure(rx())
         .use('/messages', memory());
 
-      service = app.service('messages').rx({idField: 'customId'});
-
+      service = app.service('messages').rx();
       service.create({
         text: 'A test message'
       }).then(message => {
@@ -30,7 +28,7 @@ describe('reactive resources', () => {
   describe('custom id on service', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx(Rx))
+        .configure(rx())
         .use('/messages', memory({ idField: 'customId' }));
 
       service = app.service('messages').rx({ idField: 'customId' });
@@ -48,12 +46,12 @@ describe('reactive resources', () => {
   describe('custom id on params', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx(Rx))
+        .configure(rx())
         .configure(hooks())
         .use('/messages', memory({ idField: 'customId' }));
 
-      service = app.service('messages').rx().before({
-        all: [function (hook) { hook.params.rx = { idField: 'customID' }; }]
+      service = app.service('messages').before({
+        all: [function (hook) { hook.params.rx = { idField: 'customId' }; }]
       });
 
       service.create({
@@ -142,7 +140,7 @@ describe('reactive resources', () => {
         }
       }, done);
 
-      service.remove(id);
+      setTimeout(() => service.remove(id), 20);
     });
   }
 });
