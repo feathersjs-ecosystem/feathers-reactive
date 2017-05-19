@@ -1,35 +1,31 @@
 import { sorter as createSorter } from 'feathers-commons/lib/utils';
 import { Observable } from 'rxjs/Observable';
 
-export function getSource (lazy, __super, args) {
-  if (lazy === true) {
-    let result = null;
+export function getSource (__super, args) {
+  let result = null;
 
-    return Observable.create(observer => {
-      const _observer = observer;
+  return Observable.create(observer => {
+    const _observer = observer;
 
-      if (!result) {
-        result = __super(...args);
-      }
+    if (!result) {
+      result = __super(...args);
+    }
 
-      if (!result || typeof result.then !== 'function' ||
-        typeof result.catch !== 'function'
-      ) {
-        throw new Error(`feathers-reactive only works with services that return a Promise`);
-      }
+    if (!result || typeof result.then !== 'function' ||
+      typeof result.catch !== 'function'
+    ) {
+      throw new Error(`feathers-reactive only works with services that return a Promise`);
+    }
 
-      result.then(res => {
-        _observer.next(res);
-        _observer.complete();
-      })
+    result.then(res => {
+      _observer.next(res);
+      _observer.complete();
+    })
       .catch(e => _observer.error(e));
-    });
-  }
-
-  return Observable.fromPromise(__super(...args));
+  });
 }
-
-export function promisify (stream) {
+/*
+export function promisify(stream) {
   return Object.assign(stream, {
     then (...args) {
       return this.first().toPromise().then(...args);
@@ -40,7 +36,7 @@ export function promisify (stream) {
     }
   });
 }
-
+*/
 export function makeSorter (query, options) {
   // The sort function (if $sort is set)
   const sorter = query.$sort ? createSorter(query.$sort) : createSorter({

@@ -1,5 +1,4 @@
 import assert from 'assert';
-import Rx from 'rxjs';
 import { promisify } from '../src/utils';
 
 describe('feathers-reactive utils', () => {

@@ -13,10 +13,11 @@ import 'rxjs/add/operator/exhaustMap';
 import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/mergeMap';
 
 const debug = require('debug')('feathers-reactive');
 
-function FeathersRx (options) {
+function FeathersRx (options = {}) {
   const listStrategies = strategies();
 
   if (!options.idField) {

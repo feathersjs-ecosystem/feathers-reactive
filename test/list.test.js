@@ -1,4 +1,4 @@
-import Rx from 'rxjs/Rx';
+
 import assert from 'assert';
 import feathers from 'feathers';
 import memory from 'feathers-memory';
@@ -15,7 +15,7 @@ describe('reactive lists', () => {
           .configure(rx())
           .use('/messages', memory());
 
-        service = app.service('messages').rx();
+        service = app.service('messages');
 
         service.create({
           text: 'A test message'
@@ -62,7 +62,7 @@ describe('reactive lists', () => {
     describe('default', function () {
       beforeEach(done => {
         app = feathers()
-          .configure(rx(Rx, {
+          .configure(rx({
             listStrategy: 'always'
           }))
           .use('/messages', memory());
@@ -80,7 +80,7 @@ describe('reactive lists', () => {
     describe('custom id', function () {
       beforeEach(done => {
         app = feathers()
-          .configure(rx(Rx, {
+          .configure(rx({
             listStrategy: 'always'
           }))
           .use('/messages', memory({ idField: 'customId' }));
@@ -98,7 +98,7 @@ describe('reactive lists', () => {
     describe('pagination', function () {
       beforeEach(done => {
         app = feathers()
-          .configure(rx(Rx, {
+          .configure(rx({
             listStrategy: 'always'
           }))
           .use('/messages', memory({ paginate: { default: 3 } }));
@@ -159,15 +159,17 @@ describe('reactive lists', () => {
     });
 
     it('.create and .find', done => {
-      service.watch().find().skip(1).subscribe(messages => {
+      service.watch().find().skip(2).subscribe(messages => {
         assert.deepEqual(messages, [
           { text: 'A test message', [id]: 0 },
-          { text: 'Another message', [id]: 1 }
+          { text: 'Another message', [id]: 1 },
+          { text: 'Another message', [id]: 2 }
         ]);
         done();
       }, done);
 
       setTimeout(() => service.create({ text: 'Another message' }), 20);
+      setTimeout(() => service.create({ text: 'Another message' }), 40);
     });
 
     it('.update and .find', done => {

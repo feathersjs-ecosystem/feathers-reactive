@@ -1,4 +1,7 @@
-import { promisify, getOptions, getSource } from './utils';
+import {
+  getOptions,
+  getSource
+} from './utils';
 import { Observable } from 'rxjs/Observable';
 
 // The position of the params parameters for a service method so that we can extend them
@@ -19,27 +22,28 @@ export default function (events, settings, method) {
     }
 
     const options = getOptions(settings, this._rx, params.rx);
-    const source = getSource(options.lazy, this[method].bind(this), args);
-    const stream = source.concat(source.exhaustMap(data => {
-      // Filter only data with the same id
-      const filter = current => current[options.idField] === data[options.idField];
-      // `removed` events get special treatment
-      const filteredRemoves = events.removed.filter(filter);
-      // `created`, `updated` and `patched`
-      const filteredEvents = Observable.merge(
-        events.created,
-        events.updated,
-        events.patched
-      ).filter(filter);
+    const source = getSource(this[method].bind(this), args);
+    const stream = source.concat(
+      source.exhaustMap(data => {
+        // Filter only data with the same id
+        const filter = current => current[options.idField] === data[options.idField];
+        // `removed` events get special treatment
+        const filteredRemoves = events.removed.filter(filter);
+        // `created`, `updated` and `patched`
+        const filteredEvents = Observable.merge(
+          events.created,
+          events.updated,
+          events.patched
+        ).filter(filter);
 
-      return Observable.merge(
-        // Map to a callback that merges old and new data
-        filteredEvents,
-        // filtered `removed` events always mapped to `null`
-        filteredRemoves.mapTo(null)
-      );
-    }));
+        return Observable.merge(
+          // Map to a callback that merges old and new data
+          filteredEvents,
+          // filtered `removed` events always mapped to `null`
+          filteredRemoves.mapTo(null)
+        );
+      }));
 
-    return promisify(stream);
+    return stream;
   };
 }

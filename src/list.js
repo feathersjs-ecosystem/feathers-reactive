@@ -1,4 +1,4 @@
-import { promisify, getOptions, getSource } from './utils';
+import { getOptions, getSource } from './utils';
 
 export default function (events, settings) {
   return function (params = {}) {
@@ -9,9 +9,9 @@ export default function (events, settings) {
     }
 
     const options = getOptions(settings, this._rx, params.rx);
-    const source = getSource(options.lazy, this.find.bind(this), arguments);
+    const source = getSource(this.find.bind(this), arguments);
     const stream = options.listStrategy.call(this, source, events, options, args);
 
-    return promisify(stream);
+    return stream;
   };
 }

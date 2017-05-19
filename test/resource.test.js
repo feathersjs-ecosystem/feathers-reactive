@@ -14,7 +14,7 @@ describe('reactive resources', () => {
         .configure(rx())
         .use('/messages', memory());
 
-      service = app.service('messages').rx();
+      service = app.service('messages');
       service.create({
         text: 'A test message'
       }).then(message => {
@@ -66,7 +66,7 @@ describe('reactive resources', () => {
 
   function baseTests (customId) {
     it('methods are still Promise compatible', done => {
-      service.watch().get(id).then(message => {
+      service.get(id).then(message => {
         assert.deepEqual(message, { [customId]: id, text: 'A test message' });
         done();
       }, done);
