@@ -1,7 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/concat';
 
 export default function () {
   return {
@@ -12,7 +9,7 @@ export default function () {
     always (source, events, options, args) {
       const params = args[0] || {};
       const query = Object.assign({}, params.query);
-      const _super = this._super.bind(this);
+      const _super = this.find.bind(this);
 
       // A function that returns if an item matches the query
       const matches = options.matcher(query);
