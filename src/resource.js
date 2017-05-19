@@ -1,6 +1,8 @@
 import { promisify, getOptions, getSource } from './utils';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/merge';
+import 'rxjs/add/operator/mapTo';
+import 'rxjs/add/operator/exhaustMap';
 
 // The position of the params parameters for a service method so that we can extend them
 // default is 1
@@ -36,8 +38,8 @@ export default function (events, settings, method) {
       return Observable.merge(
         // Map to a callback that merges old and new data
         filteredEvents,
-        // filtered `removed` events always map to a function that returns `null`
-        filteredRemoves.map(() => null)
+        // filtered `removed` events always mapped to `null`
+        filteredRemoves.mapTo(null)
       );
     }));
 
