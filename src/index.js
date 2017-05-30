@@ -28,7 +28,6 @@ function FeathersRx (options = {}) {
     idField: 'id',
     dataField: 'data',
     sorter: makeSorter,
-    lazy: true,
     matcher,
     // Whether to requery service when a change is detected
     listStrategy: 'smart',
@@ -50,6 +49,7 @@ function FeathersRx (options = {}) {
       removed: Observable.fromEvent(service, 'removed')
     };
 
+    // object to hold our reactive methods
     const reactiveMethods = {};
 
     app.methods.forEach(method => {
@@ -62,8 +62,10 @@ function FeathersRx (options = {}) {
 
     mixin.watch = () => reactiveMethods;
 
+    // get the new service object
     const newThis = service.mixin(mixin);
 
+    // bind the new service to all reactive methods
     for (let m in reactiveMethods) {
       reactiveMethods[m] = reactiveMethods[m].bind(newThis);
     }

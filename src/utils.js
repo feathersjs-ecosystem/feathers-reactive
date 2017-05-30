@@ -24,19 +24,7 @@ export function getSource (__super, args) {
       .catch(e => _observer.error(e));
   });
 }
-/*
-export function promisify(stream) {
-  return Object.assign(stream, {
-    then (...args) {
-      return this.first().toPromise().then(...args);
-    },
 
-    catch (...args) {
-      return this.first().toPromise().catch(...args);
-    }
-  });
-}
-*/
 export function makeSorter (query, options) {
   // The sort function (if $sort is set)
   const sorter = query.$sort ? createSorter(query.$sort) : createSorter({
