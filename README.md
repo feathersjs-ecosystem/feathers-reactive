@@ -13,31 +13,25 @@
 
 ## About
 
-`feathers-reactive` turns a [Feathers service](http://docs.feathersjs.com/services/readme.html) call into an [RxJS](https://github.com/Reactive-Extensions/RxJS) observables that automatically updates on [real-time events](http://docs.feathersjs.com/real-time/events.html).
+`feathers-reactive` adds a `watch()` method to services. The returned object implements all service methods as [RxJS](https://github.com/Reactive-Extensions/RxJS) observables that automatically update on [real-time events](http://docs.feathersjs.com/real-time/events.html).
 
 ## Options
 
 The following options are supported:
 
-- `idField` (default: `id`): The id property field of your services
+- `idField` (default: `id`): The id property field of your services. Needs to be set to work with databases that use an idField different from 'id' (MongoDB, NeDB, ... ).
 - `dataField` (default: `data`): The data property field in paginated responses
 - `listStrategy` (default: `smart`): The strategy to use for streaming the data. Can be `smart`, `always` or `never`
 - `sorter` (`function(query, options) {}`): A function that returns a sorting function for the given query and option including pagination and limiting. Does not need to be customized unless there is a sorting mechanism other than Feathers standard in place.
 - `matcher` (`function(query)`): A function that returns a function which returns whether an item matches the original query or not.
-- `lazy` (default: `false`): Run the query on first subscription instead of immediately.
-
-### Setting options and RxJS
-
-An instance of RxJS has to be passed as the first parameter when configuring the plugin on the application. Other options can be set on the application, service and method call level (and will be merged in that order):
 
 #### Application level
 
 ```js
 const feathers = require('feathers');
 const reactive = require('feathers-reactive');
-const RxJS = require('rxjs');
 
-const app = feathers().configure(reactive(RxJS, options));
+const app = feathers().configure(reactive(options));
 ```
 
 #### Service level
@@ -56,10 +50,8 @@ app.service('todos').rx({
 Each method call can also pass its own options via `params.rx`:
 
 ```js
-// Disable the reactive extensions for this call
-app.service('todos').find({ rx: false });
 // Always fetch fresh data for this method call
-app.service('todos').find({
+app.service('todos').watch().find({
   rx: {
     listStrategy: 'always'
   }
@@ -80,10 +72,9 @@ List strategies are used to determine how a data stream behaves. Currently there
 const feathers = require('feathers');
 const memory = require('feathers-memory');
 const rx = require('feathers-reactive');
-const RxJS = require('rxjs');
 
 const app = feathers()
-  .configure(rx(RxJS))
+  .configure(rx())
   .use('/messages', memory());
 
 const messages = app.service('messages');
@@ -91,12 +82,12 @@ const messages = app.service('messages');
 messages.create({
   text: 'A test message'
 }).then(() => {
-  // Get a specific message with id 0. Emit the message data once it resolves
+  // Get and watch a specific message with id 0. Emit the message data once it resolves
   // and every time it changes e.g. through an updated or patched event
-  messages.get(0).subscribe(message => console.log('My message', message));
+  messages.watch().get(0).subscribe(message => console.log('My message', message));
 
-  // Find all messages and emit a new list every time anything changes
-  messages.find().subscribe(messages => console.log('Message list', messages));
+  // Find and watch all messages and emit a new list every time anything changes
+  messages.watch().find().subscribe(messages => console.log('Message list', messages));
 
   setTimeout(() => {
     messages.create({ text: 'Another message' }).then(() =>
@@ -151,12 +142,12 @@ import ReactDOM from 'react-dom';
 import feathers from 'feathers/client';
 import socketio from 'feathers-socketio/client';
 import rx from 'feathers-reactive';
-import RxJS from 'rxjs';
+
 
 const socket = io();
 const app = feathers()
   .configure(socketio(socket))
-  .configure(rx(RxJS));
+  .configure(rx());
 const todos = app.service('todos');
 
 const TodoApp = React.createClass({
@@ -168,7 +159,7 @@ const TodoApp = React.createClass({
   },
 
   componentDidMount() {
-    this.todos = todos.find().subscribe(todos => this.setState({ todos }));
+    this.todos = todos.watch().find().subscribe(todos => this.setState({ todos }));
   },
 
   componentWillUnmount() {
