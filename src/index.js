@@ -21,7 +21,7 @@ function FeathersRx (options = {}) {
   const listStrategies = strategies();
 
   if (!options.idField) {
-    throw `feathers-reactive: setting options.idField is mandatory`
+    throw new Error(`feathers-reactive: setting options.idField is mandatory`);
   }
 
   options = Object.assign({
