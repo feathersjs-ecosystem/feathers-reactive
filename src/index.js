@@ -1,8 +1,8 @@
-import {matcher} from 'feathers-commons/lib/utils';
+import { matcher } from 'feathers-commons/lib/utils';
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
-import {makeSorter} from './utils';
+import { makeSorter } from './utils';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
@@ -17,17 +17,11 @@ import 'rxjs/add/operator/mergeMap';
 
 const debug = require('debug')('feathers-reactive');
 
-function FeathersRx (RxOrOptions, options = {}) {
-  if(RxOrOptions.Observable){
-    console.warn('feathers-reactive: RxJS is a hard dependency now and should no longer be passed to feathers-reactive as an argument.')
-  } else {
-    options = RxOrOptions || {};
-  }
-
+function FeathersRx (options = {}) {
   const listStrategies = strategies();
 
   if (!options.idField) {
-    console.warn('feathers-reactive: options.idField is not configured and will be set to \'id\' by default. If your db uses a different field like \'_id\', make sure to set idField properly.');
+    console.warn(`feathers-reactive: options.idField is not configured and will be set to 'id' by default. If your db uses a different field like '_id', make sure to set idField properly.`);
   }
 
   options = Object.assign({
@@ -42,12 +36,7 @@ function FeathersRx (RxOrOptions, options = {}) {
 
   const mixin = function (service) {
     const app = this;
-    const mixin = {
-      rx (options = {}) {
-        this._rx = options;
-        return this;
-      }
-    };
+
     const events = {
       created: Observable.fromEvent(service, 'created'),
       updated: Observable.fromEvent(service, 'updated'),
@@ -66,14 +55,22 @@ function FeathersRx (RxOrOptions, options = {}) {
       }
     });
 
-    mixin.watch = () => reactiveMethods;
+    const mixin = {
+      rx (options = {}) {
+        this._rx = options;
+        return this;
+      },
+      watch () {
+        return reactiveMethods;
+      }
+    };
 
     // get the new service object
-    const newThis = service.mixin(mixin);
+    const newService = service.mixin(mixin);
 
     // bind the new service to all reactive methods
     for (let m in reactiveMethods) {
-      reactiveMethods[m] = reactiveMethods[m].bind(newThis);
+      reactiveMethods[m] = reactiveMethods[m].bind(newService);
     }
   };
 
