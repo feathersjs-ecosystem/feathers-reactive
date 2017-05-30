@@ -17,7 +17,13 @@ import 'rxjs/add/operator/mergeMap';
 
 const debug = require('debug')('feathers-reactive');
 
-function FeathersRx (options = {}) {
+function FeathersRx (RxOrOptions, options = {}) {
+  if(RxOrOptions.Observable){
+    console.warn('feathers-reactive: RxJS is a hard dependency now and should no longer be passed to feathers-reactive as an argument.')
+  } else {
+    options = RxOrOptions || {};
+  }
+
   const listStrategies = strategies();
 
   if (!options.idField) {
