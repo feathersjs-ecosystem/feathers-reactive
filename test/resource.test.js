@@ -11,7 +11,7 @@ describe('reactive resources', () => {
   describe('standard id', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx())
+        .configure(rx({idField: 'id'}))
         .use('/messages', memory());
 
       service = app.service('messages');
@@ -28,7 +28,7 @@ describe('reactive resources', () => {
   describe('custom id on service', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx())
+        .configure(rx({idField: 'id'}))
         .use('/messages', memory({ idField: 'customId' }));
 
       service = app.service('messages').rx({ idField: 'customId' });
@@ -46,7 +46,7 @@ describe('reactive resources', () => {
   describe('custom id on params', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx())
+        .configure(rx({idField: 'id'}))
         .configure(hooks())
         .use('/messages', memory({ idField: 'customId' }));
 
