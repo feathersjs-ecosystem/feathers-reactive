@@ -12,6 +12,6 @@ export default function (events, settings) {
     const source = getSource(this.find.bind(this), arguments);
     const stream = options.listStrategy.call(this, source, events, options, args);
 
-    return options.zone ? stream.__feathers_observeOnZone(options.zone) : stream;
+    return options.let ? stream.let(options.let) : stream;
   };
 }

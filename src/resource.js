@@ -44,6 +44,6 @@ export default function (events, settings, method) {
         );
       }));
 
-    return options.zone ? stream.__feathers_observeOnZone(options.zone) : stream;
+    return options.let ? stream.let(options.let) : stream;
   };
 }

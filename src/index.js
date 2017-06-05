@@ -2,7 +2,7 @@ import { matcher } from 'feathers-commons/lib/utils';
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
-import { addObserveOnZoneOperator, makeSorter } from './utils';
+import { makeSorter } from './utils';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
@@ -11,6 +11,7 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/concat';
 import 'rxjs/add/operator/exhaustMap';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/let';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mapTo';
 import 'rxjs/add/operator/mergeMap';
@@ -23,10 +24,6 @@ function FeathersRx (options = {}) {
 
   if (!options.idField) {
     throw new Error(`feathers-reactive: setting options.idField is mandatory`);
-  }
-
-  if (typeof window !== 'undefined' && window.Zone && !options.zone) {
-    console.warn('feathers-reactive: You seem to be running zone.js. Set options.zone appropriately to avoid issues');
   }
 
   options = Object.assign({
@@ -47,11 +44,6 @@ function FeathersRx (options = {}) {
       patched: Observable.fromEvent(service, 'patched'),
       removed: Observable.fromEvent(service, 'removed')
     };
-
-    // zone.js support
-    if (options.zone) {
-      addObserveOnZoneOperator();
-    }
 
     // object to hold our reactive methods
     const reactiveMethods = {};
