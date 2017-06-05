@@ -64,3 +64,15 @@ export function getOptions (base, ...others) {
 
   return options;
 }
+
+export function addObserveOnZoneOperator () {
+  // patch Observable prototype
+  Observable.prototype.__feathers_observeOnZone = function (zone) {
+    return Observable.create(observer => {
+      const onNext = (value) => zone.run(() => observer.next(value));
+      const onError = (e) => zone.run(() => observer.error(e));
+      const onComplete = () => zone.run(() => observer.complete());
+      return this.subscribe(onNext, onError, onComplete);
+    });
+  };
+}
