@@ -1,8 +1,5 @@
 import { Observable } from 'rxjs/Observable';
 import { NullableId, Pagination, Params } from 'feathers';
-/**
- * Created by Jan Lohage on 23.06.17.
- */
 
 declare function FeathersReactive(options: FeathersReactive.Options): () => void;
 export = FeathersReactive;
