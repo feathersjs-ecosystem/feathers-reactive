@@ -108,5 +108,9 @@ $RECYCLE.BIN/
 *.lnk
 
 # Others
-lib/
 data/
+
+# The compiled/babelified modules
+lib/
+tmp/
+dist/
