@@ -42,7 +42,8 @@ declare module 'feathers' {
     /**
      * Creates a new resource with data.
      */
-    create(data: T | T[], params?: Params, callback?: any): Observable<T | T[]>;
+    create(data: T[], params?: Params, callback?: any): Observable<T[]>;
+    create(data: T, params?: Params, callback?: any): Observable<T>;
 
     /**
      * Replaces the resource identified by id with data.

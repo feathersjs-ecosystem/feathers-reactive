@@ -52,11 +52,7 @@ Each method call can also pass its own options via `params.rx`:
 
 ```js
 // Always fetch fresh data for this method call
-app.service('todos').watch().find({
-  rx: {
-    listStrategy: 'always'
-  }
-});
+app.service('todos').watch({ listStrategy: 'always' }).find();
 ```
 
 ### List strategies

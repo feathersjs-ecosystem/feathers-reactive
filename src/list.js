@@ -1,17 +1,29 @@
-import { getOptions, getSource } from './utils';
+const {
+  getOptions,
+  getSource,
+  cacheObservable,
+  getCachedObservable
+} = require('./utils');
 
-export default function (events, settings) {
-  return function (params = {}) {
-    const args = arguments;
+require('rxjs/add/operator/finally');
+require('rxjs/add/operator/shareReplay');
 
-    if (this._rx === false || params.rx === false) {
-      return this._super(...args);
+module.exports = function (settings) {
+  return function (params) {
+    const cachedObservable = getCachedObservable(this._cache, 'find', params);
+
+    // return cached Observable if it exists
+    if (cachedObservable) {
+      return cachedObservable;
     }
 
     const options = getOptions(settings, this._rx, params.rx);
     const source = getSource(this.find.bind(this), arguments);
-    const stream = options.listStrategy.call(this, source, events, options, args);
+    const stream = options.listStrategy.call(this, source, options, arguments);
 
-    return options.let ? stream.let(options.let) : stream;
+    const letStream = options.let ? stream.let(options.let) : stream;
+
+    // set cache and return cached observable
+    return cacheObservable(this._cache, 'find', params, letStream);
   };
-}
+};

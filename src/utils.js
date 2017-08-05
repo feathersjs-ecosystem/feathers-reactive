@@ -1,31 +1,27 @@
-import { sorter as createSorter } from 'feathers-commons/lib/utils';
-import { Observable } from 'rxjs/Observable';
+const createSorter = require('feathers-commons/lib/utils').sorter;
+const { Observable } = require('rxjs/Observable');
+const stringify = require('json-stable-stringify');
+const debug = require('debug')('feathers-reactive');
 
-export function getSource (__super, args) {
-  let result = null;
+function getSource (originalMethod, args) {
+  let resultPromise = null;
 
   return Observable.create(observer => {
-    const _observer = observer;
-
-    if (!result) {
-      result = __super(...args);
+    if (!resultPromise) {
+      resultPromise = originalMethod(...args);
+      _assertPromise(resultPromise);
     }
 
-    if (!result || typeof result.then !== 'function' ||
-      typeof result.catch !== 'function'
-    ) {
-      throw new Error(`feathers-reactive only works with services that return a Promise`);
-    }
-
-    result.then(res => {
-      _observer.next(res);
-      _observer.complete();
-    })
-      .catch(e => _observer.error(e));
+    resultPromise
+      .then(res => {
+        observer.next(res);
+        observer.complete();
+      })
+      .catch(e => observer.error(e));
   });
 }
 
-export function makeSorter (query, options) {
+function makeSorter (query, options) {
   // The sort function (if $sort is set)
   const sorter = query.$sort ? createSorter(query.$sort) : createSorter({
     [options.idField]: 1
@@ -55,7 +51,7 @@ export function makeSorter (query, options) {
   };
 }
 
-export function getOptions (base, ...others) {
+function getOptions (base, ...others) {
   const options = Object.assign({}, base, ...others);
 
   if (typeof options.listStrategy === 'string') {
@@ -64,3 +60,61 @@ export function getOptions (base, ...others) {
 
   return options;
 }
+
+function cacheObservable (cache, method, key, observable) {
+  const hash = _hash(key);
+
+  const cachedObservable = observable
+    .finally(() => {
+      // clean cache on unsubscription (of all observers)
+      debug('removing cache item: ', hash);
+      delete cache[method][hash];
+    })
+    .shareReplay(1);
+
+  cache[method][hash] = cachedObservable;
+
+  return cache[method][hash];
+}
+
+function getCachedObservable (cache, method, key) {
+  const hash = _hash(key);
+
+  return cache[method][hash];
+}
+
+function getParamsPosition (method) {
+  // The position of the params parameters for a service method so that we can extend them
+  // default is 1
+
+  const paramsPositions = {
+    find: 0,
+    update: 2,
+    patch: 2
+  };
+
+  return (method in paramsPositions) ? paramsPositions[method] : 1;
+}
+
+function _assertPromise (obj) {
+  if (
+    !obj ||
+    typeof obj.then !== 'function' ||
+    typeof obj.catch !== 'function'
+  ) {
+    throw new Error(`feathers-reactive only works with services that return a Promise`);
+  }
+}
+
+function _hash (key) {
+  return stringify(key);
+}
+
+Object.assign(exports, {
+  getSource,
+  makeSorter,
+  getOptions,
+  cacheObservable,
+  getCachedObservable,
+  getParamsPosition
+});

@@ -3,7 +3,7 @@
   "description": "Reactive API extensions for Feathers services",
   "version": "0.4.1",
   "homepage": "https://github.com/feathersjs/feathers-reactive",
-  "main": "lib/index",
+  "main": "src/index",
   "keywords": [
     "feathers",
     "feathers-plugin"
@@ -37,7 +37,7 @@
     "watch": "babel --watch -d lib/ src/",
     "lint": "eslint-if-supported semistandard --fix",
     "mocha": "mocha --opts mocha.opts",
-    "test": "npm run compile && npm run lint && npm run coverage",
+    "test": "npm run lint && npm run coverage",
     "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --opts mocha.opts"
   },
   "semistandard": {
@@ -55,6 +55,7 @@
   "dependencies": {
     "debug": "^2.2.0",
     "feathers-commons": "^0.8.7",
+    "json-stable-stringify": "^1.0.1",
     "rxjs": "^5.4.0"
   },
   "devDependencies": {

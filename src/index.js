@@ -1,21 +1,24 @@
-import { matcher } from 'feathers-commons/lib/utils';
-import reactiveResource from './resource';
-import reactiveList from './list';
-import strategies from './strategies';
-import { makeSorter } from './utils';
+const { matcher } = require('feathers-commons/lib/utils');
+const reactiveResource = require('./resource');
+const reactiveList = require('./list');
+const strategies = require('./strategies');
+const {
+  makeSorter,
+  getParamsPosition
+} = require('./utils');
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/concat';
-import 'rxjs/add/operator/exhaustMap';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/let';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/scan';
+const { Observable } = require('rxjs/Observable');
+require('rxjs/add/observable/fromEvent');
+require('rxjs/add/observable/fromPromise');
+require('rxjs/add/observable/merge');
+require('rxjs/add/operator/concat');
+require('rxjs/add/operator/exhaustMap');
+require('rxjs/add/operator/filter');
+require('rxjs/add/operator/let');
+require('rxjs/add/operator/map');
+require('rxjs/add/operator/mapTo');
+require('rxjs/add/operator/mergeMap');
+require('rxjs/add/operator/scan');
 
 const debug = require('debug')('feathers-reactive');
 
@@ -48,30 +51,54 @@ function FeathersRx (options = {}) {
     // object to hold our reactive methods
     const reactiveMethods = {};
 
+    const cache = {
+      find: {},
+      get: {}
+    };
+
     app.methods.forEach(method => {
       if (typeof service[method] === 'function') {
         reactiveMethods[method] = method === 'find'
-          ? reactiveList(events, options)
-          : reactiveResource(events, options, method);
+          ? reactiveList(options)
+          : reactiveResource(options, method);
       }
     });
 
     const mixin = {
+      _cache: cache,
+
+      created$: events.created,
+      updated$: events.updated,
+      patched$: events.patched,
+      removed$: events.removed,
+
       rx (options = {}) {
         this._rx = options;
         return this;
       },
-      watch () {
-        return reactiveMethods;
+      watch (options = {}) {
+        const boundMethods = {};
+
+        Object.keys(reactiveMethods).forEach(method => {
+          const position = getParamsPosition(method);
+
+          boundMethods[method] = (...args) => {
+            // inject `options` into `params.rx`
+            args[position] = Object.assign(args[position] || {}, { rx: options });
+            return reactiveMethods[method](...args);
+          };
+        });
+
+        return boundMethods;
       }
     };
 
-    // get the new service object
+    // get the extended service object
     const newService = service.mixin(mixin);
 
     // bind the new service to all reactive methods
-    for (let m in reactiveMethods) {
-      reactiveMethods[m] = reactiveMethods[m].bind(newService);
+    for (let method in reactiveMethods) {
+      reactiveMethods[method] = reactiveMethods[method].bind(newService);
     }
   };
 
@@ -84,4 +111,4 @@ function FeathersRx (options = {}) {
 
 FeathersRx.strategy = strategies;
 
-export default FeathersRx;
+module.exports = FeathersRx;

@@ -1,15 +1,15 @@
-import { Observable } from 'rxjs/Observable';
+const { Observable } = require('rxjs/Observable');
 
-export default function () {
+module.exports = function () {
   return {
     never (source) {
       return source;
     },
 
-    always (source, events, options, args) {
+    always (source, options, args) {
       const params = args[0] || {};
       const query = Object.assign({}, params.query);
-      const _super = this.find.bind(this);
+      const originalMethod = this.find.bind(this);
 
       // A function that returns if an item matches the query
       const matches = options.matcher(query);
@@ -18,19 +18,19 @@ export default function () {
 
       return source.concat(source.exhaustMap(() =>
         Observable.merge(
-          events.created.filter(matches),
-          events.removed,
-          events.updated,
-          events.patched
+          this.created$.filter(matches),
+          this.removed$,
+          this.updated$,
+          this.patched$
         ).flatMap(() => {
-          const source = Observable.fromPromise(_super(...args));
+          const source = Observable.fromPromise(originalMethod(...args));
 
           return source.map(sortAndTrim);
         })
       ));
     },
 
-    smart (source, events, options, args) {
+    smart (source, options, args) {
       const params = args[0] || {};
       const query = Object.assign({}, params.query);
       // A function that returns if an item matches the query
@@ -94,11 +94,11 @@ export default function () {
 
       return source.concat(source.exhaustMap(data =>
         Observable.merge(
-          events.created.filter(matches).map(onCreated),
-          events.removed.map(onRemoved),
-          Observable.merge(events.updated, events.patched).map(onUpdated)
+          this.created$.filter(matches).map(onCreated),
+          this.removed$.map(onRemoved),
+          Observable.merge(this.updated$, this.patched$).map(onUpdated)
         ).scan((current, callback) => sortAndTrim(callback(current)), data)
       ));
     }
   };
-}
+};

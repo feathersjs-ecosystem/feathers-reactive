@@ -141,9 +141,7 @@ describe('reactive lists', () => {
         }
       });
 
-      const source = app.service('dummy').watch().find({
-        rx: { lazy: true }
-      });
+      const source = app.service('dummy').watch().find();
 
       assert.ok(!ran);
 
@@ -436,6 +434,54 @@ describe('reactive lists', () => {
       }, done);
 
       setTimeout(() => service.patch(0, { text }));
+    });
+
+    it('injects options.let into observable chain', done => {
+      const options = {
+        let: obs => obs.do(() => done())
+      };
+      service.watch(options).find().subscribe();
+    });
+
+    it('.find uses caching', done => {
+      let i = 0;
+
+      const options = {
+        let: obs => obs.do(() => i++)
+      };
+
+      service.watch(options).find().subscribe(() => {
+        // expect i to have increased by 1
+        assert.equal(i, 1);
+
+        service.watch(options).find().subscribe(() => {
+          // expect i to _not_ have increased further
+          assert.equal(i, 1);
+
+          done();
+        });
+      });
+    });
+
+    it('clears cache after unsubscription', done => {
+      let i = 0;
+
+      const options = {
+        let: obs => obs.do(() => i++)
+      };
+
+      const sub1 = service.watch(options).find().subscribe();
+      const sub2 = service.watch(options).find().subscribe();
+
+      setTimeout(() => {
+        sub1.unsubscribe();
+        sub2.unsubscribe();
+
+        service.watch(options).find().subscribe(() => {
+          assert.equal(i, 2);
+          done();
+        });
+      });
     });
   }
 });
