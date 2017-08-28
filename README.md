@@ -151,6 +151,7 @@ import ReactDOM from 'react-dom';
 import feathers from 'feathers/client';
 import socketio from 'feathers-socketio/client';
 import rx from 'feathers-reactive';
+import io from 'socket.io-client';
 import RxJS from 'rxjs';
 
 const socket = io();
