@@ -139,7 +139,7 @@ import ReactDOM from 'react-dom';
 import feathers from 'feathers/client';
 import socketio from 'feathers-socketio/client';
 import rx from 'feathers-reactive';
-
+import io from 'socket.io-client';
 
 const socket = io();
 const app = feathers()
