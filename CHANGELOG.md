@@ -1,5 +1,31 @@
 # Change Log
 
+## [v0.5.0](https://github.com/feathersjs/feathers-reactive/tree/v0.5.0) (2017-08-28)
+[Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.4.1...v0.5.0)
+
+**Closed issues:**
+
+- Get idField from service.id if available [\#59](https://github.com/feathersjs/feathers-reactive/issues/59)
+- Is there a way to update query params? [\#39](https://github.com/feathersjs/feathers-reactive/issues/39)
+
+**Merged pull requests:**
+
+- Adding missing import for Socket.io to React section of readme [\#64](https://github.com/feathersjs/feathers-reactive/pull/64) ([corymsmith](https://github.com/corymsmith))
+- Update debug to the latest version 🚀 [\#63](https://github.com/feathersjs/feathers-reactive/pull/63) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Move reactive functions to service\(...\).watch\(\), use rxjs5 [\#58](https://github.com/feathersjs/feathers-reactive/pull/58) ([j2L4e](https://github.com/j2L4e))
+- Update semistandard to the latest version 🚀 [\#55](https://github.com/feathersjs/feathers-reactive/pull/55) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update feathers-hooks to the latest version 🚀 [\#54](https://github.com/feathersjs/feathers-reactive/pull/54) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update dependencies to enable Greenkeeper 🌴 [\#51](https://github.com/feathersjs/feathers-reactive/pull/51) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update browserify to version 14.1.0 🚀 [\#46](https://github.com/feathersjs/feathers-reactive/pull/46) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+
+## [v0.4.1](https://github.com/feathersjs/feathers-reactive/tree/v0.4.1) (2016-11-30)
+[Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.4.0...v0.4.1)
+
+**Merged pull requests:**
+
+- Update all dependencies 🌴 [\#38](https://github.com/feathersjs/feathers-reactive/pull/38) ([greenkeeperio-bot](https://github.com/greenkeeperio-bot))
+- jshint —\> semistandard [\#36](https://github.com/feathersjs/feathers-reactive/pull/36) ([corymsmith](https://github.com/corymsmith))
+
 ## [v0.4.0](https://github.com/feathersjs/feathers-reactive/tree/v0.4.0) (2016-09-05)
 [Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.3.2...v0.4.0)
 
