@@ -1,4 +1,3 @@
-import Rx from 'rxjs/Rx';
 import assert from 'assert';
 import feathers from 'feathers';
 import memory from 'feathers-memory';
@@ -12,11 +11,10 @@ describe('reactive resources', () => {
   describe('standard id', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx(Rx))
+        .configure(rx({idField: 'id'}))
         .use('/messages', memory());
 
-      service = app.service('messages').rx({idField: 'customId'});
-
+      service = app.service('messages');
       service.create({
         text: 'A test message'
       }).then(message => {
@@ -30,7 +28,7 @@ describe('reactive resources', () => {
   describe('custom id on service', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx(Rx))
+        .configure(rx({idField: 'id'}))
         .use('/messages', memory({ idField: 'customId' }));
 
       service = app.service('messages').rx({ idField: 'customId' });
@@ -48,12 +46,12 @@ describe('reactive resources', () => {
   describe('custom id on params', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx(Rx))
+        .configure(rx({idField: 'id'}))
         .configure(hooks())
         .use('/messages', memory({ idField: 'customId' }));
 
-      service = app.service('messages').rx().before({
-        all: [function (hook) { hook.params.rx = { idField: 'customID' }; }]
+      service = app.service('messages').before({
+        all: [function (hook) { hook.params.rx = { idField: 'customId' }; }]
       });
 
       service.create({
@@ -75,7 +73,7 @@ describe('reactive resources', () => {
     });
 
     it('.get as an observable', done => {
-      service.get(id).first().subscribe(message => {
+      service.watch().get(id).first().subscribe(message => {
         assert.deepEqual(message, { [customId]: id, text: 'A test message' });
         done();
       }, done);
@@ -94,9 +92,7 @@ describe('reactive resources', () => {
         }
       });
 
-      const source = app.service('dummy').get('dishes', {
-        rx: { lazy: true }
-      });
+      const source = app.service('dummy').watch().get('dishes');
 
       assert.ok(!ran);
 
@@ -111,7 +107,7 @@ describe('reactive resources', () => {
     });
 
     it('.update and .patch update existing stream', done => {
-      const result = service.get(id);
+      const result = service.watch().get(id);
 
       result.first().subscribe(message => {
         assert.deepEqual(message, { [customId]: id, text: 'A test message' });
@@ -134,7 +130,7 @@ describe('reactive resources', () => {
     });
 
     it('.remove emits null', done => {
-      service.get(id).subscribe(message => {
+      service.watch().get(id).subscribe(message => {
         if (message === null) {
           done();
         } else {
@@ -142,7 +138,55 @@ describe('reactive resources', () => {
         }
       }, done);
 
-      service.remove(id);
+      setTimeout(() => service.remove(id));
+    });
+
+    it('injects options.let into observable chain', done => {
+      const options = {
+        let: obs => obs.do(() => done())
+      };
+      service.watch(options).get(0).subscribe();
+    });
+
+    it('.get uses caching', done => {
+      let i = 0;
+
+      const options = {
+        let: obs => obs.do(() => i++)
+      };
+
+      service.watch(options).get(0).subscribe(() => {
+        // expect i to have increased by 1
+        assert.equal(i, 1);
+
+        service.watch(options).get(0).subscribe(() => {
+          // expect i to _not_ have increased further
+          assert.equal(i, 1);
+
+          done();
+        });
+      });
+    });
+
+    it('clears cache after unsubscription', done => {
+      let i = 0;
+
+      const options = {
+        let: obs => obs.do(() => i++)
+      };
+
+      const sub1 = service.watch(options).get(0).subscribe();
+      const sub2 = service.watch(options).get(0).subscribe();
+
+      setTimeout(() => {
+        sub1.unsubscribe();
+        sub2.unsubscribe();
+
+        service.watch(options).get(0).subscribe(() => {
+          assert.equal(i, 2);
+          done();
+        });
+      });
     });
   }
 });

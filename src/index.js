@@ -1,27 +1,37 @@
-import {matcher} from 'feathers-commons/lib/utils';
-import reactiveResource from './resource';
-import reactiveList from './list';
-import strategies from './strategies';
-import {makeSorter} from './utils';
+const { matcher } = require('feathers-commons/lib/utils');
+const reactiveResource = require('./resource');
+const reactiveList = require('./list');
+const strategies = require('./strategies');
+const {
+  makeSorter,
+  getParamsPosition
+} = require('./utils');
+
+const { Observable } = require('rxjs/Observable');
+require('rxjs/add/observable/fromEvent');
+require('rxjs/add/observable/fromPromise');
+require('rxjs/add/observable/merge');
+require('rxjs/add/operator/concat');
+require('rxjs/add/operator/exhaustMap');
+require('rxjs/add/operator/filter');
+require('rxjs/add/operator/let');
+require('rxjs/add/operator/map');
+require('rxjs/add/operator/mapTo');
+require('rxjs/add/operator/mergeMap');
+require('rxjs/add/operator/scan');
 
 const debug = require('debug')('feathers-reactive');
 
-function FeathersRx (Rx, options) {
-  if (!Rx) {
-    throw new Error('You have to pass an instance of RxJS as the first paramter.');
-  }
+function FeathersRx (options = {}) {
+  const listStrategies = strategies();
 
-  if (!Rx.Observable) {
-    throw new Error('The RxJS instance does not seem to provide an `Observable` type.');
+  if (!options.idField) {
+    throw new Error(`feathers-reactive: setting options.idField is mandatory`);
   }
-
-  const listStrategies = strategies(Rx);
 
   options = Object.assign({
-    idField: 'id',
     dataField: 'data',
     sorter: makeSorter,
-    lazy: false,
     matcher,
     // Whether to requery service when a change is detected
     listStrategy: 'smart',
@@ -30,27 +40,66 @@ function FeathersRx (Rx, options) {
 
   const mixin = function (service) {
     const app = this;
-    const mixin = {
-      rx (options = {}) {
-        this._rx = options;
-        return this;
-      }
-    };
+
     const events = {
-      created: Rx.Observable.fromEvent(service, 'created'),
-      updated: Rx.Observable.fromEvent(service, 'updated'),
-      patched: Rx.Observable.fromEvent(service, 'patched'),
-      removed: Rx.Observable.fromEvent(service, 'removed')
+      created: Observable.fromEvent(service, 'created'),
+      updated: Observable.fromEvent(service, 'updated'),
+      patched: Observable.fromEvent(service, 'patched'),
+      removed: Observable.fromEvent(service, 'removed')
+    };
+
+    // object to hold our reactive methods
+    const reactiveMethods = {};
+
+    const cache = {
+      find: {},
+      get: {}
     };
 
     app.methods.forEach(method => {
       if (typeof service[method] === 'function') {
-        mixin[method] = method === 'find' ? reactiveList(Rx, events, options)
-          : reactiveResource(Rx, events, options, method);
+        reactiveMethods[method] = method === 'find'
+          ? reactiveList(options)
+          : reactiveResource(options, method);
       }
     });
 
-    service.mixin(mixin);
+    const mixin = {
+      _cache: cache,
+
+      created$: events.created,
+      updated$: events.updated,
+      patched$: events.patched,
+      removed$: events.removed,
+
+      rx (options = {}) {
+        this._rx = options;
+        return this;
+      },
+      watch (options = {}) {
+        const boundMethods = {};
+
+        Object.keys(reactiveMethods).forEach(method => {
+          const position = getParamsPosition(method);
+
+          boundMethods[method] = (...args) => {
+            // inject `options` into `params.rx`
+            args[position] = Object.assign(args[position] || {}, { rx: options });
+            return reactiveMethods[method](...args);
+          };
+        });
+
+        return boundMethods;
+      }
+    };
+
+    // get the extended service object
+    const newService = service.mixin(mixin);
+
+    // bind the new service to all reactive methods
+    for (let method in reactiveMethods) {
+      reactiveMethods[method] = reactiveMethods[method].bind(newService);
+    }
   };
 
   return function () {
@@ -62,4 +111,4 @@ function FeathersRx (Rx, options) {
 
 FeathersRx.strategy = strategies;
 
-export default FeathersRx;
+module.exports = FeathersRx;

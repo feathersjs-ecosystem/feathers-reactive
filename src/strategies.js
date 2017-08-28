@@ -1,13 +1,15 @@
-export default function (Rx) {
+const { Observable } = require('rxjs/Observable');
+
+module.exports = function () {
   return {
     never (source) {
       return source;
     },
 
-    always (source, events, options, args) {
+    always (source, options, args) {
       const params = args[0] || {};
       const query = Object.assign({}, params.query);
-      const _super = this._super.bind(this);
+      const originalMethod = this.find.bind(this);
 
       // A function that returns if an item matches the query
       const matches = options.matcher(query);
@@ -15,20 +17,20 @@ export default function (Rx) {
       const sortAndTrim = options.sorter(query, options);
 
       return source.concat(source.exhaustMap(() =>
-        Rx.Observable.merge(
-          events.created.filter(matches),
-          events.removed,
-          events.updated,
-          events.patched
+        Observable.merge(
+          this.created$.filter(matches),
+          this.removed$,
+          this.updated$,
+          this.patched$
         ).flatMap(() => {
-          const source = Rx.Observable.fromPromise(_super(...args));
+          const source = Observable.fromPromise(originalMethod(...args));
 
           return source.map(sortAndTrim);
         })
       ));
     },
 
-    smart (source, events, options, args) {
+    smart (source, options, args) {
       const params = args[0] || {};
       const query = Object.assign({}, params.query);
       // A function that returns if an item matches the query
@@ -91,12 +93,12 @@ export default function (Rx) {
       };
 
       return source.concat(source.exhaustMap(data =>
-        Rx.Observable.merge(
-          events.created.filter(matches).map(onCreated),
-          events.removed.map(onRemoved),
-          Rx.Observable.merge(events.updated, events.patched).map(onUpdated)
+        Observable.merge(
+          this.created$.filter(matches).map(onCreated),
+          this.removed$.map(onRemoved),
+          Observable.merge(this.updated$, this.patched$).map(onUpdated)
         ).scan((current, callback) => sortAndTrim(callback(current)), data)
       ));
     }
   };
-}
+};
