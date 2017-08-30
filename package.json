@@ -3,7 +3,7 @@
   "description": "Reactive API extensions for Feathers services",
   "version": "0.5.0",
   "homepage": "https://github.com/feathersjs/feathers-reactive",
-  "main": "src/index",
+  "main": "lib/index",
   "keywords": [
     "feathers",
     "feathers-plugin"
