@@ -1,4 +1,4 @@
-const { Observable } = require('rxjs/Observable');
+import { Observable } from 'rxjs/Observable';
 
 module.exports = function () {
   return {

@@ -1,11 +1,11 @@
-const {
+import { Observable } from 'rxjs/Observable';
+import {
   getOptions,
   getSource,
   cacheObservable,
   getCachedObservable,
   getParamsPosition
-} = require('./utils');
-const { Observable } = require('rxjs/Observable');
+} from './utils';
 
 module.exports = function (settings, method) {
   return function () {
