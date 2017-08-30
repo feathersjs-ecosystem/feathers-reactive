@@ -1,12 +1,12 @@
-const {
+import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/shareReplay';
+
+import {
   getOptions,
   getSource,
   cacheObservable,
   getCachedObservable
-} = require('./utils');
-
-require('rxjs/add/operator/finally');
-require('rxjs/add/operator/shareReplay');
+} from './utils';
 
 module.exports = function (settings) {
   return function (params) {

@@ -1,7 +1,9 @@
-const createSorter = require('feathers-commons/lib/utils').sorter;
-const { Observable } = require('rxjs/Observable');
-const stringify = require('json-stable-stringify');
-const debug = require('debug')('feathers-reactive');
+import _debug from 'debug';
+import { sorter as createSorter } from 'feathers-commons/lib/utils';
+import { Observable } from 'rxjs/Observable';
+import stringify from 'json-stable-stringify';
+
+const debug = _debug('feathers-reactive');
 
 function getSource (originalMethod, args) {
   let resultPromise = null;
