@@ -1,5 +1,20 @@
 # Change Log
 
+## [v0.5.1](https://github.com/feathersjs/feathers-reactive/tree/v0.5.1) (2017-08-30)
+[Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.5.0...v0.5.1)
+
+**Closed issues:**
+
+- Cannot find module 'feathers-reactive'. [\#52](https://github.com/feathersjs/feathers-reactive/issues/52)
+- Observable.throw\(\) is not subscribable [\#47](https://github.com/feathersjs/feathers-reactive/issues/47)
+- Impossible to type [\#41](https://github.com/feathersjs/feathers-reactive/issues/41)
+- previous data lost when patch/remove with listStrategy='smart' [\#37](https://github.com/feathersjs/feathers-reactive/issues/37)
+
+**Merged pull requests:**
+
+- Fix index reference [\#66](https://github.com/feathersjs/feathers-reactive/pull/66) ([daffl](https://github.com/daffl))
+- Add 0.5 migration guide to readme [\#65](https://github.com/feathersjs/feathers-reactive/pull/65) ([j2L4e](https://github.com/j2L4e))
+
 ## [v0.5.0](https://github.com/feathersjs/feathers-reactive/tree/v0.5.0) (2017-08-28)
 [Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.4.1...v0.5.0)
 
