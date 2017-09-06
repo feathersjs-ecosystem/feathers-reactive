@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.5.2](https://github.com/feathersjs/feathers-reactive/tree/v0.5.2) (2017-09-06)
+[Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.5.1...v0.5.2)
+
+**Closed issues:**
+
+- Mixin of watch function into feathers service not working [\#67](https://github.com/feathersjs/feathers-reactive/issues/67)
+
+**Merged pull requests:**
+
+- add mixin.watch\(\) workaround for firefox [\#68](https://github.com/feathersjs/feathers-reactive/pull/68) ([j2L4e](https://github.com/j2L4e))
+
 ## [v0.5.1](https://github.com/feathersjs/feathers-reactive/tree/v0.5.1) (2017-08-30)
 [Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.5.0...v0.5.1)
 
