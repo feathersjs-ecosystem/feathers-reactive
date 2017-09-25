@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.5.3](https://github.com/feathersjs/feathers-reactive/tree/v0.5.3) (2017-09-25)
+[Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.5.2...v0.5.3)
+
+**Merged pull requests:**
+
+- \[typings\] make Service and ReactiveService generic types default to any [\#69](https://github.com/feathersjs/feathers-reactive/pull/69) ([j2L4e](https://github.com/j2L4e))
+
 ## [v0.5.2](https://github.com/feathersjs/feathers-reactive/tree/v0.5.2) (2017-09-06)
 [Full Changelog](https://github.com/feathersjs/feathers-reactive/compare/v0.5.1...v0.5.2)
 
