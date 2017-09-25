@@ -23,11 +23,11 @@ declare namespace FeathersReactive {
 }
 
 declare module 'feathers' {
-  interface Service<T> {
+  interface Service<T extends any> {
     watch(): ReactiveService<T>
   }
 
-  interface ReactiveService<T> {
+  interface ReactiveService<T extends any> {
     /**
      * Retrieves a list of all resources from the service.
      * Provider parameters will be passed as params.query
