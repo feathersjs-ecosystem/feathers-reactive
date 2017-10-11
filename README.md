@@ -128,7 +128,7 @@ const memory = require('feathers-memory');
 const rx = require('feathers-reactive');
 
 const app = feathers()
-  .configure(rx())
+  .configure(rx({idField: "id"}))
   .use('/messages', memory());
 
 const messages = app.service('messages');
