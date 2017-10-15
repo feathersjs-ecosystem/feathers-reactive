@@ -13,7 +13,7 @@
 
 ## About
 
-`feathers-reactive` adds a `watch()` method to services. The returned object implements all service methods as [RxJS](https://github.com/Reactive-Extensions/RxJS) observables that automatically update on [real-time events](http://docs.feathersjs.com/real-time/events.html).
+`feathers-reactive` adds a `watch()` method to services. The returned object implements all service methods as [RxJS](https://github.com/Reactive-Extensions/RxJS) observables that automatically update on [real-time events](https://docs.feathersjs.com/api/events.html#service-events).
 
 ## Migration from <= 0.4 to 0.5
 
