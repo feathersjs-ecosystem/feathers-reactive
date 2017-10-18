@@ -142,8 +142,13 @@ messages.create({
 
   // Find and watch all messages and emit a new list every time anything changes
   messages.watch().find().subscribe(messages => console.log('Message list', messages));
+  
+  /* Find and watch all messages with querying functionality. 
+  !!IMPORTANT: make sure "value" is in the correct variable type (string, boolean, int, float) otherwise create event 
+  will not trigger the console log.
+  */
+  messages.watch().find({query: {text: 'A test message'}} ).subscribe(messages => console.log('Message list with query', messages));
 
-  setTimeout(() => {
     messages.create({ text: 'Another message' }).then(() =>
       setTimeout(() => messages.patch(0, { text: 'Updated message' }), 1000)
     );
@@ -157,8 +162,9 @@ Will output:
 My message { text: 'A test message', id: 0 }
 Message list [ { text: 'A test message', id: 0 } ]
 Message list [ { text: 'A test message', id: 0 },
-  { text: 'Another message', id: 1 } ]
-My message { text: 'Updated message', id: 0 }
+  { text: 'Another message', id: 1 } ],
+Message list [ { text: 'A test message', id: 0 } ]
+Message list with query { text: 'Updated message', id: 0 }
 Message list [ { text: 'Updated message', id: 0 },
   { text: 'Another message', id: 1 } ]
 ```
