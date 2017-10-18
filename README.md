@@ -147,7 +147,7 @@ messages.create({
   !!IMPORTANT: make sure "value" is in the correct variable type (string, boolean, int, float) otherwise create event 
   will not trigger the console log.
   */
-  messages.watch().find({query: {text: 'A test message'}} ).subscribe(messages => console.log('Message list with query', messages));
+  messages.watch({ listStrategy: 'always' }).find({query: {text: 'A test message'}} ).subscribe(messages => console.log('Message list with query', messages));
 
     messages.create({ text: 'Another message' }).then(() =>
       setTimeout(() => messages.patch(0, { text: 'Updated message' }), 1000)
