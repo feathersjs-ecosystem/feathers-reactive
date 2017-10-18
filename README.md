@@ -165,7 +165,7 @@ Message list [ { text: 'A test message', id: 0 } ]
 Message list [ { text: 'A test message', id: 0 },
   { text: 'Another message', id: 1 } ],
 Message list [ { text: 'A test message', id: 0 } ]
-Message list with query { text: 'Updated message', id: 0 }
+Message list with query { text: 'A test message', id: 0 }
 Message list [ { text: 'Updated message', id: 0 },
   { text: 'Another message', id: 1 } ]
 ```
