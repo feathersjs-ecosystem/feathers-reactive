@@ -1,6 +1,3 @@
-import 'rxjs/add/operator/finally';
-import 'rxjs/add/operator/shareReplay';
-
 import {
   getOptions,
   getSource,
@@ -21,7 +18,7 @@ module.exports = function (settings) {
     const source = getSource(this.find.bind(this), arguments);
     const stream = options.listStrategy.call(this, source, options, arguments);
 
-    const letStream = options.let ? stream.let(options.let) : stream;
+    const letStream = options.let ? stream.pipe(options.let) : stream;
 
     // set cache and return cached observable
     return cacheObservable(this._cache, 'find', params, letStream);

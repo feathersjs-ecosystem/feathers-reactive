@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable';
 import {
   getOptions,
   getSource,
@@ -6,6 +5,16 @@ import {
   getCachedObservable,
   getParamsPosition
 } from './utils';
+
+import { merge } from 'rxjs/observable/merge';
+import { of } from 'rxjs/observable/of';
+
+import {
+  concat,
+  concatMap,
+  filter,
+  mapTo
+} from 'rxjs/operators';
 
 module.exports = function (settings, method) {
   return function () {
@@ -22,29 +31,35 @@ module.exports = function (settings, method) {
     // create new Observable resource
     const options = getOptions(settings, this._rx, params.rx);
     const source = getSource(this[method].bind(this), arguments);
-    const stream = source.concat(
-      source.exhaustMap(data => {
+    const stream = source.pipe(
+      concatMap(data => {
         // Filter only data with the same id
-        const filter = current => current[options.idField] === data[options.idField];
+        const filterFn = current => current[options.idField] === data[options.idField];
         // `removed` events get special treatment
-        const filteredRemoves = this.removed$.filter(filter);
+        const filteredRemoves$ = this.removed$.pipe(filter(filterFn));
         // `created`, `updated` and `patched`
-        const filteredEvents = Observable.merge(
+        const filteredEvents$ = merge(
           this.created$,
           this.updated$,
           this.patched$
-        ).filter(filter);
+        ).pipe(
+          filter(filterFn)
+        );
 
-        return Observable.merge(
+        const combinedEvents$ = merge(
           // Map to a callback that merges old and new data
-          filteredEvents,
+          filteredEvents$,
           // filtered `removed` events always mapped to `null`
-          filteredRemoves.mapTo(null)
+          filteredRemoves$.pipe(mapTo(null))
+        );
+
+        return of(data).pipe(
+          concat(combinedEvents$)
         );
       }));
 
     // apply `let` function if set
-    const letStream = options.let ? stream.let(options.let) : stream;
+    const letStream = options.let ? stream.pipe(options.let) : stream;
 
     // if the method is `get` cache the result, otherwise just return the stream
     return method === 'get' ? cacheObservable(this._cache, 'get', /* id */ arguments[0], letStream) : letStream;
