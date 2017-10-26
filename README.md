@@ -144,8 +144,7 @@ messages.create({
   messages.watch().find().subscribe(messages => console.log('Message list', messages));
   
   /* Find and watch all messages with querying functionality. 
-  NOTE: make sure "value" is in the correct variable type (string, boolean, int, float) otherwise create event 
-  will not trigger the console log.
+  NOTE: make sure "value" is in the correct variable type (string, boolean, int, float) otherwise create event will not trigger the console log.
   */
   messages.watch({ listStrategy: 'always' }).find({query: {text: 'A test message'}})
   .subscribe(messages => console.log('Message list with query', messages));
