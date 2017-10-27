@@ -97,11 +97,11 @@ function FeathersRx (options = {}) {
 
     // workaround for Firefox
     // FF defines Object.prototype.watch(), so uberproto doesn't recognize the mixin's .watch()
-    // see https://github.com/feathersjs/feathers-reactive/issues/67
+    // see https://github.com/feathersjs-ecosystem/feathers-reactive/issues/67
     if (Object.prototype.watch && Object.prototype.watch === newService.watch) {
       newService.watch = mixin.watch;
     }
-    
+
     // bind the new service to all reactive methods
     for (let method in reactiveMethods) {
       reactiveMethods[method] = reactiveMethods[method].bind(newService);

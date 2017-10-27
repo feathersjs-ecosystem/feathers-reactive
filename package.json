@@ -2,7 +2,7 @@
   "name": "feathers-reactive",
   "description": "Reactive API extensions for Feathers services",
   "version": "0.5.3",
-  "homepage": "https://github.com/feathersjs/feathers-reactive",
+  "homepage": "https://github.com/feathersjs-ecosystem/feathers-reactive",
   "main": "lib/index",
   "keywords": [
     "feathers",
@@ -11,7 +11,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/feathersjs/feathers-reactive.git"
+    "url": "git://github.com/feathersjs-ecosystem/feathers-reactive.git"
   },
   "author": {
     "name": "Feathers contributors",
@@ -20,7 +20,7 @@
   },
   "contributors": [],
   "bugs": {
-    "url": "https://github.com/feathersjs/feathers-reactive/issues"
+    "url": "https://github.com/feathersjs-ecosystem/feathers-reactive/issues"
   },
   "engines": {
     "node": ">= 4"
