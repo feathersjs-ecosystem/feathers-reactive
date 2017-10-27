@@ -23,7 +23,7 @@ declare namespace FeathersReactive {
 }
 
 declare module 'feathers' {
-  interface Service<T extends any> {
+  interface Service<T> {
     watch(): ReactiveService<T>
   }
 
