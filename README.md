@@ -31,7 +31,6 @@ app.configure(reactive(Rx, { ...options }));
 0.5:
 ```js
 const reactive = require('feathers-reactive');
-const Rx = require('rxjs');
 // ...
 app.configure(reactive({ idField: 'id' /* depends on your DB */ , ...options }));
 ```
