@@ -39,7 +39,7 @@ function makeSorter (query, options) {
 
     const limit = typeof result.limit === 'number' ? result.limit : parseInt(query.$limit, 10);
 
-    if (limit && !isNaN(limit)) {
+    if (limit && !isNaN(limit) && limit !== -1) {
       data = data.slice(0, limit);
     }
 
