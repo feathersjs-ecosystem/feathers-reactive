@@ -148,10 +148,9 @@ messages.create({
   messages.watch({ listStrategy: 'always' }).find({query: {text: 'A test message'}})
   .subscribe(messages => console.log('Message list with query', messages));
 
-    messages.create({ text: 'Another message' }).then(() =>
-      setTimeout(() => messages.patch(0, { text: 'Updated message' }), 1000)
-    );
-  }, 1000);
+  messages.create({ text: 'Another message' }).then(() =>
+    setTimeout(() => messages.patch(0, { text: 'Updated message' }), 1000)
+  );
 });
 ```
 
