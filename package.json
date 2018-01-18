@@ -72,7 +72,7 @@
     "feathers-hooks": "^2.0.0",
     "feathers-memory": "^1.0.1",
     "istanbul": "^1.1.0-alpha.1",
-    "mocha": "^4.0.0",
+    "mocha": "^5.0.0",
     "semistandard": "^11.0.0",
     "shx": "^0.2.1"
   }
