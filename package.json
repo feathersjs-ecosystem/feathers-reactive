@@ -23,7 +23,7 @@
     "url": "https://github.com/feathersjs-ecosystem/feathers-reactive/issues"
   },
   "engines": {
-    "node": ">= 4"
+    "node": ">= 6"
   },
   "scripts": {
     "prepublish": "npm run compile && npm run browserify",
