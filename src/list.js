@@ -1,9 +1,12 @@
 import {
   getOptions,
-  getSource,
+  getSource
+} from './utils';
+
+import {
   cacheObservable,
   getCachedObservable
-} from './utils';
+} from './cache';
 
 module.exports = function (settings) {
   return function (params) {

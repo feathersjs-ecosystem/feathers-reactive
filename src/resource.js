@@ -1,10 +1,13 @@
 import {
   getOptions,
   getSource,
-  cacheObservable,
-  getCachedObservable,
   getParamsPosition
 } from './utils';
+
+import {
+  cacheObservable,
+  getCachedObservable
+} from './cache';
 
 import { merge } from 'rxjs/observable/merge';
 import { of } from 'rxjs/observable/of';

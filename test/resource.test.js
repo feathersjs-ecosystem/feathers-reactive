@@ -1,7 +1,6 @@
 import assert from 'assert';
-import feathers from 'feathers';
+import feathers from '@feathersjs/feathers';
 import memory from 'feathers-memory';
-import hooks from 'feathers-hooks';
 
 import rx from '../src';
 
@@ -53,13 +52,14 @@ describe('reactive resources', () => {
     beforeEach(done => {
       app = feathers()
         .configure(rx({ idField: 'id' }))
-        .configure(hooks())
         .use('/messages', memory({ idField: 'customId' }));
 
-      service = app.service('messages').before({
-        all: [function (hook) {
-          hook.params.rx = { idField: 'customId' };
-        }]
+      service = app.service('messages').hooks({
+        before: {
+          all: [function (hook) {
+            hook.params.rx = { idField: 'customId' };
+          }]
+        }
       });
 
       service.create({

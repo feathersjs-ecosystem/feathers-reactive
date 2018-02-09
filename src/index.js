@@ -1,12 +1,10 @@
 import _debug from 'debug';
-import { matcher } from 'feathers-commons/lib/utils';
 
 import { fromEvent } from 'rxjs/observable/fromEvent';
-
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
-import { makeSorter, getParamsPosition } from './utils';
+import { makeSorter, getParamsPosition, siftMatcher } from './utils';
 
 const debug = _debug('feathers-reactive');
 
@@ -20,7 +18,7 @@ function FeathersRx (options = {}) {
   options = Object.assign({
     dataField: 'data',
     sorter: makeSorter,
-    matcher,
+    matcher: siftMatcher,
     // Whether to requery service when a change is detected
     listStrategy: 'smart',
     listStrategies
@@ -97,10 +95,10 @@ function FeathersRx (options = {}) {
     }
   };
 
-  return function () {
+  return function (app) {
     debug('Initializing feathers-reactive plugin');
 
-    this.mixins.push(mixin);
+    app.mixins.push(mixin);
   };
 }
 

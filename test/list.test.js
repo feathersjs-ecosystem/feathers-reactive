@@ -1,5 +1,5 @@
 import assert from 'assert';
-import feathers from 'feathers';
+import feathers from '@feathersjs/feathers';
 import memory from 'feathers-memory';
 
 import rx from '../src';

@@ -1,18 +1,8 @@
-import _debug from 'debug';
-import { sorter as createSorter } from 'feathers-commons/lib/utils';
+import sift from 'sift';
 
-import { defer } from 'rxjs/observable/defer';
-import {
-  finalize,
-  multicast,
-  refCount
-} from 'rxjs/operators';
+import {_, sorter as createSorter} from '@feathersjs/commons/lib/utils';
 
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-
-import stringify from 'json-stable-stringify';
-
-const debug = _debug('feathers-reactive');
+import {defer} from 'rxjs/observable/defer';
 
 function getSource (originalMethod, args) {
   return defer(() => originalMethod(...args));
@@ -58,34 +48,6 @@ function getOptions (base, ...others) {
   return options;
 }
 
-function cacheObservable (cache, method, key, observable) {
-  const hash = _hash(key);
-
-  const cachedObservable = observable
-    .pipe(
-     //  tap(() => console.log('sub'), () => console.log('err'), () => console.log('unsub')),
-      finalize(() => {
-        // clean cache on unsubscription (of all observers)
-        debug('removing cache item: ', hash);
-        /// console.log('removing cache item: ', hash);
-        delete cache[method][hash];
-      }),
-      _oldStyleShareReplay(1)
-    );
-
-  cache[method][hash] = cachedObservable;
-
-//  console.log('cached:', hash);
-
-  return cache[method][hash];
-}
-
-function getCachedObservable (cache, method, key) {
-  const hash = _hash(key);
-
-  return cache[method][hash];
-}
-
 function getParamsPosition (method) {
   // The position of the params parameters for a service method so that we can extend them
   // default is 1
@@ -99,31 +61,16 @@ function getParamsPosition (method) {
   return (method in paramsPositions) ? paramsPositions[method] : 1;
 }
 
-function _hash (key) {
-  return stringify(key);
-}
+function siftMatcher (originalQuery) {
+  const query = _.omit(originalQuery, '$limit', '$skip', '$sort', '$select');
 
-// eslint:disable
-/* We relied on faulty behavior fixed in https://github.com/ReactiveX/rxjs/commit/accbcd0c5f9fd5976be3f491d454c4a61f699c4b.
-   This is the old shareReplay that tears down when refCount hits 0 */
-function _oldStyleShareReplay (bufferSize, windowTime, scheduler) {
-  let subject;
-
-  const connectable = multicast(function shareReplaySubjectFactory () {
-    if (this._isComplete) {
-      return subject;
-    } else {
-      return (subject = new ReplaySubject(bufferSize, windowTime, scheduler));
-    }
-  });
-  return (source) => refCount()(connectable(source));
+  return sift(query);
 }
 
 Object.assign(exports, {
   getSource,
   makeSorter,
   getOptions,
-  cacheObservable,
-  getCachedObservable,
-  getParamsPosition
+  getParamsPosition,
+  siftMatcher
 });
