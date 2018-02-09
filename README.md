@@ -1,11 +1,11 @@
 # feathers-reactive
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/feathersjs/feathers-reactive.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/feathersjs-ecosystem/feathers-reactive.svg)](https://greenkeeper.io/)
 
-[![Build Status](https://travis-ci.org/feathersjs/feathers-reactive.png?branch=master)](https://travis-ci.org/feathersjs/feathers-reactive)
-[![Code Climate](https://codeclimate.com/github/feathersjs/feathers-reactive.png)](https://codeclimate.com/github/feathersjs/feathers-reactive)
-[![Test Coverage](https://codeclimate.com/github/feathersjs/feathers-reactive/badges/coverage.svg)](https://codeclimate.com/github/feathersjs/feathers-reactive/coverage)
-[![Dependency Status](https://img.shields.io/david/feathersjs/feathers-reactive.svg?style=flat-square)](https://david-dm.org/feathersjs/feathers-reactive)
+[![Build Status](https://travis-ci.org/feathersjs-ecosystem/feathers-reactive.png?branch=master)](https://travis-ci.org/feathersjs-ecosystem/feathers-reactive)
+[![Code Climate](https://codeclimate.com/github/feathersjs-ecosystem/feathers-reactive.png)](https://codeclimate.com/github/feathersjs-ecosystem/feathers-reactive)
+[![Test Coverage](https://codeclimate.com/github/feathersjs-ecosystem/feathers-reactive/badges/coverage.svg)](https://codeclimate.com/github/feathersjs-ecosystem/feathers-reactive/coverage)
+[![Dependency Status](https://img.shields.io/david/feathersjs-ecosystem/feathers-reactive.svg?style=flat-square)](https://david-dm.org/feathersjs-ecosystem/feathers-reactive)
 [![Download Status](https://img.shields.io/npm/dm/feathers-reactive.svg?style=flat-square)](https://www.npmjs.com/package/feathers-reactive)
 [![Slack Status](http://slack.feathersjs.com/badge.svg)](http://slack.feathersjs.com)
 
@@ -31,7 +31,6 @@ app.configure(reactive(Rx, { ...options }));
 0.5:
 ```js
 const reactive = require('feathers-reactive');
-const Rx = require('rxjs');
 // ...
 app.configure(reactive({ idField: 'id' /* depends on your DB */ , ...options }));
 ```
@@ -142,12 +141,16 @@ messages.create({
 
   // Find and watch all messages and emit a new list every time anything changes
   messages.watch().find().subscribe(messages => console.log('Message list', messages));
+  
+  /* Find and watch all messages with querying functionality. 
+  NOTE: make sure "value" is in the correct variable type (string, boolean, int, float) otherwise create event will not trigger the console log.
+  */
+  messages.watch({ listStrategy: 'always' }).find({query: {text: 'A test message'}})
+  .subscribe(messages => console.log('Message list with query', messages));
 
-  setTimeout(() => {
-    messages.create({ text: 'Another message' }).then(() =>
-      setTimeout(() => messages.patch(0, { text: 'Updated message' }), 1000)
-    );
-  }, 1000);
+  messages.create({ text: 'Another message' }).then(() =>
+    setTimeout(() => messages.patch(0, { text: 'Updated message' }), 1000)
+  );
 });
 ```
 
@@ -157,8 +160,9 @@ Will output:
 My message { text: 'A test message', id: 0 }
 Message list [ { text: 'A test message', id: 0 } ]
 Message list [ { text: 'A test message', id: 0 },
-  { text: 'Another message', id: 1 } ]
-My message { text: 'Updated message', id: 0 }
+  { text: 'Another message', id: 1 } ],
+Message list [ { text: 'A test message', id: 0 } ]
+Message list with query { text: 'A test message', id: 0 }
 Message list [ { text: 'Updated message', id: 0 },
   { text: 'Another message', id: 1 } ]
 ```
