@@ -10,19 +10,16 @@ function cacheObservable (cache, method, key, observable) {
 
   const cachedObservable = observable
     .pipe(
-      //  tap(() => console.log('sub'), () => console.log('err'), () => console.log('unsub')),
       finalize(() => {
         // clean cache on unsubscription (of all observers)
         debug('removing cache item: ', hash);
-        /// console.log('removing cache item: ', hash);
+
         delete cache[method][hash];
       }),
       _oldStyleShareReplay(1)
     );
 
   cache[method][hash] = cachedObservable;
-
-//  console.log('cached:', hash);
 
   return cache[method][hash];
 }
