@@ -62,9 +62,9 @@ module.exports = function (settings, method) {
       }));
 
     // apply `let` function if set
-    const letStream = options.let ? stream.pipe(options.let) : stream;
+    const pipeStream = options.pipe ? stream.pipe(options.pipe) : stream;
 
     // if the method is `get` cache the result, otherwise just return the stream
-    return method === 'get' ? cacheObservable(this._cache, 'get', /* id */ arguments[0], letStream) : letStream;
+    return method === 'get' ? cacheObservable(this._cache, 'get', /* id */ arguments[0], pipeStream) : pipeStream;
   };
 };

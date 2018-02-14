@@ -520,9 +520,9 @@ describe('reactive lists', () => {
       setTimeout(() => service.patch(0, { text }));
     });
 
-    it('injects options.let into observable chain', done => {
+    it('injects options.pipe into observable chain', done => {
       const options = {
-        let: tap(() => done())
+        pipe: tap(() => done())
       };
       service.watch(options).find().pipe(first()).subscribe();
     });
