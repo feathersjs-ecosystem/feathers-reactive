@@ -1,8 +1,6 @@
 import sift from 'sift';
-
-import {_, sorter as createSorter} from '@feathersjs/commons/lib/utils';
-
-import {defer} from 'rxjs/observable/defer';
+import { _, sorter as createSorter } from '@feathersjs/commons/lib/utils';
+import { defer } from 'rxjs/observable/defer';
 
 function getSource (originalMethod, args) {
   return defer(() => originalMethod(...args));
@@ -62,12 +60,14 @@ function getParamsPosition (method) {
 }
 
 function siftMatcher (originalQuery) {
-  const query = _.omit(originalQuery, '$limit', '$skip', '$sort', '$select');
+  const keysToOmit = Object.keys(originalQuery).filter(key => key.charCodeAt(0) === 36);
+  const query = _.omit(originalQuery, ...keysToOmit);
 
   return sift(query);
 }
 
 Object.assign(exports, {
+  sift,
   getSource,
   makeSorter,
   getOptions,

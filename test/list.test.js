@@ -261,8 +261,13 @@ describe('reactive lists', () => {
       }, 20);
     });
 
-    it('.find with $sort, .create and .patch', done => {
-      const result = service.watch().find({ query: { $sort: { text: -1 } } });
+    it('.find with $sort, .create and .patch, omits $ properties', done => {
+      const result = service.watch().find({
+        query: {
+          $sort: { text: -1 },
+          $populate: 'something'
+        }
+      });
 
       result.pipe(
         skip(1),
@@ -319,8 +324,8 @@ describe('reactive lists', () => {
         const result = service.watch().find({ query: { counter: 1 } });
 
         result.pipe(first()).subscribe(messages =>
-            assert.deepEqual(messages, createdMessages),
-          done);
+          assert.deepEqual(messages, createdMessages),
+        done);
 
         result.pipe(skip(1), first()).subscribe(messages => {
           assert.deepEqual(messages, [{
@@ -351,8 +356,8 @@ describe('reactive lists', () => {
         const result = service.watch().find({ query: { counter: 1 } });
 
         result.pipe(first()).subscribe(messages =>
-            assert.deepEqual(messages, createdMessages),
-          done);
+          assert.deepEqual(messages, createdMessages),
+        done);
 
         result.pipe(skip(2), first()).subscribe(messages => {
           assert.deepEqual(messages, [{

@@ -1,6 +1,6 @@
 import stringify from 'json-stable-stringify';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
-import {finalize, multicast, refCount} from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { finalize, multicast, refCount } from 'rxjs/operators';
 
 import _debug from 'debug';
 const debug = _debug('feathers-reactive');
