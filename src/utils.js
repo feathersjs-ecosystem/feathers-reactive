@@ -1,26 +1,11 @@
-import _debug from 'debug';
-import { sorter as createSorter } from 'feathers-commons/lib/utils';
-import { Observable } from 'rxjs/Observable';
-import stringify from 'json-stable-stringify';
+import sift from 'sift';
 
-const debug = _debug('feathers-reactive');
+import {_, sorter as createSorter} from '@feathersjs/commons/lib/utils';
+
+import {defer} from 'rxjs/observable/defer';
 
 function getSource (originalMethod, args) {
-  let resultPromise = null;
-
-  return Observable.create(observer => {
-    if (!resultPromise) {
-      resultPromise = originalMethod(...args);
-      _assertPromise(resultPromise);
-    }
-
-    resultPromise
-      .then(res => {
-        observer.next(res);
-        observer.complete();
-      })
-      .catch(e => observer.error(e));
-  });
+  return defer(() => originalMethod(...args));
 }
 
 function makeSorter (query, options) {
@@ -63,28 +48,6 @@ function getOptions (base, ...others) {
   return options;
 }
 
-function cacheObservable (cache, method, key, observable) {
-  const hash = _hash(key);
-
-  const cachedObservable = observable
-    .finally(() => {
-      // clean cache on unsubscription (of all observers)
-      debug('removing cache item: ', hash);
-      delete cache[method][hash];
-    })
-    .shareReplay(1);
-
-  cache[method][hash] = cachedObservable;
-
-  return cache[method][hash];
-}
-
-function getCachedObservable (cache, method, key) {
-  const hash = _hash(key);
-
-  return cache[method][hash];
-}
-
 function getParamsPosition (method) {
   // The position of the params parameters for a service method so that we can extend them
   // default is 1
@@ -98,25 +61,16 @@ function getParamsPosition (method) {
   return (method in paramsPositions) ? paramsPositions[method] : 1;
 }
 
-function _assertPromise (obj) {
-  if (
-    !obj ||
-    typeof obj.then !== 'function' ||
-    typeof obj.catch !== 'function'
-  ) {
-    throw new Error(`feathers-reactive only works with services that return a Promise`);
-  }
-}
+function siftMatcher (originalQuery) {
+  const query = _.omit(originalQuery, '$limit', '$skip', '$sort', '$select');
 
-function _hash (key) {
-  return stringify(key);
+  return sift(query);
 }
 
 Object.assign(exports, {
   getSource,
   makeSorter,
   getOptions,
-  cacheObservable,
-  getCachedObservable,
-  getParamsPosition
+  getParamsPosition,
+  siftMatcher
 });

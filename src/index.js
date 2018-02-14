@@ -1,23 +1,10 @@
 import _debug from 'debug';
-import { matcher } from 'feathers-commons/lib/utils';
-import { Observable } from 'rxjs/Observable';
 
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/concat';
-import 'rxjs/add/operator/exhaustMap';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/let';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/scan';
-
+import { fromEvent } from 'rxjs/observable/fromEvent';
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
-import { makeSorter, getParamsPosition } from './utils';
+import { makeSorter, getParamsPosition, siftMatcher } from './utils';
 
 const debug = _debug('feathers-reactive');
 
@@ -31,7 +18,7 @@ function FeathersRx (options = {}) {
   options = Object.assign({
     dataField: 'data',
     sorter: makeSorter,
-    matcher,
+    matcher: siftMatcher,
     // Whether to requery service when a change is detected
     listStrategy: 'smart',
     listStrategies
@@ -41,10 +28,10 @@ function FeathersRx (options = {}) {
     const app = this;
 
     const events = {
-      created: Observable.fromEvent(service, 'created'),
-      updated: Observable.fromEvent(service, 'updated'),
-      patched: Observable.fromEvent(service, 'patched'),
-      removed: Observable.fromEvent(service, 'removed')
+      created: fromEvent(service, 'created'),
+      updated: fromEvent(service, 'updated'),
+      patched: fromEvent(service, 'patched'),
+      removed: fromEvent(service, 'removed')
     };
 
     // object to hold our reactive methods
@@ -108,10 +95,10 @@ function FeathersRx (options = {}) {
     }
   };
 
-  return function () {
+  return function (app) {
     debug('Initializing feathers-reactive plugin');
 
-    this.mixins.push(mixin);
+    app.mixins.push(mixin);
   };
 }
 

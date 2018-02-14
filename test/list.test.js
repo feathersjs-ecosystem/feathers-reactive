@@ -1,9 +1,14 @@
-
 import assert from 'assert';
-import feathers from 'feathers';
+import feathers from '@feathersjs/feathers';
 import memory from 'feathers-memory';
 
 import rx from '../src';
+
+import {
+  first,
+  skip,
+  tap
+} from 'rxjs/operators';
 
 describe('reactive lists', () => {
   let app, service;
@@ -12,7 +17,7 @@ describe('reactive lists', () => {
     describe('default', function () {
       beforeEach(done => {
         app = feathers()
-          .configure(rx({idField: 'id'}))
+          .configure(rx({ idField: 'id' }))
           .use('/messages', memory());
 
         service = app.service('messages');
@@ -28,10 +33,10 @@ describe('reactive lists', () => {
     describe('custom id', function () {
       beforeEach(done => {
         app = feathers()
-          .configure(rx({idField: 'id'}))
+          .configure(rx({ idField: 'id' }))
           .use('/messages', memory({ idField: 'customId' }));
 
-        service = app.service('messages').rx({idField: 'customId'});
+        service = app.service('messages').rx({ idField: 'customId' });
 
         service.create({
           text: 'A test message'
@@ -44,7 +49,7 @@ describe('reactive lists', () => {
     describe('pagination', function () {
       beforeEach(done => {
         app = feathers()
-          .configure(rx({idField: 'id'}))
+          .configure(rx({ idField: 'id' }))
           .use('/messages', memory({ paginate: { default: 3 } }));
 
         service = app.service('messages').rx();
@@ -87,7 +92,7 @@ describe('reactive lists', () => {
           }))
           .use('/messages', memory({ idField: 'customId' }));
 
-        service = app.service('messages').rx({idField: 'customId'});
+        service = app.service('messages').rx({ idField: 'customId' });
 
         service.create({
           text: 'A test message'
@@ -120,15 +125,24 @@ describe('reactive lists', () => {
   function baseTests (id) {
     it('.find is promise compatible', done => {
       service.find().then(messages => {
-        assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
+        assert.deepEqual(messages, [{
+          text: 'A test message',
+          [id]: 0
+        }]);
         done();
       });
     });
 
     it('lazy execution on subscription', done => {
       const fixture = [
-        { id: 0, text: 'first' },
-        { id: 1, text: 'second' }
+        {
+          id: 0,
+          text: 'first'
+        },
+        {
+          id: 1,
+          text: 'second'
+        }
       ];
 
       let ran = false;
@@ -141,7 +155,7 @@ describe('reactive lists', () => {
         }
       });
 
-      const source = app.service('dummy').watch().find();
+      const source = app.service('dummy').watch().find().pipe(first());
 
       assert.ok(!ran);
 
@@ -153,18 +167,30 @@ describe('reactive lists', () => {
     });
 
     it('.find as an observable', done => {
-      service.watch().find().first().subscribe(messages => {
-        assert.deepEqual(messages, [ { text: 'A test message', [id]: 0 } ]);
+      service.watch().find().pipe(first()).subscribe(messages => {
+        assert.deepEqual(messages, [{
+          text: 'A test message',
+          [id]: 0
+        }]);
         done();
       }, done);
     });
 
     it('.create and .find', done => {
-      service.watch().find().skip(2).subscribe(messages => {
+      service.watch().find().pipe(skip(2), first()).subscribe(messages => {
         assert.deepEqual(messages, [
-          { text: 'A test message', [id]: 0 },
-          { text: 'Another message', [id]: 1 },
-          { text: 'Another message', [id]: 2 }
+          {
+            text: 'A test message',
+            [id]: 0
+          },
+          {
+            text: 'Another message',
+            [id]: 1
+          },
+          {
+            text: 'Another message',
+            [id]: 2
+          }
         ]);
         done();
       }, done);
@@ -174,9 +200,12 @@ describe('reactive lists', () => {
     });
 
     it('.update and .find', done => {
-      service.watch().find().skip(1).subscribe(messages => {
+      service.watch().find().pipe(skip(1), first()).subscribe(messages => {
         assert.deepEqual(messages, [
-          { text: 'An updated test message', [id]: 0 }
+          {
+            text: 'An updated test message',
+            [id]: 0
+          }
         ]);
         done();
       }, done);
@@ -185,9 +214,12 @@ describe('reactive lists', () => {
     });
 
     it('.patch and .find', done => {
-      service.watch().find().skip(1).subscribe(messages => {
+      service.watch().find().pipe(skip(1), first()).subscribe(messages => {
         assert.deepEqual(messages, [
-          { text: 'A patched test message', [id]: 0 }
+          {
+            text: 'A patched test message',
+            [id]: 0
+          }
         ]);
         done();
       }, done);
@@ -196,7 +228,7 @@ describe('reactive lists', () => {
     });
 
     it('.remove and .find', done => {
-      service.watch().find().skip(1).subscribe(messages => {
+      service.watch().find().pipe(skip(1), first()).subscribe(messages => {
         assert.deepEqual(messages, []);
         done();
       }, done);
@@ -207,9 +239,9 @@ describe('reactive lists', () => {
     it('.find with .create that matches', done => {
       const result = service.watch().find({ query: { counter: 1 } });
 
-      result.first().subscribe(messages => assert.deepEqual(messages, []), done);
+      result.pipe(first()).subscribe(messages => assert.deepEqual(messages, []), done);
 
-      result.skip(1).subscribe(messages => {
+      result.pipe(skip(1), first()).subscribe(messages => {
         assert.deepEqual(messages, [{
           [id]: 1,
           text: 'New message',
@@ -232,7 +264,10 @@ describe('reactive lists', () => {
     it('.find with $sort, .create and .patch', done => {
       const result = service.watch().find({ query: { $sort: { text: -1 } } });
 
-      result.skip(1).first().subscribe(messages => {
+      result.pipe(
+        skip(1),
+        first()
+      ).subscribe(messages => {
         assert.deepEqual(messages, [{
           [id]: 1,
           text: 'B test message'
@@ -242,7 +277,10 @@ describe('reactive lists', () => {
         }]);
       }, done);
 
-      result.skip(2).first().subscribe(messages => {
+      result.pipe(
+        skip(2),
+        first()
+      ).subscribe(messages => {
         assert.deepEqual(messages, [{
           [id]: 0,
           text: 'Updated test message'
@@ -269,16 +307,22 @@ describe('reactive lists', () => {
 
     it('removes item after .update/.patch if it does not match', done => {
       Promise.all([
-        service.create({ text: 'first', counter: 1 }),
-        service.create({ text: 'second', counter: 1 })
+        service.create({
+          text: 'first',
+          counter: 1
+        }),
+        service.create({
+          text: 'second',
+          counter: 1
+        })
       ]).then(createdMessages => {
         const result = service.watch().find({ query: { counter: 1 } });
 
-        result.first().subscribe(messages =>
-          assert.deepEqual(messages, createdMessages),
-        done);
+        result.pipe(first()).subscribe(messages =>
+            assert.deepEqual(messages, createdMessages),
+          done);
 
-        result.skip(1).subscribe(messages => {
+        result.pipe(skip(1), first()).subscribe(messages => {
           assert.deepEqual(messages, [{
             text: 'second',
             counter: 1,
@@ -295,16 +339,22 @@ describe('reactive lists', () => {
 
     it('adds item back after .update/.patch if it matches again', done => {
       Promise.all([
-        service.create({ text: 'first', counter: 1 }),
-        service.create({ text: 'second', counter: 1 })
+        service.create({
+          text: 'first',
+          counter: 1
+        }),
+        service.create({
+          text: 'second',
+          counter: 1
+        })
       ]).then(createdMessages => {
         const result = service.watch().find({ query: { counter: 1 } });
 
-        result.first().subscribe(messages =>
-          assert.deepEqual(messages, createdMessages),
-        done);
+        result.pipe(first()).subscribe(messages =>
+            assert.deepEqual(messages, createdMessages),
+          done);
 
-        result.skip(2).subscribe(messages => {
+        result.pipe(skip(2), first()).subscribe(messages => {
           assert.deepEqual(messages, [{
             text: 'first',
             counter: 1,
@@ -329,13 +379,22 @@ describe('reactive lists', () => {
   function paginationTests (id) {
     it('removes items if the data length is past the limit', done => {
       const expect = [
-        { text: 'A test message', [id]: 0 },
-        { text: 'first', [id]: 1 },
-        { text: 'second', [id]: 2 }
+        {
+          text: 'A test message',
+          [id]: 0
+        },
+        {
+          text: 'first',
+          [id]: 1
+        },
+        {
+          text: 'second',
+          [id]: 2
+        }
       ];
       const result = service.watch().find();
 
-      result.skip(3).subscribe(messages => {
+      result.pipe(skip(3), first()).subscribe(messages => {
         assert.deepEqual(messages.data, expect);
         done();
       }, done);
@@ -343,31 +402,43 @@ describe('reactive lists', () => {
       setTimeout(() => {
         service.create({ text: 'first' });
         service.create({ text: 'second' });
-        service.create({text: 'third'});
+        service.create({ text: 'third' });
       }, 20);
     });
 
     it('.create updates total', done => {
-      service.watch().find().first().subscribe(data => {
+      service.watch().find().pipe(first()).subscribe(data => {
         assert.deepEqual(data, {
           total: 1,
           limit: 3,
           skip: 0,
           data: [
-            { text: 'A test message', id: 0 }
+            {
+              text: 'A test message',
+              id: 0
+            }
           ]
         });
       }, done);
 
-      service.watch().find().skip(2).subscribe(data => {
+      service.watch().find().pipe(skip(2), first()).subscribe(data => {
         assert.deepEqual(data, {
           total: 3,
           limit: 3,
           skip: 0,
           data: [
-            { text: 'A test message', [id]: 0 },
-            { text: 'first', [id]: 1 },
-            { text: 'second', [id]: 2 }
+            {
+              text: 'A test message',
+              [id]: 0
+            },
+            {
+              text: 'first',
+              [id]: 1
+            },
+            {
+              text: 'second',
+              [id]: 2
+            }
           ]
         });
         done();
@@ -380,18 +451,21 @@ describe('reactive lists', () => {
     });
 
     it('.remove updates total', done => {
-      service.watch().find().first().subscribe(data => {
+      service.watch().find().pipe(first()).subscribe(data => {
         assert.deepEqual(data, {
           total: 1,
           limit: 3,
           skip: 0,
           data: [
-            { text: 'A test message', id: 0 }
+            {
+              text: 'A test message',
+              id: 0
+            }
           ]
         });
       }, done);
 
-      service.watch().find().skip(1).subscribe(data => {
+      service.watch().find().pipe(skip(1), first()).subscribe(data => {
         assert.deepEqual(data, {
           total: 0,
           limit: 3,
@@ -413,22 +487,32 @@ describe('reactive lists', () => {
       };
       const text = 'updated text';
 
-      service.watch().find({ query: { text } }).first()
-        .subscribe(data => assert.deepEqual(data, empty), done);
+      service.watch().find({ query: { text } }).pipe(
+        first()
+      ).subscribe(data => assert.deepEqual(data, empty), done);
 
-      service.watch().find({ query: { text } }).skip(1).first().subscribe(data => {
+      service.watch().find({ query: { text } }).pipe(
+        skip(1),
+        first()
+      ).subscribe(data => {
         assert.deepEqual(data, {
           total: 1,
           limit: 3,
           skip: 0,
           data: [
-            { [id]: 0, text: 'updated text' }
+            {
+              [id]: 0,
+              text: 'updated text'
+            }
           ]
         });
         setTimeout(() => service.patch(0, { text: 'changed again' }));
       }, done);
 
-      service.watch().find({ query: { text } }).skip(2).first().subscribe(data => {
+      service.watch().find({ query: { text } }).pipe(
+        skip(2),
+        first()
+      ).subscribe(data => {
         assert.deepEqual(data, empty);
         done();
       }, done);
@@ -436,52 +520,36 @@ describe('reactive lists', () => {
       setTimeout(() => service.patch(0, { text }));
     });
 
-    it('injects options.let into observable chain', done => {
+    it('injects options.pipe into observable chain', done => {
       const options = {
-        let: obs => obs.do(() => done())
+        pipe: tap(() => done())
       };
-      service.watch(options).find().subscribe();
+      service.watch(options).find().pipe(first()).subscribe();
     });
 
     it('.find uses caching', done => {
-      let i = 0;
+      const o1 = service.watch().find();
+      const o2 = service.watch().find();
 
-      const options = {
-        let: obs => obs.do(() => i++)
-      };
+      assert.equal(o2, o1);
 
-      service.watch(options).find().subscribe(() => {
-        // expect i to have increased by 1
-        assert.equal(i, 1);
-
-        service.watch(options).find().subscribe(() => {
-          // expect i to _not_ have increased further
-          assert.equal(i, 1);
-
-          done();
-        });
-      });
+      done();
     });
 
     it('clears cache after unsubscription', done => {
-      let i = 0;
+      const o1 = service.watch().find();
+      const o2 = service.watch().find();
 
-      const options = {
-        let: obs => obs.do(() => i++)
-      };
+      const sub1 = o1.subscribe();
+      const sub2 = o2.subscribe();
 
-      const sub1 = service.watch(options).find().subscribe();
-      const sub2 = service.watch(options).find().subscribe();
+      sub1.unsubscribe();
+      sub2.unsubscribe();
 
-      setTimeout(() => {
-        sub1.unsubscribe();
-        sub2.unsubscribe();
+      assert.equal(o1, o2);
+      assert.notEqual(service.watch().find(), o1);
 
-        service.watch(options).find().subscribe(() => {
-          assert.equal(i, 2);
-          done();
-        });
-      });
+      done();
     });
   }
 });

@@ -1,9 +1,14 @@
 import assert from 'assert';
-import feathers from 'feathers';
+import feathers from '@feathersjs/feathers';
 import memory from 'feathers-memory';
-import hooks from 'feathers-hooks';
 
 import rx from '../src';
+
+import {
+  skip,
+  tap,
+  take
+} from 'rxjs/operators';
 
 describe('reactive resources', () => {
   let app, id, service;
@@ -11,7 +16,7 @@ describe('reactive resources', () => {
   describe('standard id', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx({idField: 'id'}))
+        .configure(rx({ idField: 'id' }))
         .use('/messages', memory());
 
       service = app.service('messages');
@@ -28,7 +33,7 @@ describe('reactive resources', () => {
   describe('custom id on service', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx({idField: 'id'}))
+        .configure(rx({ idField: 'id' }))
         .use('/messages', memory({ idField: 'customId' }));
 
       service = app.service('messages').rx({ idField: 'customId' });
@@ -46,12 +51,15 @@ describe('reactive resources', () => {
   describe('custom id on params', function () {
     beforeEach(done => {
       app = feathers()
-        .configure(rx({idField: 'id'}))
-        .configure(hooks())
+        .configure(rx({ idField: 'id' }))
         .use('/messages', memory({ idField: 'customId' }));
 
-      service = app.service('messages').before({
-        all: [function (hook) { hook.params.rx = { idField: 'customId' }; }]
+      service = app.service('messages').hooks({
+        before: {
+          all: [function (hook) {
+            hook.params.rx = { idField: 'customId' };
+          }]
+        }
       });
 
       service.create({
@@ -67,14 +75,22 @@ describe('reactive resources', () => {
   function baseTests (customId) {
     it('methods are still Promise compatible', done => {
       service.get(id).then(message => {
-        assert.deepEqual(message, { [customId]: id, text: 'A test message' });
+        assert.deepEqual(message, {
+          [customId]: id,
+          text: 'A test message'
+        });
         done();
       }, done);
     });
 
     it('.get as an observable', done => {
-      service.watch().get(id).first().subscribe(message => {
-        assert.deepEqual(message, { [customId]: id, text: 'A test message' });
+      service.watch().get(id).pipe(
+        take(1)
+      ).subscribe(message => {
+        assert.deepEqual(message, {
+          [customId]: id,
+          text: 'A test message'
+        });
         done();
       }, done);
     });
@@ -87,12 +103,13 @@ describe('reactive resources', () => {
           ran = true;
 
           return Promise.resolve({
-            id, description: `Do ${id}!`
+            id,
+            description: `Do ${id}!`
           });
         }
       });
 
-      const source = app.service('dummy').watch().get('dishes');
+      const source = app.service('dummy').watch().get('dishes').pipe(take(1));
 
       assert.ok(!ran);
 
@@ -109,84 +126,89 @@ describe('reactive resources', () => {
     it('.update and .patch update existing stream', done => {
       const result = service.watch().get(id);
 
-      result.first().subscribe(message => {
-        assert.deepEqual(message, { [customId]: id, text: 'A test message' });
-        service.update(id, { text: 'Updated', prop: true });
+      result.pipe(
+        take(1)
+      ).subscribe(message => {
+        assert.deepEqual(message, {
+          [customId]: id,
+          text: 'A test message'
+        });
+        service.update(id, {
+          text: 'Updated',
+          prop: true
+        });
       }, done);
 
-      result.skip(1).first().subscribe(message => {
+      result.pipe(
+        skip(1),
+        take(1)
+      ).subscribe(message => {
         assert.deepEqual(message, {
-          [customId]: id, text: 'Updated', prop: true
+          [customId]: id,
+          text: 'Updated',
+          prop: true
         });
         service.patch(id, { text: 'Updated again' });
       }, done);
 
-      result.skip(2).first().subscribe(message => {
+      result.pipe(
+        skip(2),
+        take(1)
+      ).subscribe(message => {
         assert.deepEqual(message, {
-          [customId]: id, text: 'Updated again', prop: true
+          [customId]: id,
+          text: 'Updated again',
+          prop: true
         });
         done();
       }, done);
     });
 
     it('.remove emits null', done => {
-      service.watch().get(id).subscribe(message => {
+      service.watch().get(id).pipe(take(2)).subscribe(message => {
         if (message === null) {
           done();
         } else {
-          assert.deepEqual(message, { [customId]: id, text: 'A test message' });
+          assert.deepEqual(message, {
+            [customId]: id,
+            text: 'A test message'
+          });
         }
       }, done);
 
       setTimeout(() => service.remove(id));
     });
 
-    it('injects options.let into observable chain', done => {
+    it('injects options.pipe into observable chain', done => {
       const options = {
-        let: obs => obs.do(() => done())
+        pipe: tap(() => done())
       };
-      service.watch(options).get(0).subscribe();
+      service.watch(options).get(0).pipe(take(1)).subscribe();
     });
 
     it('.get uses caching', done => {
-      let i = 0;
+      const o1 = service.watch().get(0);
+      const o2 = service.watch().get(0);
 
-      const options = {
-        let: obs => obs.do(() => i++)
-      };
+      assert.equal(o2, o1);
 
-      service.watch(options).get(0).subscribe(() => {
-        // expect i to have increased by 1
-        assert.equal(i, 1);
-
-        service.watch(options).get(0).subscribe(() => {
-          // expect i to _not_ have increased further
-          assert.equal(i, 1);
-
-          done();
-        });
-      });
+      done();
     });
 
     it('clears cache after unsubscription', done => {
-      let i = 0;
+      const o1 = service.watch().get(0);
+      const o2 = service.watch().get(0);
 
-      const options = {
-        let: obs => obs.do(() => i++)
-      };
+      const sub1 = o1.subscribe();
+      const sub2 = o2.subscribe();
 
-      const sub1 = service.watch(options).get(0).subscribe();
-      const sub2 = service.watch(options).get(0).subscribe();
+      sub1.unsubscribe();
+      sub2.unsubscribe();
 
-      setTimeout(() => {
-        sub1.unsubscribe();
-        sub2.unsubscribe();
+      assert.equal(o1, o2);
+      assert.notEqual(service.watch().get(0), o1);
 
-        service.watch(options).get(0).subscribe(() => {
-          assert.equal(i, 2);
-          done();
-        });
-      });
+      done();
     });
   }
 });
