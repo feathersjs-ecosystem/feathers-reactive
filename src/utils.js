@@ -1,6 +1,8 @@
 import sift from 'sift';
 import { _, sorter as createSorter } from '@feathersjs/commons/lib/utils';
 import { defer } from 'rxjs/observable/defer';
+import { tap } from 'rxjs/operators/tap';
+import { catchError } from 'rxjs/operators/catchError';
 
 function getSource (originalMethod, args) {
   return defer(() => originalMethod(...args));
@@ -66,11 +68,47 @@ function siftMatcher (originalQuery) {
   return sift(query);
 }
 
+const ERROR_INCOMPLETE = 'feathers-reactive: data is incomplete';
+
+function isComplete (page, options) {
+  const isPaginated = !!page[ options.dataField ];
+
+  if (isPaginated) {
+    const length = page[ options.dataField ].length;
+
+    if (page.total >= page.limit && length < page.limit) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function retryWhenIncomplete (options) {
+  return function (source) {
+    return source.pipe(
+      tap(data => {
+        if (!isComplete(data, options)) {
+          throw new Error(ERROR_INCOMPLETE);
+        }
+      }),
+      catchError((err, caught) => {
+        if (err.message === ERROR_INCOMPLETE) {
+          return caught;
+        }
+
+        throw err;
+      })
+    );
+  };
+}
+
 Object.assign(exports, {
   sift,
   getSource,
   makeSorter,
   getOptions,
   getParamsPosition,
-  siftMatcher
+  siftMatcher,
+  retryWhenIncomplete
 });

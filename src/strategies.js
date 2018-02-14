@@ -1,13 +1,14 @@
 import { merge } from 'rxjs/observable/merge';
-import { of } from 'rxjs/observable/of';
+import { concat } from 'rxjs/observable/concat';
+
 import {
-  concat,
-  concatMap,
   concatMapTo,
   filter,
   map,
   scan
 } from 'rxjs/operators';
+
+import { retryWhenIncomplete } from './utils';
 
 module.exports = function () {
   return {
@@ -31,12 +32,10 @@ module.exports = function () {
         this.patched$
       );
 
-      return source$.pipe(
-        concat(
-          events$.pipe(
-            concatMapTo(source$)
-          )
-        ));
+      return concat(
+        source$,
+        events$.pipe(concatMapTo(source$))
+      );
     },
 
     smart (source$, options, args) {
@@ -114,15 +113,10 @@ module.exports = function () {
         )
       );
 
-      return source$.pipe(
-        concatMap(data =>
-          of(data).pipe(
-            concat(
-              events$.pipe(
-                scan((current, callback) => sortAndTrim(callback(current)), data))
-            )
-          )
-        ));
+      return concat(source$, events$).pipe(
+        scan((current, callback) => sortAndTrim(callback(current))),
+        retryWhenIncomplete(options)
+      );
     }
   };
 };
