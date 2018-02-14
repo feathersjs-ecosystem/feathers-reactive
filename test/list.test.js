@@ -261,8 +261,13 @@ describe('reactive lists', () => {
       }, 20);
     });
 
-    it('.find with $sort, .create and .patch', done => {
-      const result = service.watch().find({ query: { $sort: { text: -1 } } });
+    it('.find with $sort, .create and .patch, omits $ properties', done => {
+      const result = service.watch().find({
+        query: {
+          $sort: { text: -1 },
+          $populate: 'something'
+        }
+      });
 
       result.pipe(
         skip(1),
