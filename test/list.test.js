@@ -319,8 +319,8 @@ describe('reactive lists', () => {
         const result = service.watch().find({ query: { counter: 1 } });
 
         result.pipe(first()).subscribe(messages =>
-            assert.deepEqual(messages, createdMessages),
-          done);
+          assert.deepEqual(messages, createdMessages),
+        done);
 
         result.pipe(skip(1), first()).subscribe(messages => {
           assert.deepEqual(messages, [{
@@ -351,8 +351,8 @@ describe('reactive lists', () => {
         const result = service.watch().find({ query: { counter: 1 } });
 
         result.pipe(first()).subscribe(messages =>
-            assert.deepEqual(messages, createdMessages),
-          done);
+          assert.deepEqual(messages, createdMessages),
+        done);
 
         result.pipe(skip(2), first()).subscribe(messages => {
           assert.deepEqual(messages, [{
