@@ -39,9 +39,9 @@ module.exports = function (settings, method) {
         // Filter only data with the same id
         const filterFn = current => current[options.idField] === data[options.idField];
         // `removed` events get special treatment
-        const filteredRemoves$ = this.removed$.pipe(filter(filterFn));
+        const filteredRemoves = this.removed$.pipe(filter(filterFn));
         // `created`, `updated` and `patched`
-        const filteredEvents$ = merge(
+        const filteredEvents = merge(
           this.created$,
           this.updated$,
           this.patched$
@@ -49,15 +49,15 @@ module.exports = function (settings, method) {
           filter(filterFn)
         );
 
-        const combinedEvents$ = merge(
+        const combinedEvents = merge(
           // Map to a callback that merges old and new data
-          filteredEvents$,
+          filteredEvents,
           // filtered `removed` events always mapped to `null`
-          filteredRemoves$.pipe(mapTo(null))
+          filteredRemoves.pipe(mapTo(null))
         );
 
         return of(data).pipe(
-          concat(combinedEvents$)
+          concat(combinedEvents)
         );
       }));
 
