@@ -22,7 +22,7 @@ The following options are supported:
 - `listStrategy` (default: `smart`): The strategy to use for streaming the data. Can be `smart`, `always` or `never`
 - `sorter` (`function(query, options) {}`): A function that returns a sorting function for the given query and option including pagination and limiting. Does not need to be customized unless there is a sorting mechanism other than Feathers standard in place.
 - `matcher` (`function(query)`): A function that returns a function which returns whether an item matches the original query or not.
-- `let` (`function(observable) => observable`) A function that lets you modify every `Observable` created by reactive service calls. Must return an `Observable`. Example: `let: observable => observable.do(console.log)` 'injects' a `.do` into the observable chain.
+- `pipe` (`function(observable) => observable`) A function that lets you modify every `Observable` created by reactive service calls. Must return an `Observable`. Example: `pipe: observable => observable.do(console.log)` 'injects' a `.do` into the observable chain.
 
 #### Application level
 
