@@ -525,9 +525,24 @@ describe('reactive lists', () => {
       setTimeout(() => service.patch(0, { text }));
     });
 
-    it('injects options.pipe into observable chain', done => {
+    it('injects options.pipe into observable chain (single operator)', done => {
       const options = {
         pipe: tap(() => done())
+      };
+      service.watch(options).find().pipe(first()).subscribe();
+    });
+
+    it('injects options.pipe into observable chain (array of operators)', done => {
+      let i = 0;
+
+      const options = {
+        pipe: [
+          tap(() => i++),
+          tap(() => {
+            assert.equal(i, 1);
+            done();
+          })
+        ]
       };
       service.watch(options).find().pipe(first()).subscribe();
     });

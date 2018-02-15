@@ -1,7 +1,8 @@
 import {
   getOptions,
   getSource,
-  getParamsPosition
+  getParamsPosition,
+  getPipeStream
 } from './utils';
 
 import {
@@ -61,8 +62,7 @@ module.exports = function (settings, method) {
         );
       }));
 
-    // apply `let` function if set
-    const pipeStream = options.pipe ? stream.pipe(options.pipe) : stream;
+    const pipeStream = getPipeStream(stream, options);
 
     // if the method is `get` cache the result, otherwise just return the stream
     return method === 'get' ? cacheObservable(this._cache, 'get', /* id */ arguments[0], pipeStream) : pipeStream;

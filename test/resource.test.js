@@ -179,9 +179,24 @@ describe('reactive resources', () => {
       setTimeout(() => service.remove(id));
     });
 
-    it('injects options.pipe into observable chain', done => {
+    it('injects options.pipe into observable chain (single operator)', done => {
       const options = {
         pipe: tap(() => done())
+      };
+      service.watch(options).get(0).pipe(take(1)).subscribe();
+    });
+
+    it('injects options.pipe into observable chain (array of operators)', done => {
+      let i = 0;
+
+      const options = {
+        pipe: [
+          tap(() => i++),
+          tap(() => {
+            assert.equal(i, 1);
+            done();
+          })
+        ]
       };
       service.watch(options).get(0).pipe(take(1)).subscribe();
     });
