@@ -1,6 +1,7 @@
 import {
   getOptions,
-  getSource
+  getSource,
+  getPipeStream
 } from './utils';
 
 import {
@@ -21,9 +22,9 @@ module.exports = function (settings) {
     const source = getSource(this.find.bind(this), arguments);
     const stream = options.listStrategy.call(this, source, options, arguments);
 
-    const letStream = options.pipe ? stream.pipe(options.pipe) : stream;
+    const pipeStream = getPipeStream(stream, options);
 
     // set cache and return cached observable
-    return cacheObservable(this._cache, 'find', params, letStream);
+    return cacheObservable(this._cache, 'find', params, pipeStream);
   };
 };

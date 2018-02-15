@@ -46,6 +46,16 @@ function getOptions (base, ...others) {
   return options;
 }
 
+function getPipeStream (stream, options) {
+  if (!options.pipe) {
+    return stream;
+  } else if (Array.isArray(options.pipe)) {
+    return stream.pipe(...options.pipe);
+  } else {
+    return stream.pipe(options.pipe);
+  }
+}
+
 function getParamsPosition (method) {
   // The position of the params parameters for a service method so that we can extend them
   // default is 1
@@ -72,5 +82,6 @@ Object.assign(exports, {
   makeSorter,
   getOptions,
   getParamsPosition,
-  siftMatcher
+  siftMatcher,
+  getPipeStream
 });
