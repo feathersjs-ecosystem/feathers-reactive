@@ -1,5 +1,13 @@
+// Type definitions for feathers-reactive 0.5
+// Project: https://github.com/feathersjs-ecosystem/feathers-reactive
+// Definitions by: Jan Lohage <https://github.com/j2L4e>
+// Definitions: https://github.com/feathersjs-ecosystem/feathers-reactive
+
+// TypeScript Version: 2.1
+
 import { Observable } from 'rxjs/Observable';
 import { NullableId, Paginated, Params } from '@feathersjs/feathers';
+import { OperatorFunction } from 'rxjs/interfaces';
 
 declare function FeathersReactive(options: FeathersReactive.Options): () => void;
 export = FeathersReactive;
@@ -8,25 +16,25 @@ declare namespace FeathersReactive {
   type ListStrategy = any;
 
   // TODO: check for completeness
-  interface Options<S extends { [name: string]: ListStrategy }> {
-    idField: string,
-    dataField?: string,
-    sorter?: (query: any, options: any) => any,
+  interface Options {
+    idField: string;
+    dataField?: string;
+    sorter?: (query: any, options: any) => any;
 
     /**
      * a filter function factory
      */
-    matcher?: (query: any) => (element: any) => boolean,
+    matcher?: (query: any) => (element: any) => boolean;
 
-    listStrategies?: S,
-    listStrategy?: 'always' | 'smart' | 'never' | keyof S,
-    let?: (obs: Observable<any>) => Observable<any>
+    listStrategies?: { [name: string]: ListStrategy };
+    listStrategy?: 'always' | 'smart' | 'never' | string | ListStrategy;
+    pipe?: OperatorFunction<any, any> | Array<OperatorFunction<any, any>>;
   }
 }
 
 declare module '@feathersjs/feathers' {
   interface ServiceAddons<T> {
-    watch(options?: Partial<FeathersReactive.Options>): ReactiveService<T>
+    watch(options?: Partial<FeathersReactive.Options>): ReactiveService<T>;
   }
 
   interface ReactiveService<T> {
@@ -34,7 +42,7 @@ declare module '@feathersjs/feathers' {
      * Retrieves a list of all resources from the service.
      * Provider parameters will be passed as params.query
      */
-    find(params?: Params): Observable<Array<T> | Paginated<T>>;
+    find(params?: Params): Observable<T[] | Paginated<T>>;
 
     /**
      * Retrieves a single resource with the given id from the service.
@@ -44,7 +52,7 @@ declare module '@feathersjs/feathers' {
     /**
      * Creates a new resource with data.
      */
-    create(data: Partial<Array<T>>, params?: Params): Observable<Array<T>>;
+    create(data: Partial<T[]>, params?: Params): Observable<T[]>;
     create(data: Partial<T>, params?: Params): Observable<T>;
 
     /**
