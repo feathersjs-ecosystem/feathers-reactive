@@ -1,5 +1,49 @@
 # Change Log
 
+## [v0.6.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.6.0) (2018-02-15)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.5.4...v0.6.0)
+
+**Closed issues:**
+
+- Using feathers reactive with rxjs 5.5.x breaks angular production builds \(build optimizing\) [\#96](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/96)
+- Cannot find module 'feathers' when using @feathersjs/client [\#83](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/83)
+- Error: The RxJS instance does not seem to provide an `Observable` type. [\#81](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/81)
+- Caching is broken with rxjs 5.5.0 [\#77](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/77)
+- Update rxjs to 5.5 [\#76](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/76)
+- subscribing to query with $populate does not see any updates even with listStrategy=always [\#60](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/60)
+- Subscriptions with $client query parameters are not reactive [\#56](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/56)
+- Subscriptions with $contains and $search are not reactive [\#53](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/53)
+
+**Merged pull requests:**
+
+- Make options.pipe take single or multiple operators, fix typings. [\#98](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/98) ([j2L4e](https://github.com/j2L4e))
+- Omit all $ top level properties and export sift instance [\#97](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/97) ([daffl](https://github.com/daffl))
+- buzzard, rxjs 5.5 [\#95](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/95) ([j2L4e](https://github.com/j2L4e))
+- Update browserify to the latest version 🚀 [\#94](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/94) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update mocha to the latest version 🚀 [\#91](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/91) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Support disablePagination\(\) hook [\#90](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/90) ([psi-4ward](https://github.com/psi-4ward))
+- Remove rxjs import from 0.5 configuration example [\#89](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/89) ([hubgit](https://github.com/hubgit))
+- Update browserify to the latest version 🚀 [\#87](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/87) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update semistandard to the latest version 🚀 [\#86](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/86) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+
+## [v0.5.4](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.5.4) (2017-10-27)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.5.3...v0.5.4)
+
+**Closed issues:**
+
+- patch subscribe fires twice [\#80](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/80)
+- feathers-reactive not responding to create event with query applied in .find\(\) \(possibly related to \#62\) [\#73](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/73)
+- Link to outdated docs confuses about project state [\#70](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/70)
+- Official query syntax for $gt, $gte does not work [\#62](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/62)
+
+**Merged pull requests:**
+
+- Update dependencies to enable Greenkeeper 🌴 [\#79](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/79) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Fix TypeScript declarations [\#78](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/78) ([rybaczewa](https://github.com/rybaczewa))
+- Updated README to include querying example and stress importance of providing the correct variable type. [\#75](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/75) ([jobobo21](https://github.com/jobobo21))
+- Adding the mandatory idField to the usage example [\#74](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/74) ([johnlindquist](https://github.com/johnlindquist))
+- Update mocha to the latest version 🚀 [\#72](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/72) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+
 ## [v0.5.3](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.5.3) (2017-09-25)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.5.2...v0.5.3)
 
