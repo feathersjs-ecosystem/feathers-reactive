@@ -22,7 +22,7 @@ The following options are supported:
 - `listStrategy` (default: `smart`): The strategy to use for streaming the data. Can be `smart`, `always` or `never`
 - `sorter` (`function(query, options) {}`): A function that returns a sorting function for the given query and option including pagination and limiting. Does not need to be customized unless there is a sorting mechanism other than Feathers standard in place.
 - `matcher` (`function(query)`): A function that returns a function which returns whether an item matches the original query or not.
-- `pipe` (`function(observable) => observable`) A function that lets you modify every `Observable` created by reactive service calls. Must return an `Observable`. Example: `pipe: observable => observable.do(console.log)` 'injects' a `.do` into the observable chain.
+- `pipe` (`operator | operator[]`) One or multiple rxjs operators of the form `function(observable) => observable` like you would pass them to an Observable's [.pipe method](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md). The supplied operators are applied to any Observable created by `feathers-reactive`. `options.pipe: tap(data => console.log(data))` would log every emitted value to the console. 
 
 #### Application level
 
