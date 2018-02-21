@@ -1,36 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import feathers from 'feathers/client';
-import socketio from 'feathers-socketio/client';
-import rx from 'feathers-reactive';
-import RxJS from 'rxjs';
+import React, { Component } from 'react';
+import io from 'socket.io-client'
+import feathers from '@feathersjs/client';
+import reactive from 'feathers-reactive';
+//import RxJS from 'rxjs';
+import './logo.svg';
+import './App.css';
 
-// eslint-disable-next-line
-const socket = window.socket = io();
-const app = window.app = feathers()
-  .configure(socketio(socket))
-  .configure(rx(RxJS));
+const socket = io();
+const app = feathers()
+  .configure(feathers.socketio(socket))
+  .configure(reactive({
+    idField: 'id'
+  }));
 const todos = app.service('todos');
 
-const TodoApp = React.createClass({
-  getInitialState () {
-    return {
-      todos: [],
-      text: ''
-    };
-  },
+class App extends Component {
+  state = {
+    todos: [],
+    text: ''
+  }
 
   componentDidMount () {
-    this.todos = todos.find().subscribe(todos => this.setState({ todos }));
-  },
+    this.todos = todos.watch().find().subscribe(todos => this.setState({ todos }));
+  }
 
   componentWillUnmount () {
     this.todos.unsubscribe();
-  },
+  }
 
   updateText (ev) {
     this.setState({ text: ev.target.value });
-  },
+  }
 
   createTodo (ev) {
     todos.create({
@@ -39,26 +39,27 @@ const TodoApp = React.createClass({
     });
     this.setState({ text: '' });
     ev.preventDefault();
-  },
+  }
 
   updateTodo (todo, ev) {
     todo.complete = ev.target.checked;
     todos.patch(todo.id, todo);
-  },
+  }
 
-  deleteTodo (todo) {
+  deleteTodo (todo, e) {
+    e.preventDefault();
     todos.remove(todo.id);
-  },
+  }
 
   render () {
     const renderTodo = todo =>
-      <li className={`page-header checkbox ${todo.complete ? 'done' : ''}`}>
+      <li key={todo.id} className={`page-header checkbox ${todo.complete ? 'done' : ''}`}>
         <label>
           <input type='checkbox' onChange={this.updateTodo.bind(this, todo)}
             checked={todo.complete} />
           {todo.text}
         </label>
-        <a href='javascript://' className='pull-right delete'
+        <a href='' className='pull-right delete'
           onClick={this.deleteTodo.bind(this, todo)}>
           <span className='glyphicon glyphicon-remove' />
         </a>
@@ -68,10 +69,10 @@ const TodoApp = React.createClass({
       <h1>Feathers real-time Todos</h1>
 
       <ul className='todos list-unstyled'>{this.state.todos.map(renderTodo)}</ul>
-      <form role='form' className='create-todo' onSubmit={this.createTodo}>
+      <form className='create-todo' onSubmit={this.createTodo.bind(this)}>
         <div className='form-group'>
           <input type='text' className='form-control' name='description'
-            placeholder='Add a new Todo' onChange={this.updateText}
+            placeholder='Add a new Todo' onChange={this.updateText.bind(this)}
             value={this.state.text} />
         </div>
         <button type='submit' className='btn btn-info col-md-12'>
@@ -80,6 +81,6 @@ const TodoApp = React.createClass({
       </form>
     </div>;
   }
-});
+}
 
-ReactDOM.render(<TodoApp />, document.getElementById('app'));
+export default App;

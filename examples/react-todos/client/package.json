@@ -1,0 +1,27 @@
+{
+  "name": "feathers-react-todos-client",
+  "version": "0.2.0",
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Jonathon Hill",
+      "email": "jhill9693@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "@feathersjs/client": "^3.4.2",
+    "feathers-reactive": "^0.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.1.1",
+    "rxjs": "^5.5.6",
+    "socket.io-client": "^2.0.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "http://localhost:3030"
+}
