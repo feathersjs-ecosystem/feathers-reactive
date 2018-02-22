@@ -12,12 +12,12 @@ const getUrl = pathname => url.format({
 });
 
 describe('Feathers application tests', () => {
-  before(function(done) {
+  before(function (done) {
     this.server = app.listen(port);
     this.server.once('listening', () => done());
   });
 
-  after(function(done) {
+  after(function (done) {
     this.server.close(done);
   });
 
@@ -27,7 +27,7 @@ describe('Feathers application tests', () => {
     );
   });
 
-  describe('404', function() {
+  describe('404', function () {
     it('shows a 404 HTML page', () => {
       return rp({
         url: getUrl('path/to/nowhere'),

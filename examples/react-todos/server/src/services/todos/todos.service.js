@@ -3,7 +3,6 @@ const createService = require('feathers-memory');
 const hooks = require('./todos.hooks');
 
 module.exports = function (app) {
-  
   const paginate = app.get('paginate');
 
   const options = {

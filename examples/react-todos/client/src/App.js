@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import io from 'socket.io-client'
+import io from 'socket.io-client';
 import feathers from '@feathersjs/client';
 import reactive from 'feathers-reactive';
-//import RxJS from 'rxjs';
 import './logo.svg';
 import './App.css';
 
@@ -12,12 +11,16 @@ const app = feathers()
   .configure(reactive({
     idField: 'id'
   }));
+
 const todos = app.service('todos');
 
 class App extends Component {
-  state = {
-    todos: [],
-    text: ''
+  constructor () {
+    super();
+    this.state = {
+      todos: [],
+      text: ''
+    };
   }
 
   componentDidMount () {
