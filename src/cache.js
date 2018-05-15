@@ -1,5 +1,5 @@
 import stringify from 'json-stable-stringify';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 import { finalize, multicast, refCount } from 'rxjs/operators';
 
 import _debug from 'debug';

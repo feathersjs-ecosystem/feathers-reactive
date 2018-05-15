@@ -57,7 +57,7 @@
     "@feathersjs/feathers": "^3.1.1",
     "debug": "^3.1.0",
     "json-stable-stringify": "^1.0.1",
-    "rxjs": "^5.5.0",
+    "rxjs": "^6.1.0",
     "sift": "^5.0.0"
   },
   "devDependencies": {

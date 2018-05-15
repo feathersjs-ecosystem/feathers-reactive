@@ -10,8 +10,7 @@ import {
   getCachedObservable
 } from './cache';
 
-import { merge } from 'rxjs/observable/merge';
-import { of } from 'rxjs/observable/of';
+import { merge, of } from 'rxjs';
 
 import {
   concat,
