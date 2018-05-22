@@ -1,5 +1,4 @@
-import { merge } from 'rxjs/observable/merge';
-import { of } from 'rxjs/observable/of';
+import { merge, of } from 'rxjs';
 import {
   concat,
   concatMap,

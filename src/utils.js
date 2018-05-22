@@ -1,6 +1,6 @@
 import sift from 'sift';
 import { _, sorter as createSorter } from '@feathersjs/commons/lib/utils';
-import { defer } from 'rxjs/observable/defer';
+import { defer } from 'rxjs';
 
 function getSource (originalMethod, args) {
   return defer(() => originalMethod(...args));

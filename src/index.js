@@ -1,6 +1,7 @@
 import _debug from 'debug';
 
-import { fromEvent } from 'rxjs/observable/fromEvent';
+import { fromEvent } from 'rxjs';
+import { map } from 'rxjs/operators';
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
@@ -28,10 +29,10 @@ function FeathersRx (options = {}) {
     const app = this;
 
     const events = {
-      created: fromEvent(service, 'created'),
-      updated: fromEvent(service, 'updated'),
-      patched: fromEvent(service, 'patched'),
-      removed: fromEvent(service, 'removed')
+      created: fromEvent(service, 'created').pipe(map(event => event[0])),
+      updated: fromEvent(service, 'updated').pipe(map(event => event[0])),
+      patched: fromEvent(service, 'patched').pipe(map(event => event[0])),
+      removed: fromEvent(service, 'removed').pipe(map(event => event[0]))
     };
 
     // object to hold our reactive methods

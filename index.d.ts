@@ -5,9 +5,8 @@
 
 // TypeScript Version: 2.1
 
-import { Observable } from 'rxjs/Observable';
+import { Observable, OperatorFunction } from 'rxjs';
 import { NullableId, Paginated, Params } from '@feathersjs/feathers';
-import { OperatorFunction } from 'rxjs/interfaces';
 
 declare function FeathersReactive(options: FeathersReactive.Options): () => void;
 export = FeathersReactive;
