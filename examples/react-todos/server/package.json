@@ -1,0 +1,46 @@
+{
+  "name": "feathers-react-todos-server",
+  "description": "",
+  "version": "0.2.0",
+  "main": "src",
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Jonathon Hill",
+      "email": "jhill9693@gmail.com"
+    }
+  ],
+  "directories": {
+    "lib": "src",
+    "test": "test/"
+  },
+  "engines": {
+    "node": "^8.0.0",
+    "yarn": ">= 0.18.0"
+  },
+  "scripts": {
+    "test": "yarn run eslint && yarn run mocha",
+    "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "start": "node src/",
+    "mocha": "mocha test/ --recursive --exit"
+  },
+  "dependencies": {
+    "@feathersjs/configuration": "^1.0.2",
+    "@feathersjs/errors": "^3.3.0",
+    "@feathersjs/express": "^1.2.0",
+    "@feathersjs/feathers": "^3.1.3",
+    "@feathersjs/socketio": "^3.2.0",
+    "compression": "^1.7.2",
+    "cors": "^2.8.4",
+    "feathers-memory": "^2.1.0",
+    "helmet": "^3.11.0",
+    "serve-favicon": "^2.4.5",
+    "winston": "^2.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.1",
+    "mocha": "^5.0.1",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
+  }
+}
