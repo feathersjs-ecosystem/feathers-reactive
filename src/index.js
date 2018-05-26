@@ -1,7 +1,6 @@
 import _debug from 'debug';
 
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
@@ -29,10 +28,13 @@ function FeathersRx (options = {}) {
     const app = this;
 
     const events = {
-      created: fromEvent(service, 'created').pipe(map(event => event[0])),
-      updated: fromEvent(service, 'updated').pipe(map(event => event[0])),
-      patched: fromEvent(service, 'patched').pipe(map(event => event[0])),
-      removed: fromEvent(service, 'removed').pipe(map(event => event[0]))
+      // fromEvent's result selector (3rd arg) is deprecated
+      // we need it here because service events have an inconsistent number of arguments (i.e. sometimes 1, sometimes >1)
+      // related: https://github.com/ReactiveX/rxjs/issues/3751
+      created: fromEvent(service, 'created', (...args) => args[0]),
+      updated: fromEvent(service, 'updated', (...args) => args[0]),
+      patched: fromEvent(service, 'patched', (...args) => args[0]),
+      removed: fromEvent(service, 'removed', (...args) => args[0])
     };
 
     // object to hold our reactive methods
