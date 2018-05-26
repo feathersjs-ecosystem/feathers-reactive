@@ -1,7 +1,6 @@
 import _debug from 'debug';
 
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
 import reactiveResource from './resource';
 import reactiveList from './list';
 import strategies from './strategies';
