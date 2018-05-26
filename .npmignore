@@ -2,7 +2,6 @@
 .travis.yml
 .babelrc
 .idea/
-src/
 test/
 !lib/
 !dist/
