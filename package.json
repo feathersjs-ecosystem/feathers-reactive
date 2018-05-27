@@ -62,6 +62,7 @@
     "sift": "^5.1.0"
   },
   "devDependencies": {
+    "@feathersjs/socketio": "^3.2.1",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
