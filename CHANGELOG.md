@@ -1,11 +1,38 @@
 # Change Log
 
+## [v0.7.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.7.0) (2018-05-28)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.6.0...v0.7.0)
+
+**Fixed bugs:**
+
+- Transpile fails for client builds [\#103](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/103)
+- Build fails with create-react-app [\#101](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/101)
+- smart strategy + matcher don't filter initial find [\#35](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/35)
+
+**Closed issues:**
+
+- RXJS6 Cannot read property '\_id' of undefined [\#111](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/111)
+- Feathers-reactive es5 compatible [\#109](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/109)
+- Reactive mongodb [\#107](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/107)
+- Update to rxjs6 once final [\#106](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/106)
+- watch function is not working on all methods [\#102](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/102)
+- Subscription doesn't report updates when used with buzzard [\#99](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/99)
+- Using feathers reactive with rxjs 5.5.x breaks angular production builds \(build optimizing\) [\#96](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/96)
+- EventEmitter memory leak detected [\#88](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/88)
+- Use TC39 proposal for Symbol.observable to turn resources into Observables [\#43](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/43)
+
+**Merged pull requests:**
+
+- Update all examples and Readme [\#114](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/114) ([daffl](https://github.com/daffl))
+- fix \#111 [\#113](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/113) ([j2L4e](https://github.com/j2L4e))
+- Add Webpack ES5 build [\#110](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/110) ([daffl](https://github.com/daffl))
+- migrate to rxjs6 [\#108](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/108) ([j2L4e](https://github.com/j2L4e))
+
 ## [v0.6.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.6.0) (2018-02-15)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.5.4...v0.6.0)
 
 **Closed issues:**
 
-- Using feathers reactive with rxjs 5.5.x breaks angular production builds \(build optimizing\) [\#96](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/96)
 - Cannot find module 'feathers' when using @feathersjs/client [\#83](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/83)
 - Error: The RxJS instance does not seem to provide an `Observable` type. [\#81](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/81)
 - Caching is broken with rxjs 5.5.0 [\#77](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/77)
@@ -180,13 +207,13 @@
 **Merged pull requests:**
 
 - Finalize for first beta release [\#10](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/10) ([daffl](https://github.com/daffl))
-- Think I fixed the race condition [\#9](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/9) ([harangue](https://github.com/harangue))
+- Think I fixed the race condition [\#9](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/9) ([jack-guy](https://github.com/jack-guy))
 - Strategy [\#7](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/7) ([daffl](https://github.com/daffl))
 - Revert "Added Strategy support" [\#6](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/6) ([daffl](https://github.com/daffl))
-- Pagination [\#5](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/5) ([harangue](https://github.com/harangue))
-- Id field [\#4](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/4) ([harangue](https://github.com/harangue))
-- Added Strategy support [\#2](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/2) ([harangue](https://github.com/harangue))
-- Switched to RxJS 5, fixed tests, rimraf [\#1](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/1) ([harangue](https://github.com/harangue))
+- Pagination [\#5](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/5) ([jack-guy](https://github.com/jack-guy))
+- Id field [\#4](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/4) ([jack-guy](https://github.com/jack-guy))
+- Added Strategy support [\#2](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/2) ([jack-guy](https://github.com/jack-guy))
+- Switched to RxJS 5, fixed tests, rimraf [\#1](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/1) ([jack-guy](https://github.com/jack-guy))
 
 
 
