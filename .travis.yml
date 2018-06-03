@@ -3,6 +3,7 @@ node_js:
   - node
   - '6'
 sudo: false
+install: npm install
 before_script:
   - 'npm install -g codeclimate-test-reporter'
 after_script:
@@ -10,8 +11,3 @@ after_script:
 addons:
   code_climate:
     repo_token: 2f17a82a32f47d743a0186bc6caa85720c1b57910b6ecd7c3e589fdeeb97b2a5
-notifications:
-  email: false
-  slack:
-    rooms:
-      secure: VZRlgJAa8T5bp9yl8GlhMKp+Mjble6VXUDjiFZrNZ4iFD5D3ob1+OjcYY3CtO++AfwzdzMupvZp6b0RNecFVgAM3ExvqhVWtBOQIHCJCnKQJSMYhsPcgmmdBQryMqS9EouOk+ODFO2x9TRStjloA0TkvvHN4hxZUViu+acrmWHJmIhSXGguQKEIS0FgO2N+V/MPBQyIV6cQcQmeTmG4HSdVu9TUl5q1HKVX1VFko5G4WkZCRecoe51rD1ntjn8pyuk23+x+xZyaEWY3ZTMPTR4BOdtxvzxZFnZzCKQF9qJONDyuG2CB+Lx9f20I5marF1l5EMuqBsIkPdFcg2fxVHnK7f+sa9Xi8k5CoPjkNG+b1HngnPmAdjm6wD382Xruf7Zf7Q2GncXID01o+ap27srPagpLZV/3fLfNlVBtyud3bibuA7VDt0x1HIFSrqXEGq7wjIUNVNx7YKAz48htPLoLWxeHEPNj7n1kqt0s7zW0sdyhvbgfHFSKL2GDgcnxNb+nehbdl+t8CjM6CAUYLFWgjZ0mNt9u98mDFmbkLDcD9w26FTDk/t1G45JBJUc5IE5/WhkmBadTgunhXKmpY069X+om4IS/olV/wMwezNLq+45Cu0ec6WP80N+6cFGFwl682l8tRaBrPVPM5mvkPVXtc5+9mlkuudl6nUbMLgAc=
