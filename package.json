@@ -58,7 +58,7 @@
     "debug": "^3.1.0",
     "json-stable-stringify": "^1.0.1",
     "rxjs": "^6.1.0",
-    "sift": "^5.1.0"
+    "sift": "^6.0.0"
   },
   "devDependencies": {
     "@feathersjs/socketio": "^3.2.1",
