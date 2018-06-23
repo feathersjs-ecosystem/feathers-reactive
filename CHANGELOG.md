@@ -1,5 +1,20 @@
 # Change Log
 
+## [v0.7.1](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.7.1) (2018-06-23)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.7.0...v0.7.1)
+
+**Closed issues:**
+
+- All declarations of 'observable' must have identical modifiers. [\#120](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/120)
+
+**Merged pull requests:**
+
+- Update all dependencies [\#121](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/121) ([daffl](https://github.com/daffl))
+- Update sift to the latest version 🚀 [\#119](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/119) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- update package-lock.json [\#117](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/117) ([j2L4e](https://github.com/j2L4e))
+- Update shx to the latest version 🚀 [\#116](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/116) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update webpack-cli to the latest version 🚀 [\#115](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/115) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+
 ## [v0.7.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.7.0) (2018-05-28)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.6.0...v0.7.0)
 
