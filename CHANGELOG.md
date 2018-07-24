@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.7.2](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.7.2) (2018-07-24)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.7.1...v0.7.2)
+
+**Closed issues:**
+
+- EventEmitter memory leak detected [\#88](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/88)
+
+**Merged pull requests:**
+
+- share\(\) fromEvent Observables [\#126](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/126) ([j2L4e](https://github.com/j2L4e))
+
 ## [v0.7.1](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.7.1) (2018-06-23)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.7.0...v0.7.1)
 
@@ -33,7 +44,6 @@
 - watch function is not working on all methods [\#102](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/102)
 - Subscription doesn't report updates when used with buzzard [\#99](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/99)
 - Using feathers reactive with rxjs 5.5.x breaks angular production builds \(build optimizing\) [\#96](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/96)
-- EventEmitter memory leak detected [\#88](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/88)
 - Use TC39 proposal for Symbol.observable to turn resources into Observables [\#43](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/43)
 
 **Merged pull requests:**
