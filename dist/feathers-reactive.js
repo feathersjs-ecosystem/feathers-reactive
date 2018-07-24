@@ -190,6 +190,8 @@ var _debug3 = _interopRequireDefault(_debug2);
 
 var _rxjs = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 
+var _operators = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+
 var _resource = __webpack_require__(/*! ./resource */ "./lib/resource.js");
 
 var _resource2 = _interopRequireDefault(_resource);
@@ -237,16 +239,16 @@ function FeathersRx() {
       // related: https://github.com/ReactiveX/rxjs/issues/3751
       created: (0, _rxjs.fromEvent)(service, 'created', function () {
         return arguments.length <= 0 ? undefined : arguments[0];
-      }),
+      }).pipe((0, _operators.share)()),
       updated: (0, _rxjs.fromEvent)(service, 'updated', function () {
         return arguments.length <= 0 ? undefined : arguments[0];
-      }),
+      }).pipe((0, _operators.share)()),
       patched: (0, _rxjs.fromEvent)(service, 'patched', function () {
         return arguments.length <= 0 ? undefined : arguments[0];
-      }),
+      }).pipe((0, _operators.share)()),
       removed: (0, _rxjs.fromEvent)(service, 'removed', function () {
         return arguments.length <= 0 ? undefined : arguments[0];
-      })
+      }).pipe((0, _operators.share)())
     };
 
     // object to hold our reactive methods
