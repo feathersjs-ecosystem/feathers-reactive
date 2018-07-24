@@ -130,13 +130,32 @@ app.listen(3030).on('listening', () =>
 );
 ````
 
+### Usage
+
+For an ES5 compatible version on the client (e.g. when using `create-react-app`) you can import `feathers-reactive/dist/feathers-reactive`. In `client.js`:
+
+```js
+import io from 'socket.io-client';
+import feathers from '@feathersjs/client';
+import rx from 'feathers-reactive/dist/feathers-reactive';
+
+const socket = io('http://localhost:3030');
+const app = feathers()
+  .configure(feathers.socketio(socket))
+  .configure(rx({
+    idField: 'id'
+  }));
+
+export default app;
+```
+
 ### React
 
 A real-time ReactJS Todo application (with Bootstrap styles) can look like this (see the [examples/react-todos](./examples/react-todos) folder for a working example);
 
 ```js
 import React, { Component } from 'react';
-import client from './feathers';
+import client from './client';
 
 class App extends Component {
   constructor (props) {
