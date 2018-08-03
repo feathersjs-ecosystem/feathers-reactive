@@ -53,7 +53,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "@feathersjs/commons": "^1.4.1",
+    "@feathersjs/commons": "^2.0.0",
     "@feathersjs/feathers": "^3.1.7",
     "debug": "^3.1.0",
     "json-stable-stringify": "^1.0.1",
