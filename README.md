@@ -19,7 +19,7 @@ The following options are supported:
 
 - `idField` (mandatory): The id property field of your services. Depends on your service/database. Usually 'id' (SQL, Rethinkdb, …) or '_id' (MongoDB, NeDB, … ).
 - `dataField` (default: `data`): The data property field in paginated responses
-- `listStrategy` (default: `smart`): The strategy to use for streaming the data. Can be `smart`, `always` or `never`
+- `listStrategy` (default: `smart`): The strategy to use for streaming the data. Can be `smart`, `always` or `never`. __Avoid using `always` whenever possible__.
 - `sorter` (`function(query, options) {}`): A function that returns a sorting function for the given query and option including pagination and limiting. Does not need to be customized unless there is a sorting mechanism other than Feathers standard in place.
 - `matcher` (`function(query)`): A function that returns a function which returns whether an item matches the original query or not.
 - `pipe` (`operator | operator[]`) One or multiple rxjs operators of the form `function(observable) => observable` like you would pass them to an Observable's [.pipe method](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md). The supplied operators are applied to any Observable created by `feathers-reactive`. `options.pipe: tap(data => console.log(data))` would log every emitted value to the console. 
@@ -38,7 +38,7 @@ const app = feathers().configure(reactive(options));
 With `feathers-reactive` configured on the application individual options can be set at the service level with `service.rx`:
 
 ```js
-// Set a different id field and always re-fetch data
+// Set a different id field
 app.service('todos').rx({
   idField: '_id'
 });
@@ -49,8 +49,8 @@ app.service('todos').rx({
 Each method call can also pass its own options via `params.rx`:
 
 ```js
-// Always fetch fresh data for this method call
-app.service('todos').watch({ listStrategy: 'always' }).find();
+// Never update data for this method call
+app.service('todos').watch({ listStrategy: 'never' }).find();
 ```
 
 ### List strategies
@@ -59,7 +59,7 @@ List strategies are used to determine how a data stream behaves. Currently there
 
 - `never` - Returns a stream from the service promise that only emits the method call data and never updates after that
 - `smart` (default) - Returns a stream that smartly emits updated list data based on the services real-time events. It does not re-query any new data (but does not cover some cases in which the `always` strategy can be used).
-- `always` - Re-runs the original query to always get fresh data from the server on any matching real-time event. Avoid this list strategy if possible since it can put a higher load on the server than necessary.
+- `always` - Re-runs the original query to always get fresh data from the server on any matching real-time event. __Avoid this list strategy if possible__ since it will put a higher load on the server than necessary.
 
 ## Usage
 
