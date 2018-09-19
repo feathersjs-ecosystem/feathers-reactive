@@ -70,6 +70,7 @@
     "@babel/plugin-proposal-function-bind": "^7.0.0",
     "@babel/plugin-transform-modules-commonjs": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
+    "@babel/register": "^7.0.0",
     "@feathersjs/socketio": "^3.2.5",
     "babel-loader": "^8.0.2",
     "babel-plugin-add-module-exports": "^1.0.0",
