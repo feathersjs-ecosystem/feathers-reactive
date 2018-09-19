@@ -1,46 +1,50 @@
 const path = require('path');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const merge = require('webpack-merge');
 
 const isProduction = process.env.NODE_ENV === 'production';
-const output = isProduction ? 'feathers-reactive.min.js' : 'feathers-reactive.js';
-
 const config = {
   entry: `./lib`,
   output: {
     library: ['feathers', 'reactive'],
     libraryTarget: 'umd',
-    path: path.resolve(__dirname, 'dist'),
-    filename: `${output}`
+    path: path.resolve(__dirname, 'dist')
   },
   module: {
     rules: [{
       test: /\.js/,
-      exclude: /node_modules\/(?!(@feathersjs))/,
-      loader: 'babel-loader'
+      exclude: /node_modules\/(?!(@feathersjs|debug))/,
+      loader: 'babel-loader',
+      options: {
+        presets: ['@babel/preset-env']
+      }
     }]
-  },
-  plugins: []
+  }
 };
 
-if (!isProduction) {
-  Object.assign(config, {
-    mode: 'development',
-    devtool: 'source-map'
-  });
-} else {
-  Object.assign(config, {
-    mode: 'production',
-    plugins: [new UglifyJSPlugin({
-      uglifyOptions: {
-        ie8: false,
-        comments: false,
-        sourceMap: false
-      }
-    }), new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    })]
-  });
-}
+const dev = {
+  mode: 'development',
+  devtool: 'source-map',
+  output: {
+    filename: 'feathers-reactive.js'
+  }
+};
 
-module.exports = config;
+const prod = {
+  mode: 'production',
+  output: {
+    filename: 'feathers-reactive.min.js'
+  },
+  plugins: [new UglifyJSPlugin({
+    uglifyOptions: {
+      ie8: false,
+      comments: false,
+      sourceMap: false
+    }
+  }), new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production')
+  })]
+};
+
+module.exports = merge(config, isProduction ? prod : dev);
