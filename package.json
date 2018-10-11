@@ -62,7 +62,7 @@
     "debug": "^4.0.1",
     "json-stable-stringify": "^1.0.1",
     "rxjs": "^6.3.2",
-    "sift": "^6.0.0"
+    "sift": "^7.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.0",
