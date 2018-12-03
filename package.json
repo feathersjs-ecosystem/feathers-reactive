@@ -59,6 +59,7 @@
   "dependencies": {
     "@feathersjs/commons": "^3.0.1",
     "@feathersjs/feathers": "^3.2.2",
+    "@types/feathersjs__feathers": "^3.1.0",
     "debug": "^4.0.1",
     "json-stable-stringify": "^1.0.1",
     "rxjs": "^6.3.2",
