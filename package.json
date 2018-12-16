@@ -57,7 +57,7 @@
     "IE 10"
   ],
   "dependencies": {
-    "@feathersjs/commons": "^3.0.1",
+    "@feathersjs/commons": "^4.0.0",
     "@feathersjs/feathers": "^3.2.2",
     "debug": "^4.0.1",
     "json-stable-stringify": "^1.0.1",
