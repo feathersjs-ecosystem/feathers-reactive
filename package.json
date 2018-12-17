@@ -74,7 +74,7 @@
     "@feathersjs/socketio": "^3.2.5",
     "babel-loader": "^8.0.2",
     "babel-plugin-add-module-exports": "^1.0.0",
-    "feathers-memory": "^2.2.0",
+    "feathers-memory": "^3.0.0",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^5.2.0",
     "semistandard": "^13.0.0",
