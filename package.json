@@ -77,7 +77,7 @@
     "babel-plugin-add-module-exports": "^1.0.0",
     "feathers-memory": "^2.2.0",
     "istanbul": "^1.1.0-alpha.1",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.0",
     "semistandard": "^13.0.0",
     "shx": "^0.3.2",
     "uglifyjs-webpack-plugin": "^2.0.1",
