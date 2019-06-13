@@ -1,5 +1,6 @@
 import sift from 'sift';
-import { _, sorter as createSorter } from '@feathersjs/commons/lib/utils';
+import { _ } from '@feathersjs/commons/lib/utils';
+import { sorter as createSorter } from '@feathersjs/adapter-commons';
 import { defer } from 'rxjs';
 
 function getSource (originalMethod, args) {
