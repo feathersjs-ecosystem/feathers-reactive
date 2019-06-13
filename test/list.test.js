@@ -18,7 +18,9 @@ describe('reactive lists', () => {
       beforeEach(done => {
         app = feathers()
           .configure(rx({ idField: 'id' }))
-          .use('/messages', memory());
+          .use('/messages', memory({
+            multi: [ 'create' ]
+          }));
 
         service = app.service('messages');
 
@@ -34,7 +36,10 @@ describe('reactive lists', () => {
       beforeEach(done => {
         app = feathers()
           .configure(rx({ idField: 'id' }))
-          .use('/messages', memory({ idField: 'customId' }));
+          .use('/messages', memory({
+            id: 'customId',
+            multi: [ 'create' ]
+          }));
 
         service = app.service('messages').rx({ idField: 'customId' });
 
@@ -50,7 +55,10 @@ describe('reactive lists', () => {
       beforeEach(done => {
         app = feathers()
           .configure(rx({ idField: 'id' }))
-          .use('/messages', memory({ paginate: { default: 3 } }));
+          .use('/messages', memory({
+            multi: [ 'create' ],
+            paginate: { default: 3 }
+          }));
 
         service = app.service('messages').rx();
 
@@ -71,7 +79,9 @@ describe('reactive lists', () => {
             idField: 'id',
             listStrategy: 'always'
           }))
-          .use('/messages', memory());
+          .use('/messages', memory({
+            multi: [ 'create' ]
+          }));
 
         service = app.service('messages').rx();
 
@@ -90,7 +100,10 @@ describe('reactive lists', () => {
             idField: 'id',
             listStrategy: 'always'
           }))
-          .use('/messages', memory({ idField: 'customId' }));
+          .use('/messages', memory({
+            multi: [ 'create' ],
+            id: 'customId'
+          }));
 
         service = app.service('messages').rx({ idField: 'customId' });
 
@@ -109,7 +122,10 @@ describe('reactive lists', () => {
             idField: 'id',
             listStrategy: 'always'
           }))
-          .use('/messages', memory({ paginate: { default: 3 } }));
+          .use('/messages', memory({
+            multi: [ 'create' ],
+            paginate: { default: 3 }
+          }));
 
         service = app.service('messages').rx();
 
@@ -261,11 +277,10 @@ describe('reactive lists', () => {
       }, 20);
     });
 
-    it('.find with $sort, .create and .patch, omits $ properties', done => {
+    it('.find with $sort, .create and .patch', done => {
       const result = service.watch().find({
         query: {
-          $sort: { text: -1 },
-          $populate: 'something'
+          $sort: { text: -1 }
         }
       });
 

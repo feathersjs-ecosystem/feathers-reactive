@@ -17,7 +17,9 @@ describe('reactive resources', () => {
     beforeEach(done => {
       app = feathers()
         .configure(rx({ idField: 'id' }))
-        .use('/messages', memory());
+        .use('/messages', memory({
+          multi: [ 'create' ]
+        }));
 
       service = app.service('messages');
       service.create({
@@ -34,7 +36,10 @@ describe('reactive resources', () => {
     beforeEach(done => {
       app = feathers()
         .configure(rx({ idField: 'id' }))
-        .use('/messages', memory({ idField: 'customId' }));
+        .use('/messages', memory({
+          multi: [ 'create' ],
+          id: 'customId'
+        }));
 
       service = app.service('messages').rx({ idField: 'customId' });
 
@@ -52,7 +57,10 @@ describe('reactive resources', () => {
     beforeEach(done => {
       app = feathers()
         .configure(rx({ idField: 'id' }))
-        .use('/messages', memory({ idField: 'customId' }));
+        .use('/messages', memory({
+          multi: [ 'create' ],
+          id: 'customId'
+        }));
 
       service = app.service('messages').hooks({
         before: {
