@@ -1,5 +1,39 @@
 # Change Log
 
+## [v0.8.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.8.0) (2019-06-13)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.7.2...v0.8.0)
+
+**Fixed bugs:**
+
+- Socket reconnect. How to? [\#104](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/104)
+
+**Closed issues:**
+
+- An in-range update of babel-loader is breaking the build 🚨 [\#157](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/157)
+- An in-range update of babel-plugin-add-module-exports is breaking the build 🚨 [\#156](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/156)
+- An in-range update of @types/feathersjs\_\_feathers is breaking the build 🚨 [\#155](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/155)
+- An in-range update of webpack-cli is breaking the build 🚨 [\#154](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/154)
+- An in-range update of webpack is breaking the build 🚨 [\#152](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/152)
+- An in-range update of babel7 is breaking the build 🚨 [\#151](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/151)
+- An in-range update of uglifyjs-webpack-plugin is breaking the build 🚨 [\#150](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/150)
+- An in-range update of mocha is breaking the build 🚨 [\#149](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/149)
+- Does this need to be configured on client only or client and server? [\#147](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/147)
+- An in-range update of babel7 is breaking the build 🚨 [\#137](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/137)
+- How to set idField when using feathers custom ids on services? [\#134](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/134)
+- What is the plus over featherjs channels? [\#132](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/132)
+- Still no full ES5 support? [\#122](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/122)
+
+**Merged pull requests:**
+
+- Update all dependencies, drop Node 6 support [\#159](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/159) ([daffl](https://github.com/daffl))
+- Fix Mocha tests [\#158](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/158) ([daffl](https://github.com/daffl))
+- Update mocha to the latest version 🚀 [\#148](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/148) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Add @types/feathersjs\_\_feathers dependency, [\#142](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/142) ([j2L4e](https://github.com/j2L4e))
+- Update semistandard to the latest version 🚀 [\#141](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/141) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update Readme [\#136](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/136) ([musicformellons](https://github.com/musicformellons))
+- typo [\#135](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/135) ([musicformellons](https://github.com/musicformellons))
+- Update all dependencies and build [\#133](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/133) ([daffl](https://github.com/daffl))
+
 ## [v0.7.2](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.7.2) (2018-07-24)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.7.1...v0.7.2)
 
@@ -209,7 +243,7 @@
 - Remove data merging option [\#23](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/23) ([daffl](https://github.com/daffl))
 - Customize sorter and matcher [\#22](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/22) ([daffl](https://github.com/daffl))
 - make find\(\) query on subscription [\#21](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/21) ([j2L4e](https://github.com/j2L4e))
-- Update README.md [\#17](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/17) ([aminmeyghani](https://github.com/aminmeyghani))
+- Update README.md [\#17](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/17) ([ajmeyghani](https://github.com/ajmeyghani))
 - missed reference npm in react-todos [\#15](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/15) ([johnny4young](https://github.com/johnny4young))
 
 ## [v0.2.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.2.0) (2016-05-24)
