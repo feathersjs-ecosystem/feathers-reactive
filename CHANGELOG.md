@@ -1,5 +1,17 @@
 # Change Log
 
+## [v0.8.1](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.8.1) (2019-06-19)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.8.0...v0.8.1)
+
+**Closed issues:**
+
+- `@feathersjs/adapter-commons` dependency [\#161](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/161)
+
+**Merged pull requests:**
+
+- Fix adapter-commons dependency [\#162](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/162) ([daffl](https://github.com/daffl))
+- Add missing rx function type to Feathers Service [\#160](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/160) ([WaeCo](https://github.com/WaeCo))
+
 ## [v0.8.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.8.0) (2019-06-13)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.7.2...v0.8.0)
 
