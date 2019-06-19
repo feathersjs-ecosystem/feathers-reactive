@@ -179,7 +179,7 @@ Object.assign(exports, {
 "use strict";
 
 
-var _debug2 = _interopRequireDefault(__webpack_require__(/*! debug */ "./node_modules/debug/src/browser.js"));
+var _debug = _interopRequireDefault(__webpack_require__(/*! debug */ "./node_modules/debug/src/browser.js"));
 
 var _rxjs = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 
@@ -199,7 +199,7 @@ function _interopRequireDefault(obj) {
   };
 }
 
-var debug = (0, _debug2.default)('feathers-reactive');
+var debug = (0, _debug.default)('feathers-reactive');
 
 function FeathersRx() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
