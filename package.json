@@ -59,6 +59,7 @@
   "dependencies": {
     "@feathersjs/commons": "^4.0.0",
     "@feathersjs/feathers": "^3.3.1",
+    "@feathersjs/adapter-commons": "^2.0.0",
     "@types/feathersjs__feathers": "^3.1.5",
     "debug": "^4.1.1",
     "json-stable-stringify": "^1.0.1",
@@ -72,7 +73,6 @@
     "@babel/plugin-transform-modules-commonjs": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.4",
-    "@feathersjs/adapter-commons": "^2.0.0",
     "@feathersjs/socketio": "^3.2.9",
     "babel-loader": "^8.0.6",
     "babel-plugin-add-module-exports": "^1.0.2",
