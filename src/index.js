@@ -1,4 +1,4 @@
-import _debug from 'debug';
+import Debug from 'debug';
 
 import { fromEvent } from 'rxjs';
 import { share } from 'rxjs/operators';
@@ -7,7 +7,7 @@ import reactiveList from './list';
 import strategies from './strategies';
 import { makeSorter, getParamsPosition, siftMatcher, sift } from './utils';
 
-const debug = _debug('feathers-reactive');
+const debug = Debug('feathers-reactive');
 
 function FeathersRx (options = {}) {
   const listStrategies = strategies();
