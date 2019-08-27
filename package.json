@@ -73,7 +73,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.4",
-    "@feathersjs/socketio": "^3.2.9",
+    "@feathersjs/socketio": "^4.3.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-add-module-exports": "^1.0.2",
     "feathers-memory": "^4.0.0",
