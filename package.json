@@ -36,9 +36,9 @@
     "compile": "shx rm -rf lib/ && babel -d lib/ src/",
     "watch": "babel --watch -d lib/ src/",
     "lint": "semistandard src/ test/ --fix",
-    "mocha": "mocha --opts mocha.opts",
-    "test": "npm run lint && npm run coverage",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --opts mocha.opts"
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive test/ --require @babel/register",
+    "mocha": "mocha --recursive test/ --require @babel/register",
+    "test": "npm run lint && npm run coverage"
   },
   "semistandard": {
     "env": [
