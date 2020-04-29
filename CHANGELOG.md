@@ -1,5 +1,23 @@
 # Change Log
 
+## [v0.8.2](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.8.2) (2020-04-29)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.8.1...v0.8.2)
+
+**Closed issues:**
+
+- How to unsubscribe\(\) ? [\#175](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/175)
+- An in-range update of webpack is breaking the build 🚨 [\#165](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/165)
+- Typings support for feathers-reactive [\#164](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/164)
+
+**Merged pull requests:**
+
+- Update all dependencies [\#176](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/176) ([daffl](https://github.com/daffl))
+- Align types with feathers [\#174](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/174) ([sean-nicholas](https://github.com/sean-nicholas))
+- Update @feathersjs/socketio to the latest version 🚀 [\#171](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/171) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Update @feathersjs/feathers to the latest version 🚀 [\#169](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/169) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+- Greenkeeper/webpack 4.36.1 [\#166](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/166) ([daffl](https://github.com/daffl))
+- Update feathers-memory to the latest version 🚀 [\#163](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/163) ([greenkeeper[bot]](https://github.com/apps/greenkeeper))
+
 ## [v0.8.1](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.8.1) (2019-06-19)
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.8.0...v0.8.1)
 
