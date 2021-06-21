@@ -1,11 +1,11 @@
 import { merge, of } from 'rxjs';
 import {
   concat,
-  concatMap,
+  switchMap,
   concatMapTo,
   filter,
   map,
-  scan
+  scan,
 } from 'rxjs/operators';
 
 module.exports = function () {
@@ -112,16 +112,21 @@ module.exports = function () {
           map(onUpdated)
         )
       );
-
-      return source$.pipe(
-        concatMap(data =>
+      const reset$ = this.reset$;
+      return merge(source$, reset$.pipe(concatMapTo(source$))).pipe(
+        switchMap((data) =>
           of(data).pipe(
             concat(
               events$.pipe(
-                scan((current, callback) => sortAndTrim(callback(current)), data))
+                scan(
+                  (current, callback) => sortAndTrim(callback(current)),
+                  data
+                )
+              )
             )
           )
-        ));
+        )
+      );
     }
   };
 };

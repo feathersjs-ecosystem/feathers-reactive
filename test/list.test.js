@@ -9,6 +9,7 @@ import {
   skip,
   tap
 } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 describe('reactive lists', () => {
   let app, service;
@@ -31,7 +32,69 @@ describe('reactive lists', () => {
 
       baseTests('id');
     });
+    describe('reset', function () {
+      beforeEach(done => {
+        app = feathers()
+          .configure(rx({ idField: 'id' }))
+          .use('/messages', memory({
+            multi: [ 'create' ]
+          }));
 
+        service = app.service('messages');
+
+        service.create({
+          text: 'A test message'
+        }).then(() => done())
+      });
+
+      it('subscriber is notified on reset', done => {
+        service.watch().find().pipe(skip(1), first()).subscribe(messages => {
+          assert.deepStrictEqual(messages, [{
+            text: 'A test message',
+            id: 0
+          }]);
+          done(); 
+        });
+        setTimeout(() => service.reset(), 20);        
+      });
+      it('after reset, noise data is removed', done => {
+        service.watch().find().pipe(skip(1), first()).subscribe(messages => {
+          // add some noize
+          assert.deepStrictEqual(messages, [{
+            text: 'A test message',
+            id: 0
+          },
+          {
+            text: 'fake data',
+            id: 36
+          }]);
+        });
+        service.watch().find().pipe(skip(2), first()).subscribe(messages => {
+          // noize is cleared on reset
+          assert.deepStrictEqual(messages, [{
+            text: 'A test message',
+            id: 0
+          },
+          ]);
+        });
+        service.watch().find().pipe(skip(3), first()).subscribe(messages => {
+          // noize is not re-introduced
+          assert.deepStrictEqual(messages, [{
+            text: 'A test message',
+            id: 0
+          },
+          {
+            text: 'good data',
+            id: 1
+          },
+          ]);
+          done(); 
+        });
+        setTimeout(() => service.emit("created", {text: 'fake data', id: 36}), 20); // noize data
+        setTimeout(() => service.reset(), 40);
+        setTimeout(() => service.create({text: 'good data'}), 60);
+      });
+    });
     describe('custom id', function () {
       beforeEach(done => {
         app = feathers()

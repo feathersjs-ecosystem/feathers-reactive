@@ -1,6 +1,6 @@
 import Debug from 'debug';
 
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { share } from 'rxjs/operators';
 import reactiveResource from './resource';
 import reactiveList from './list';
@@ -11,6 +11,7 @@ const debug = Debug('feathers-reactive');
 
 function FeathersRx (options = {}) {
   const listStrategies = strategies();
+  const resetSubject = new Subject();
 
   if (!options.idField) {
     throw new Error(`feathers-reactive: setting options.idField is mandatory`);
@@ -35,7 +36,8 @@ function FeathersRx (options = {}) {
       created: fromEvent(service, 'created', (...args) => args[0]).pipe(share()),
       updated: fromEvent(service, 'updated', (...args) => args[0]).pipe(share()),
       patched: fromEvent(service, 'patched', (...args) => args[0]).pipe(share()),
-      removed: fromEvent(service, 'removed', (...args) => args[0]).pipe(share())
+      removed: fromEvent(service, 'removed', (...args) => args[0]).pipe(share()),
+      reset: resetSubject.asObservable(),
     };
 
     // object to hold our reactive methods
@@ -61,10 +63,13 @@ function FeathersRx (options = {}) {
       updated$: events.updated,
       patched$: events.patched,
       removed$: events.removed,
-
+      reset$: events.reset,
       rx (options = {}) {
         this._rx = options;
         return this;
+      },
+      reset(){
+        resetSubject.next();
       },
       watch (options = {}) {
         const boundMethods = {};
