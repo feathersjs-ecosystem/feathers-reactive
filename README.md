@@ -58,7 +58,7 @@ app.service('todos').watch({ listStrategy: 'never' }).find();
 List strategies are used to determine how a data stream behaves. Currently there are three strategies:
 
 - `never` - Returns a stream from the service promise that only emits the method call data and never updates after that
-- `smart` (default) - Returns a stream that smartly emits updated list data based on the services real-time events. It does not re-query any new data (but does not cover some cases in which the `always` strategy can be used).
+- `smart` (default) - Returns a stream that smartly emits updated list data based on the services real-time events. It does not re-query any new data (but does not cover some cases in which the `always` strategy can be used). When using smart list strategy, an additional method reset is available to get fresh data from the server.
 - `always` - Re-runs the original query to always get fresh data from the server on any matching real-time event. __Avoid this list strategy if possible__ since it will put a higher load on the server than necessary.
 
 ## Usage
