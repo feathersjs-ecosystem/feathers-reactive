@@ -48,7 +48,13 @@ module.exports = function () {
       const onCreated = eventData => {
         return page => {
           const isPaginated = !!page[options.dataField];
-          const process = data => data.concat(eventData);
+          const process = data => {
+            // We should not add object twice
+            const exists = data.find(current =>
+              eventData[options.idField] === current[options.idField]
+            )
+            return (exists ? data : data.concat(eventData));
+          }
 
           if (isPaginated) {
             return Object.assign({}, page, {
@@ -85,6 +91,16 @@ module.exports = function () {
             data.filter(current => eventData[options.idField] !== current[options.idField])
               .concat(eventData)
               .filter(matches);
+          /* Why this does not actually work ?
+          const process = data => {
+            // Remove previous matching object if any
+            let newData = data.filter(current => eventData[options.idField] !== current[options.idField]);
+            // We should not add object we are not already aware of however
+            if (newData.length < data.length) {
+              newData = newData.concat(eventData);
+            }
+            return newData.filter(matches);
+          }*/
 
           if (isPaginated) {
             const processed = process(page[options.dataField]);
