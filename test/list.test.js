@@ -19,7 +19,7 @@ describe('reactive lists', () => {
         app = feathers()
           .configure(rx({ idField: 'id' }))
           .use('/messages', memory({
-            multi: [ 'create' ]
+            multi: ['create']
           }));
 
         service = app.service('messages');
@@ -38,7 +38,7 @@ describe('reactive lists', () => {
           .configure(rx({ idField: 'id' }))
           .use('/messages', memory({
             id: 'customId',
-            multi: [ 'create' ]
+            multi: ['create']
           }));
 
         service = app.service('messages').rx({ idField: 'customId' });
@@ -56,7 +56,7 @@ describe('reactive lists', () => {
         app = feathers()
           .configure(rx({ idField: 'id' }))
           .use('/messages', memory({
-            multi: [ 'create' ],
+            multi: ['create'],
             paginate: { default: 3 }
           }));
 
@@ -80,7 +80,7 @@ describe('reactive lists', () => {
             listStrategy: 'always'
           }))
           .use('/messages', memory({
-            multi: [ 'create' ]
+            multi: ['create']
           }));
 
         service = app.service('messages').rx();
@@ -101,7 +101,7 @@ describe('reactive lists', () => {
             listStrategy: 'always'
           }))
           .use('/messages', memory({
-            multi: [ 'create' ],
+            multi: ['create'],
             id: 'customId'
           }));
 
@@ -123,7 +123,7 @@ describe('reactive lists', () => {
             listStrategy: 'always'
           }))
           .use('/messages', memory({
-            multi: [ 'create' ],
+            multi: ['create'],
             paginate: { default: 3 }
           }));
 

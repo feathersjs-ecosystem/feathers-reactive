@@ -36,9 +36,10 @@
     "compile": "shx rm -rf lib/ && babel -d lib/ src/",
     "watch": "babel --watch -d lib/ src/",
     "lint": "semistandard src/ test/ --fix",
-    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive test/ --require @babel/register",
+    "coverage": "nyc npm run mocha",
     "mocha": "mocha --recursive test/ --require @babel/register",
-    "test": "npm run lint && npm run coverage"
+    "test": "npm run lint && npm run coverage",
+    "update-dependencies": "ncu -u"
   },
   "semistandard": {
     "env": [
@@ -57,33 +58,32 @@
     "IE 10"
   ],
   "dependencies": {
-    "@feathersjs/commons": "^4.5.3",
-    "@feathersjs/feathers": "^4.5.3",
-    "@feathersjs/adapter-commons": "^4.5.2",
-    "@types/feathersjs__feathers": "^3.1.5",
-    "debug": "^4.1.1",
+    "@feathersjs/adapter-commons": "^4.5.12",
+    "@feathersjs/commons": "^4.5.12",
+    "@feathersjs/feathers": "^4.5.12",
+    "debug": "^4.3.4",
     "json-stable-stringify": "^1.0.1",
-    "rxjs": "^6.5.5",
-    "sift": "^12.0.1"
+    "rxjs": "^7.5.5",
+    "sift": "^16.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/plugin-proposal-function-bind": "^7.8.3",
-    "@babel/plugin-transform-modules-commonjs": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/register": "^7.9.0",
-    "@feathersjs/socketio": "^4.5.4",
-    "babel-loader": "^8.1.0",
-    "babel-plugin-add-module-exports": "^1.0.2",
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.8",
+    "@babel/plugin-proposal-function-bind": "^7.16.7",
+    "@babel/plugin-transform-modules-commonjs": "^7.17.7",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/register": "^7.17.7",
+    "@feathersjs/socketio": "^4.5.13",
+    "babel-loader": "^8.2.4",
+    "babel-plugin-add-module-exports": "^1.0.4",
     "feathers-memory": "^4.1.0",
-    "istanbul": "^1.1.0-alpha.1",
-    "mocha": "^7.1.2",
-    "semistandard": "^14.2.0",
-    "shx": "^0.3.2",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-merge": "^4.2.2"
+    "mocha": "^9.2.2",
+    "npm-check-updates": "^12.5.4",
+    "nyc": "^15.1.0",
+    "semistandard": "^16.0.1",
+    "shx": "^0.3.4",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-merge": "^5.8.0"
   }
 }

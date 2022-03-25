@@ -18,7 +18,7 @@ describe('reactive resources', () => {
       app = feathers()
         .configure(rx({ idField: 'id' }))
         .use('/messages', memory({
-          multi: [ 'create' ]
+          multi: ['create']
         }));
 
       service = app.service('messages');
@@ -37,7 +37,7 @@ describe('reactive resources', () => {
       app = feathers()
         .configure(rx({ idField: 'id' }))
         .use('/messages', memory({
-          multi: [ 'create' ],
+          multi: ['create'],
           id: 'customId'
         }));
 
@@ -58,7 +58,7 @@ describe('reactive resources', () => {
       app = feathers()
         .configure(rx({ idField: 'id' }))
         .use('/messages', memory({
-          multi: [ 'create' ],
+          multi: ['create'],
           id: 'customId'
         }));
 
