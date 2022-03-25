@@ -52,9 +52,9 @@ module.exports = function () {
             // We should not add object twice
             const exists = data.find(current =>
               eventData[options.idField] === current[options.idField]
-            )
+            );
             return (exists ? data : data.concat(eventData));
-          }
+          };
 
           if (isPaginated) {
             return Object.assign({}, page, {
@@ -96,7 +96,7 @@ module.exports = function () {
               newData = newData.concat(eventData);
             }
             return newData.filter(matches);
-          }
+          };
 
           if (isPaginated) {
             const processed = process(page[options.dataField]);
@@ -107,7 +107,7 @@ module.exports = function () {
               [options.dataField]: processed
             });
           }
-          
+
           return process(page);
         };
       };

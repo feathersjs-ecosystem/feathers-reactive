@@ -75,20 +75,20 @@ describe('reactive lists', () => {
         app = feathers()
           .configure(rx({ idField: 'id' }))
           .use('/messages', memory({
-            multi: [ 'create' ]
+            multi: ['create']
           }));
 
-        done()
+        done();
       });
 
       it('patch before create event', done => {
-        const now = new Date()
+        const now = new Date();
         service = app.service('messages');
         service.hooks({
           after: {
             create: [context => service.patch(context.result.id, { createdAt: now.toISOString() }).then(result => context)]
           }
-        })
+        });
 
         service.watch().find().pipe(skip(2), first()).subscribe(messages => {
           assert.deepEqual(messages, [
@@ -105,13 +105,13 @@ describe('reactive lists', () => {
       });
 
       it('update before create event', done => {
-        const now = new Date()
+        const now = new Date();
         service = app.service('messages');
         service.hooks({
           after: {
             create: [context => service.update(context.result.id, { text: 'An updated test message', createdAt: now.toISOString() }).then(result => context)]
           }
-        })
+        });
 
         service.watch().find().pipe(skip(2), first()).subscribe(messages => {
           assert.deepEqual(messages, [
