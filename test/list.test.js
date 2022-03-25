@@ -69,6 +69,64 @@ describe('reactive lists', () => {
 
       paginationTests('id');
     });
+
+    describe('race conditions', function () {
+      beforeEach(done => {
+        app = feathers()
+          .configure(rx({ idField: 'id' }))
+          .use('/messages', memory({
+            multi: [ 'create' ]
+          }));
+
+        done()
+      });
+
+      it('patch before create event', done => {
+        const now = new Date()
+        service = app.service('messages');
+        service.hooks({
+          after: {
+            create: [context => service.patch(context.result.id, { createdAt: now.toISOString() }).then(result => context)]
+          }
+        })
+
+        service.watch().find().pipe(skip(2), first()).subscribe(messages => {
+          assert.deepEqual(messages, [
+            {
+              createdAt: now.toISOString(),
+              text: 'A test message',
+              id: 0
+            }
+          ]);
+          done();
+        }, done);
+
+        setTimeout(() => service.create({ text: 'A test message' }), 20);
+      });
+
+      it('update before create event', done => {
+        const now = new Date()
+        service = app.service('messages');
+        service.hooks({
+          after: {
+            create: [context => service.update(context.result.id, { text: 'An updated test message', createdAt: now.toISOString() }).then(result => context)]
+          }
+        })
+
+        service.watch().find().pipe(skip(2), first()).subscribe(messages => {
+          assert.deepEqual(messages, [
+            {
+              createdAt: now.toISOString(),
+              text: 'An updated test message',
+              id: 0
+            }
+          ]);
+          done();
+        }, done);
+
+        setTimeout(() => service.create({ text: 'A test message' }), 20);
+      });
+    });
   });
 
   describe('strategy.always', function () {

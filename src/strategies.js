@@ -48,7 +48,13 @@ module.exports = function () {
       const onCreated = eventData => {
         return page => {
           const isPaginated = !!page[options.dataField];
-          const process = data => data.concat(eventData);
+          const process = data => {
+            // We should not add object twice
+            const exists = data.find(current =>
+              eventData[options.idField] === current[options.idField]
+            )
+            return (exists ? data : data.concat(eventData));
+          }
 
           if (isPaginated) {
             return Object.assign({}, page, {
@@ -81,10 +87,16 @@ module.exports = function () {
         return page => {
           const isPaginated = !!page[options.dataField];
           const length = isPaginated ? page[options.dataField].length : page.length;
-          const process = data =>
-            data.filter(current => eventData[options.idField] !== current[options.idField])
-              .concat(eventData)
-              .filter(matches);
+          const process = data => {
+            // Remove previous matching object if any
+            let newData = data.filter(current => eventData[options.idField] !== current[options.idField]);
+            // We should not add object we are not already aware of
+            // except if update has changed it from an unmatched to a matched object
+            if ((newData.length < data.length) || matches([eventData])) {
+              newData = newData.concat(eventData);
+            }
+            return newData.filter(matches);
+          }
 
           if (isPaginated) {
             const processed = process(page[options.dataField]);
@@ -95,7 +107,7 @@ module.exports = function () {
               [options.dataField]: processed
             });
           }
-
+          
           return process(page);
         };
       };
