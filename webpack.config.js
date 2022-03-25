@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const merge = require('webpack-merge');
+const merge = require('webpack-merge').default;
 
 const isProduction = process.env.NODE_ENV === 'production';
 const config = {

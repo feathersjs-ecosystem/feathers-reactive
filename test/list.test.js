@@ -9,7 +9,6 @@ import {
   skip,
   tap
 } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 describe('reactive lists', () => {
   let app, service;
@@ -37,14 +36,14 @@ describe('reactive lists', () => {
         app = feathers()
           .configure(rx({ idField: 'id' }))
           .use('/messages', memory({
-            multi: [ 'create' ]
+            multi: ['create']
           }));
 
         service = app.service('messages');
 
         service.create({
           text: 'A test message'
-        }).then(() => done())
+        }).then(() => done());
       });
 
       it('subscriber is notified on reset', done => {
@@ -53,9 +52,9 @@ describe('reactive lists', () => {
             text: 'A test message',
             id: 0
           }]);
-          done(); 
+          done();
         });
-        setTimeout(() => service.reset(), 20);        
+        setTimeout(() => service.reset(), 20);
       });
       it('after reset, noise data is removed', done => {
         service.watch().find().pipe(skip(1), first()).subscribe(messages => {
@@ -74,7 +73,7 @@ describe('reactive lists', () => {
           assert.deepStrictEqual(messages, [{
             text: 'A test message',
             id: 0
-          },
+          }
           ]);
         });
         service.watch().find().pipe(skip(3), first()).subscribe(messages => {
@@ -86,13 +85,13 @@ describe('reactive lists', () => {
           {
             text: 'good data',
             id: 1
-          },
+          }
           ]);
-          done(); 
+          done();
         });
-        setTimeout(() => service.emit("created", {text: 'fake data', id: 36}), 20); // noize data
+        setTimeout(() => service.emit('created', { text: 'fake data', id: 36 }), 20); // noize data
         setTimeout(() => service.reset(), 40);
-        setTimeout(() => service.create({text: 'good data'}), 60);
+        setTimeout(() => service.create({ text: 'good data' }), 60);
       });
     });
     describe('custom id', function () {

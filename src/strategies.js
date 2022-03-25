@@ -5,7 +5,7 @@ import {
   concatMapTo,
   filter,
   map,
-  scan,
+  scan
 } from 'rxjs/operators';
 
 module.exports = function () {

@@ -37,7 +37,7 @@ function FeathersRx (options = {}) {
       updated: fromEvent(service, 'updated', (...args) => args[0]).pipe(share()),
       patched: fromEvent(service, 'patched', (...args) => args[0]).pipe(share()),
       removed: fromEvent(service, 'removed', (...args) => args[0]).pipe(share()),
-      reset: resetSubject.asObservable(),
+      reset: resetSubject.asObservable()
     };
 
     // object to hold our reactive methods
@@ -68,7 +68,7 @@ function FeathersRx (options = {}) {
         this._rx = options;
         return this;
       },
-      reset(){
+      reset () {
         resetSubject.next();
       },
       watch (options = {}) {
