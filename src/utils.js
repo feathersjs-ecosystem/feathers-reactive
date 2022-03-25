@@ -9,9 +9,11 @@ function getSource (originalMethod, args) {
 
 function makeSorter (query, options) {
   // The sort function (if $sort is set)
-  const sorter = query.$sort ? createSorter(query.$sort) : createSorter({
-    [options.idField]: 1
-  });
+  const sorter = query.$sort
+    ? createSorter(query.$sort)
+    : createSorter({
+      [options.idField]: 1
+    });
 
   return function (result) {
     const isPaginated = !!result[options.dataField];

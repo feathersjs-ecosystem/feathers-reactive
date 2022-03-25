@@ -13,7 +13,7 @@ function FeathersRx (options = {}) {
   const listStrategies = strategies();
 
   if (!options.idField) {
-    throw new Error(`feathers-reactive: setting options.idField is mandatory`);
+    throw new Error('feathers-reactive: setting options.idField is mandatory');
   }
 
   options = Object.assign({
@@ -94,7 +94,7 @@ function FeathersRx (options = {}) {
     }
 
     // bind the new service to all reactive methods
-    for (let method in reactiveMethods) {
+    for (const method in reactiveMethods) {
       reactiveMethods[method] = reactiveMethods[method].bind(newService);
     }
   };

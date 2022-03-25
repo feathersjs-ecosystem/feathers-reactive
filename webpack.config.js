@@ -36,13 +36,7 @@ const prod = {
   output: {
     filename: 'feathers-reactive.min.js'
   },
-  plugins: [new UglifyJSPlugin({
-    uglifyOptions: {
-      ie8: false,
-      comments: false,
-      sourceMap: false
-    }
-  }), new webpack.DefinePlugin({
+  plugins: [new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify('production')
   })]
 };
