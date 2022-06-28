@@ -27,8 +27,6 @@ function FeathersRx (options = {}) {
   }, options);
 
   const mixin = function (service) {
-    const app = this;
-
     const events = {
       // fromEvent's result selector (3rd arg) is deprecated
       // we need it here because service events have an inconsistent number of arguments (i.e. sometimes 1, sometimes >1)
@@ -48,7 +46,7 @@ function FeathersRx (options = {}) {
       get: {}
     };
 
-    const methods = ['find', 'get', 'create', 'update', 'patch', 'remove']
+    const methods = ['find', 'get', 'create', 'update', 'patch', 'remove'];
     methods.forEach(method => {
       if (typeof service[method] === 'function') {
         reactiveMethods[method] = method === 'find'
