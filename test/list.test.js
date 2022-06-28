@@ -15,24 +15,24 @@ describe('reactive lists', () => {
 
   describe('strategy.smart', function () {
     describe('default', function () {
-      beforeEach(done => {
+      beforeEach(async () => {
         app = feathers()
-          .configure(rx({ idField: 'id' }))
-          .use('/messages', memory({
-            multi: ['create']
-          }));
+        app.configure(rx({ idField: 'id' }))
+        app.use('/messages', memory({
+          multi: ['create']
+        }));
 
         service = app.service('messages');
-
-        service.create({
+        await app.setup()
+        await service.create({
           text: 'A test message'
-        }).then(() => done());
+        });
       });
 
       baseTests('id');
     });
     describe('reset', function () {
-      beforeEach(done => {
+      beforeEach(async () => {
         app = feathers()
           .configure(rx({ idField: 'id' }))
           .use('/messages', memory({
@@ -41,9 +41,9 @@ describe('reactive lists', () => {
 
         service = app.service('messages');
 
-        service.create({
+        await service.create({
           text: 'A test message'
-        }).then(() => done());
+        });
       });
 
       it('subscriber is notified on reset', done => {
@@ -95,7 +95,7 @@ describe('reactive lists', () => {
       });
     });
     describe('custom id', function () {
-      beforeEach(done => {
+      beforeEach(async () => {
         app = feathers()
           .configure(rx({ idField: 'id' }))
           .use('/messages', memory({
@@ -105,16 +105,16 @@ describe('reactive lists', () => {
 
         service = app.service('messages').rx({ idField: 'customId' });
 
-        service.create({
+        await service.create({
           text: 'A test message'
-        }).then(() => done());
+        });
       });
 
       baseTests('customId');
     });
 
     describe('pagination', function () {
-      beforeEach(done => {
+      beforeEach(async () => {
         app = feathers()
           .configure(rx({ idField: 'id' }))
           .use('/messages', memory({
@@ -124,9 +124,9 @@ describe('reactive lists', () => {
 
         service = app.service('messages').rx();
 
-        service.create({
+        await service.create({
           text: 'A test message'
-        }).then(() => done());
+        });
       });
 
       paginationTests('id');
@@ -193,7 +193,7 @@ describe('reactive lists', () => {
 
   describe('strategy.always', function () {
     describe('default', function () {
-      beforeEach(done => {
+      beforeEach(async () => {
         app = feathers()
           .configure(rx({
             idField: 'id',
@@ -205,16 +205,16 @@ describe('reactive lists', () => {
 
         service = app.service('messages').rx();
 
-        service.create({
+        await service.create({
           text: 'A test message'
-        }).then(() => done());
+        });
       });
 
       baseTests('id');
     });
 
     describe('custom id', function () {
-      beforeEach(done => {
+      beforeEach(async () => {
         app = feathers()
           .configure(rx({
             idField: 'id',
@@ -227,16 +227,16 @@ describe('reactive lists', () => {
 
         service = app.service('messages').rx({ idField: 'customId' });
 
-        service.create({
+        await service.create({
           text: 'A test message'
-        }).then(() => done());
+        });
       });
 
       baseTests('customId');
     });
 
     describe('pagination', function () {
-      beforeEach(done => {
+      beforeEach(async () => {
         app = feathers()
           .configure(rx({
             idField: 'id',
@@ -249,9 +249,9 @@ describe('reactive lists', () => {
 
         service = app.service('messages').rx();
 
-        service.create({
+        await service.create({
           text: 'A test message'
-        }).then(() => done());
+        });
       });
 
       paginationTests('id');
