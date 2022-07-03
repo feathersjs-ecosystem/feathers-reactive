@@ -16,14 +16,14 @@ describe('reactive lists', () => {
   describe('strategy.smart', function () {
     describe('default', function () {
       beforeEach(async () => {
-        app = feathers()
-        app.configure(rx({ idField: 'id' }))
+        app = feathers();
+        app.configure(rx({ idField: 'id' }));
         app.use('/messages', memory({
           multi: ['create']
         }));
 
         service = app.service('messages');
-        await app.setup()
+        await app.setup();
         await service.create({
           text: 'A test message'
         });
