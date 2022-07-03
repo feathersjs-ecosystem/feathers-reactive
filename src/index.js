@@ -27,8 +27,6 @@ function FeathersRx (options = {}) {
   }, options);
 
   const mixin = function (service) {
-    const app = this;
-
     const events = {
       // fromEvent's result selector (3rd arg) is deprecated
       // we need it here because service events have an inconsistent number of arguments (i.e. sometimes 1, sometimes >1)
@@ -48,7 +46,8 @@ function FeathersRx (options = {}) {
       get: {}
     };
 
-    app.methods.forEach(method => {
+    const methods = ['find', 'get', 'create', 'update', 'patch', 'remove'];
+    methods.forEach(method => {
       if (typeof service[method] === 'function') {
         reactiveMethods[method] = method === 'find'
           ? reactiveList(options)
@@ -89,7 +88,7 @@ function FeathersRx (options = {}) {
     };
 
     // get the extended service object
-    const newService = service.mixin(mixin);
+    const newService = Object.assign(service, mixin);
 
     // workaround for Firefox
     // FF defines Object.prototype.watch(), so uberproto doesn't recognize the mixin's .watch()
