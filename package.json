@@ -3,7 +3,7 @@
   "description": "Reactive API extensions for Feathers services",
   "version": "0.9.0",
   "homepage": "https://github.com/feathersjs-ecosystem/feathers-reactive",
-  "main": "lib/index",
+  "main": "src/index.js",
   "keywords": [
     "feathers",
     "feathers-plugin"
@@ -28,7 +28,7 @@
   "scripts": {
     "add-dist": "npm run compile && npm run webpack && git add dist/ --force && git commit -am \"Updating dist\"",
     "publish": "git push origin --tags && npm run changelog && git push origin",
-    "webpack": "shx rm -rf dist/ && webpack && NODE_ENV=production webpack",
+    "webpack": "shx rm -rf dist/ && webpack && cross-env NODE_ENV=production webpack",
     "release:patch": "npm run add-dist && npm version patch && npm publish",
     "release:minor": "npm run add-dist && npm version minor && npm publish",
     "release:major": "npm run add-dist && npm version major && npm publish",
@@ -51,16 +51,16 @@
     ]
   },
   "directories": {
-    "lib": "lib"
+    "lib": "src"
   },
   "browserslist": [
     "last 2 versions",
     "IE 10"
   ],
   "dependencies": {
-    "@feathersjs/adapter-commons": "^4.5.15",
-    "@feathersjs/commons": "^4.5.15",
-    "@feathersjs/feathers": "^4.5.15",
+    "@feathersjs/adapter-commons": "^5.0.0-pre.22",
+    "@feathersjs/commons": "^5.0.0-pre.22",
+    "@feathersjs/feathers": "^5.0.0-pre.22",
     "debug": "^4.3.4",
     "json-stable-stringify": "^1.0.1",
     "rxjs": "^7.5.5",
@@ -76,6 +76,7 @@
     "@feathersjs/socketio": "^4.5.15",
     "babel-loader": "^8.2.5",
     "babel-plugin-add-module-exports": "^1.0.4",
+    "cross-env": "^7.0.3",
     "feathers-memory": "^4.1.0",
     "mocha": "^10.0.0",
     "npm-check-updates": "^15.0.1",

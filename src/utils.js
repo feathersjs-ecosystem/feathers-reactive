@@ -1,5 +1,5 @@
 import sift from 'sift';
-import { _ } from '@feathersjs/commons/lib/utils';
+import { _ } from '@feathersjs/commons';
 import { sorter as createSorter } from '@feathersjs/adapter-commons';
 import { defer } from 'rxjs';
 
