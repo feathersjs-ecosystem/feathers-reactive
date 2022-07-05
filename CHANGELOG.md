@@ -2,14 +2,22 @@
 
 ## [Unreleased](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/HEAD)
 
-[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.9.0...HEAD)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.10.0...HEAD)
 
 **Merged pull requests:**
 
-- chore: Update all dependencies and plugin infrastructure [\#184](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/184) ([daffl](https://github.com/daffl))
-- fix: Hook generating patched/updated event before created event generates doublons \(closes \#182\) [\#183](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/183) ([claustres](https://github.com/claustres))
-- implement reset [\#181](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/181) ([rmanibus](https://github.com/rmanibus))
-- update link to API docs of rxjs 6 [\#177](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/177) ([avimar](https://github.com/avimar))
+- Update all dependencies and fix Socket.io addListener usage [\#191](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/191) ([daffl](https://github.com/daffl))
+- chore\(dependencies\): Update all dependencies [\#189](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/189) ([daffl](https://github.com/daffl))
+- Upgraded to Feathers v5 - aka Dove \(\#179\) [\#188](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/188) ([claustres](https://github.com/claustres))
+- chore\(dependencies\): Update all dependencies [\#187](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/187) ([daffl](https://github.com/daffl))
+
+## [v0.10.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.10.0) (2022-07-05)
+
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.9.0...v0.10.0)
+
+**Closed issues:**
+
+- Cannot call addListener on the client service connection [\#190](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/190)
 
 ## [v0.9.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.9.0) (2022-03-25)
 
@@ -19,6 +27,13 @@
 
 - Hook generating patched/updated event before created event generates doublons [\#182](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/182)
 - Allow to Re-fetch all data when using smart listStrategy  [\#180](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/180)
+
+**Merged pull requests:**
+
+- chore: Update all dependencies and plugin infrastructure [\#184](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/184) ([daffl](https://github.com/daffl))
+- fix: Hook generating patched/updated event before created event generates doublons \(closes \#182\) [\#183](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/183) ([claustres](https://github.com/claustres))
+- implement reset [\#181](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/181) ([rmanibus](https://github.com/rmanibus))
+- update link to API docs of rxjs 6 [\#177](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/177) ([avimar](https://github.com/avimar))
 
 ## [v0.8.2](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.8.2) (2020-04-29)
 
@@ -50,7 +65,7 @@
 **Merged pull requests:**
 
 - Fix adapter-commons dependency [\#162](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/162) ([daffl](https://github.com/daffl))
-- Add missing rx function type to Feathers Service [\#160](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/160) ([WaeCo](https://github.com/WaeCo))
+- Add missing rx function type to Feathers Service [\#160](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/160) ([Niels-Be](https://github.com/Niels-Be))
 
 ## [v0.8.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.8.0) (2019-06-13)
 
