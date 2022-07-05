@@ -107,6 +107,10 @@ function FeathersRx (options = {}) {
     debug('Initializing feathers-reactive plugin');
 
     app.mixins.push(mixin);
+
+    if (app.io && typeof app.io.addEventListener === 'function') {
+      app.io.addListener = app.io.addEventListener;
+    }
   };
 }
 

@@ -5,9 +5,6 @@ import socketioClient from '@feathersjs/socketio-client';
 import io from 'socket.io-client';
 import memory from 'feathers-memory';
 import rx from '../src';
-import {
-  take
-} from 'rxjs/operators';
 
 const app = feathers()
   .configure(socketio())
@@ -29,7 +26,7 @@ describe('feathers-reactive integration', () => {
 
     client.service('todos')
       .watch({ listStrategy: 'smart' })
-      .find({ query: {} }).pipe(take(1))
+      .find({ query: {} })
       .subscribe(messages => {
         assert.ok(messages);
         done();
