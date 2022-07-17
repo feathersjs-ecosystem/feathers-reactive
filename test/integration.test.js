@@ -81,8 +81,7 @@ describe('feathers-reactive integration', () => {
     });
 
     await app.service('messages').remove(message.id);
-
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => client.service('messages').once('removed', resolve));
 
     listener.unsubscribe();
     // We should have 5 calls: first find + 4 events
