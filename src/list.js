@@ -9,7 +9,7 @@ import {
   getCachedObservable
 } from './cache';
 
-module.exports = function (settings) {
+export default function (settings) {
   return function (params) {
     const cachedObservable = getCachedObservable(this._cache, 'find', params);
 
