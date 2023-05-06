@@ -19,7 +19,7 @@ import {
   mapTo
 } from 'rxjs/operators';
 
-module.exports = function (settings, method) {
+export default function (settings, method) {
   return function () {
     const position = getParamsPosition(method);
     const params = arguments[position] || {};
