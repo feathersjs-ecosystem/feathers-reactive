@@ -1,5 +1,6 @@
 {
   "name": "feathers-reactive",
+  "type": "module",
   "description": "Reactive API extensions for Feathers services",
   "version": "0.10.0",
   "homepage": "https://github.com/feathersjs-ecosystem/feathers-reactive",
