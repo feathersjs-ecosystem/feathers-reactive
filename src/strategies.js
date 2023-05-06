@@ -8,7 +8,7 @@ import {
   scan
 } from 'rxjs/operators';
 
-module.exports = function () {
+export default function () {
   return {
     never (source$) {
       return source$;
