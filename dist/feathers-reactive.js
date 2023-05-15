@@ -5770,7 +5770,7 @@ var SafeSubscriber = (function (_super) {
         var partialObserver;
         if (isFunction_1.isFunction(observerOrNext) || !observerOrNext) {
             partialObserver = {
-                next: observerOrNext !== null && observerOrNext !== void 0 ? observerOrNext : undefined,
+                next: (observerOrNext !== null && observerOrNext !== void 0 ? observerOrNext : undefined),
                 error: error !== null && error !== void 0 ? error : undefined,
                 complete: complete !== null && complete !== void 0 ? complete : undefined,
             };
@@ -8425,7 +8425,7 @@ exports.concatWith = concatWith;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.connect = void 0;
 var Subject_1 = __webpack_require__(/*! ../Subject */ "./node_modules/rxjs/dist/cjs/internal/Subject.js");
-var from_1 = __webpack_require__(/*! ../observable/from */ "./node_modules/rxjs/dist/cjs/internal/observable/from.js");
+var innerFrom_1 = __webpack_require__(/*! ../observable/innerFrom */ "./node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js");
 var lift_1 = __webpack_require__(/*! ../util/lift */ "./node_modules/rxjs/dist/cjs/internal/util/lift.js");
 var fromSubscribable_1 = __webpack_require__(/*! ../observable/fromSubscribable */ "./node_modules/rxjs/dist/cjs/internal/observable/fromSubscribable.js");
 var DEFAULT_CONFIG = {
@@ -8436,7 +8436,7 @@ function connect(selector, config) {
     var connector = config.connector;
     return lift_1.operate(function (source, subscriber) {
         var subject = connector();
-        from_1.from(selector(fromSubscribable_1.fromSubscribable(subject))).subscribe(subscriber);
+        innerFrom_1.innerFrom(selector(fromSubscribable_1.fromSubscribable(subject))).subscribe(subscriber);
         subscriber.add(source.subscribe(subject));
     });
 }
@@ -8893,25 +8893,10 @@ exports.exhaust = exhaustAll_1.exhaustAll;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.exhaustAll = void 0;
-var lift_1 = __webpack_require__(/*! ../util/lift */ "./node_modules/rxjs/dist/cjs/internal/util/lift.js");
-var innerFrom_1 = __webpack_require__(/*! ../observable/innerFrom */ "./node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js");
-var OperatorSubscriber_1 = __webpack_require__(/*! ./OperatorSubscriber */ "./node_modules/rxjs/dist/cjs/internal/operators/OperatorSubscriber.js");
+var exhaustMap_1 = __webpack_require__(/*! ./exhaustMap */ "./node_modules/rxjs/dist/cjs/internal/operators/exhaustMap.js");
+var identity_1 = __webpack_require__(/*! ../util/identity */ "./node_modules/rxjs/dist/cjs/internal/util/identity.js");
 function exhaustAll() {
-    return lift_1.operate(function (source, subscriber) {
-        var isComplete = false;
-        var innerSub = null;
-        source.subscribe(OperatorSubscriber_1.createOperatorSubscriber(subscriber, function (inner) {
-            if (!innerSub) {
-                innerSub = innerFrom_1.innerFrom(inner).subscribe(OperatorSubscriber_1.createOperatorSubscriber(subscriber, undefined, function () {
-                    innerSub = null;
-                    isComplete && subscriber.complete();
-                }));
-            }
-        }, function () {
-            isComplete = true;
-            !innerSub && subscriber.complete();
-        }));
-    });
+    return exhaustMap_1.exhaustMap(identity_1.identity);
 }
 exports.exhaustAll = exhaustAll;
 //# sourceMappingURL=exhaustAll.js.map
@@ -10622,8 +10607,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.share = void 0;
-var from_1 = __webpack_require__(/*! ../observable/from */ "./node_modules/rxjs/dist/cjs/internal/observable/from.js");
-var take_1 = __webpack_require__(/*! ../operators/take */ "./node_modules/rxjs/dist/cjs/internal/operators/take.js");
+var innerFrom_1 = __webpack_require__(/*! ../observable/innerFrom */ "./node_modules/rxjs/dist/cjs/internal/observable/innerFrom.js");
 var Subject_1 = __webpack_require__(/*! ../Subject */ "./node_modules/rxjs/dist/cjs/internal/Subject.js");
 var Subscriber_1 = __webpack_require__(/*! ../Subscriber */ "./node_modules/rxjs/dist/cjs/internal/Subscriber.js");
 var lift_1 = __webpack_require__(/*! ../util/lift */ "./node_modules/rxjs/dist/cjs/internal/util/lift.js");
@@ -10631,19 +10615,19 @@ function share(options) {
     if (options === void 0) { options = {}; }
     var _a = options.connector, connector = _a === void 0 ? function () { return new Subject_1.Subject(); } : _a, _b = options.resetOnError, resetOnError = _b === void 0 ? true : _b, _c = options.resetOnComplete, resetOnComplete = _c === void 0 ? true : _c, _d = options.resetOnRefCountZero, resetOnRefCountZero = _d === void 0 ? true : _d;
     return function (wrapperSource) {
-        var connection = null;
-        var resetConnection = null;
-        var subject = null;
+        var connection;
+        var resetConnection;
+        var subject;
         var refCount = 0;
         var hasCompleted = false;
         var hasErrored = false;
         var cancelReset = function () {
             resetConnection === null || resetConnection === void 0 ? void 0 : resetConnection.unsubscribe();
-            resetConnection = null;
+            resetConnection = undefined;
         };
         var reset = function () {
             cancelReset();
-            connection = subject = null;
+            connection = subject = undefined;
             hasCompleted = hasErrored = false;
         };
         var resetAndUnsubscribe = function () {
@@ -10664,7 +10648,8 @@ function share(options) {
                 }
             });
             dest.subscribe(subscriber);
-            if (!connection) {
+            if (!connection &&
+                refCount > 0) {
                 connection = new Subscriber_1.SafeSubscriber({
                     next: function (value) { return dest.next(value); },
                     error: function (err) {
@@ -10680,7 +10665,7 @@ function share(options) {
                         dest.complete();
                     },
                 });
-                from_1.from(source).subscribe(connection);
+                innerFrom_1.innerFrom(source).subscribe(connection);
             }
         })(wrapperSource);
     };
@@ -10693,13 +10678,18 @@ function handleReset(reset, on) {
     }
     if (on === true) {
         reset();
-        return null;
+        return;
     }
     if (on === false) {
-        return null;
+        return;
     }
-    return on.apply(void 0, __spreadArray([], __read(args))).pipe(take_1.take(1))
-        .subscribe(function () { return reset(); });
+    var onSubscriber = new Subscriber_1.SafeSubscriber({
+        next: function () {
+            onSubscriber.unsubscribe();
+            reset();
+        },
+    });
+    return on.apply(void 0, __spreadArray([], __read(args))).subscribe(onSubscriber);
 }
 //# sourceMappingURL=share.js.map
 
@@ -10725,7 +10715,7 @@ function shareReplay(configOrBufferSize, windowTime, scheduler) {
         (_a = configOrBufferSize.bufferSize, bufferSize = _a === void 0 ? Infinity : _a, _b = configOrBufferSize.windowTime, windowTime = _b === void 0 ? Infinity : _b, _c = configOrBufferSize.refCount, refCount = _c === void 0 ? false : _c, scheduler = configOrBufferSize.scheduler);
     }
     else {
-        bufferSize = configOrBufferSize !== null && configOrBufferSize !== void 0 ? configOrBufferSize : Infinity;
+        bufferSize = (configOrBufferSize !== null && configOrBufferSize !== void 0 ? configOrBufferSize : Infinity);
     }
     return share_1.share({
         connector: function () { return new ReplaySubject_1.ReplaySubject(bufferSize, windowTime, scheduler); },
