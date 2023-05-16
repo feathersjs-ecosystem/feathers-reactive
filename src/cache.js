@@ -50,7 +50,12 @@ function _oldStyleShareReplay (bufferSize, windowTime, scheduler) {
   return (source) => refCount()(connectable(source));
 }
 
-Object.assign(exports, {
+// Object.assign(exports, {
+//   cacheObservable,
+//   getCachedObservable
+// });
+
+export {
   cacheObservable,
   getCachedObservable
-});
+};

@@ -2,10 +2,10 @@ import Debug from 'debug';
 
 import { fromEvent, Subject } from 'rxjs';
 import { share } from 'rxjs/operators';
-import reactiveResource from './resource';
-import reactiveList from './list';
-import strategies from './strategies';
-import { makeSorter, getParamsPosition, siftMatcher, sift } from './utils';
+import reactiveResource from './resource.js';
+import reactiveList from './list.js';
+import strategies from './strategies.js';
+import { makeSorter, getParamsPosition, siftMatcher, sift } from './utils.js';
 
 const debug = Debug('feathers-reactive');
 
@@ -117,4 +117,6 @@ function FeathersRx (options = {}) {
 FeathersRx.strategy = strategies;
 FeathersRx.sift = sift;
 
-module.exports = FeathersRx;
+// module.exports = FeathersRx;
+
+export default FeathersRx;

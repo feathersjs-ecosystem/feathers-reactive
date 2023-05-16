@@ -2,12 +2,12 @@ import {
   getOptions,
   getSource,
   getPipeStream
-} from './utils';
+} from './utils.js';
 
 import {
   cacheObservable,
   getCachedObservable
-} from './cache';
+} from './cache.js';
 
 export default function (settings) {
   return function (params) {

@@ -24,7 +24,7 @@
     "url": "https://github.com/feathersjs-ecosystem/feathers-reactive/issues"
   },
   "engines": {
-    "node": ">= 8"
+    "node": ">= 14"
   },
   "scripts": {
     "add-dist": "npm run compile && npm run webpack && git add dist/ --force && git commit -am \"Updating dist\"",

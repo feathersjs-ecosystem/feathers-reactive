@@ -79,12 +79,14 @@ function siftMatcher (originalQuery) {
   return sift(query);
 }
 
-Object.assign(exports, {
-  sift,
-  getSource,
-  makeSorter,
-  getOptions,
-  getParamsPosition,
-  siftMatcher,
-  getPipeStream
-});
+// Object.assign(exports, {
+//   sift,
+//   getSource,
+//   makeSorter,
+//   getOptions,
+//   getParamsPosition,
+//   siftMatcher,
+//   getPipeStream
+// });
+
+export { sift, getSource, makeSorter, getOptions, getParamsPosition, siftMatcher, getPipeStream };
