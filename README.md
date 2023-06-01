@@ -7,7 +7,7 @@
 
 ## About
 
-`feathers-reactive` adds a `watch()` method to services. The returned object implements all service methods as [RxJS v6](https://github.com/ReactiveX/rxjs/tree/6.x) observables that automatically update on [real-time events](https://docs.feathersjs.com/api/events.html#service-events).
+`feathers-reactive` adds a `watch()` method to services. The returned object implements all service methods as [RxJS v7](https://github.com/ReactiveX/rxjs) observables that automatically update on [real-time events](https://docs.feathersjs.com/api/events.html#service-events).
 
 ## Options
 
@@ -23,8 +23,8 @@ The following options are supported:
 #### Application level
 
 ```js
-const feathers = require('feathers');
-const reactive = require('feathers-reactive');
+import feathers from '@feathersjs/feathers';
+import { FeathersReactive } from 'feathers-reactive';
 
 const app = feathers().configure(reactive(options));
 ```
@@ -92,7 +92,7 @@ messages.create({
 
 Will output:
 
-```
+```console
 My message { text: 'A test message', id: 0 }
 Message list [ { text: 'A test message', id: 0 } ]
 Message list [ { text: 'A test message', id: 0 },
@@ -123,7 +123,7 @@ app.publish(() => app.channel('everybody'));
 app.listen(3030).on('listening', () =>
   console.log('Feathers Socket.io server running on localhost:3030')
 );
-````
+```
 
 ### Usage
 
@@ -229,6 +229,6 @@ export default App;
 
 ## License
 
-Copyright (c) 2018
+Copyright (c) 2023
 
 Licensed under the [MIT license](LICENSE).
