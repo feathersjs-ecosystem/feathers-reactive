@@ -24,9 +24,9 @@ The following options are supported:
 
 ```js
 import feathers from '@feathersjs/feathers';
-import { FeathersReactive } from 'feathers-reactive';
+import { rx } from 'feathers-reactive';
 
-const app = feathers().configure(reactive(options));
+const app = feathers().configure(rx(options));
 ```
 
 #### Service level
@@ -60,9 +60,9 @@ List strategies are used to determine how a data stream behaves. Currently there
 ## Usage
 
 ```js
-const feathers = require('@feathersjs/feathers');
-const memory = require('feathers-memory');
-const rx = require('feathers-reactive');
+import {feathers} from '@feathersjs/feathers';
+import memory from 'feathers-memory';
+import { rx } from 'feathers-reactive';
 
 const app = feathers()
   .configure(rx({
@@ -109,9 +109,9 @@ Let's assume a simple Feathers Socket.io server in `app.js` like this:
 > npm install @feathersjs/feathers @feathersjs/socketio feathers-memory
 
 ```js
-const feathers = require('@feathersjs/feathers');
-const socketio = require('@feathersjs/socketio');
-const memory = require('feathers-memory');
+import {feathers} from '@feathersjs/feathers';
+import socketio from '@feathersjs/socketio';
+import memory from 'feathers-memory';
 
 const app = feathers()
   .configure(socketio())

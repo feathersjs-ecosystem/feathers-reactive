@@ -12,7 +12,7 @@ import { makeSorter, getParamsPosition, siftMatcher } from './utils';
 
 const debug = Debug('feathers-reactive');
 
-export function FeathersReactive(
+export function rx(
   options: Options = {
     idField: '_id'
   }
@@ -146,5 +146,5 @@ export function FeathersReactive(
   };
 }
 
-FeathersReactive.strategy = strategies;
-FeathersReactive.sift = sift;
+rx.strategy = strategies;
+rx.sift = sift;

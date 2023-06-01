@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import io from 'socket.io-client';
 import { beforeAll, describe, expect, it } from 'vitest';
 
-import { FeathersReactive } from '../src';
+import { rx } from '../src';
 
 const app = feathers().configure(socketio()).use('/messages', memory());
 
@@ -22,7 +22,7 @@ describe('feathers-reactive integration', () => {
     const socket = io('http://localhost:3030');
     const client = feathers()
       .configure(socketioClient(socket))
-      .configure(FeathersReactive({ idField: 'id' }));
+      .configure(rx({ idField: 'id' }));
 
     let callCount = 0;
     const listener = client
@@ -54,7 +54,7 @@ describe('feathers-reactive integration', () => {
     const socket = io('http://localhost:3030');
     const client = feathers()
       .configure(socketioClient(socket))
-      .configure(FeathersReactive({ idField: 'id' }));
+      .configure(rx({ idField: 'id' }));
 
     let callCount = 0;
     const find = client
@@ -95,10 +95,10 @@ describe('feathers-reactive integration', () => {
     const socket = io('http://localhost:3030');
     const client1 = feathers()
       .configure(socketioClient(socket))
-      .configure(FeathersReactive({ idField: 'id' }));
+      .configure(rx({ idField: 'id' }));
     const client2 = feathers()
       .configure(socketioClient(socket))
-      .configure(FeathersReactive({ idField: 'id' }));
+      .configure(rx({ idField: 'id' }));
 
     let callCount1 = 0;
     let callCount2 = 0;
