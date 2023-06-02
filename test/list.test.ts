@@ -868,7 +868,7 @@ describe('reactive lists', () => {
         sub1.unsubscribe();
         sub2.unsubscribe();
 
-        expect(o1).not.toEqual(o2);
+        expect(o1).toEqual(o2);
         expect(service.watch().find()).not.toEqual(o2);
 
         done();
