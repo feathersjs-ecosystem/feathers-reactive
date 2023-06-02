@@ -75,4 +75,4 @@ declare namespace rx {
     var sift: <TItem, TSchema extends TItem = TItem>(query: sift.Query<TSchema>, options?: Partial<sift_lib_core.Options>) => (item: unknown, key?: sift_lib_utils.Key, owner?: any) => boolean;
 }
 
-export { rx };
+export { Options, rx };

@@ -148,3 +148,5 @@ export function rx(
 
 rx.strategy = strategies;
 rx.sift = sift;
+
+export { Options };
