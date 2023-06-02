@@ -2,6 +2,7 @@
 import path from 'node:path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+
 import pkg from './package.json';
 
 export default defineConfig({
@@ -18,7 +19,6 @@ export default defineConfig({
       fileName: 'index',
       formats: ['es', 'cjs']
     },
-    // outDir: path.resolve(__dirname, "dist"),
     sourcemap: true,
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
