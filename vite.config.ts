@@ -28,6 +28,7 @@ export default defineConfig({
     }
   },
   test: {
-    globals: true
+    globals: true,
+    exclude: ['node_modules', 'dist', '.idea', '.git', '.cache', './examples'] // To exclude `./examples` we have to add the defaults as well ("node_modules", etc...)
   }
 });

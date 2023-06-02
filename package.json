@@ -53,7 +53,7 @@
     "release:major": "npm version major && npm publish",
     "lint": "eslint src/**/*.ts test/**/*.ts --fix",
     "vitest": "vitest",
-    "test": "vitest run",
+    "test": "vitest run && npm run test:react",
     "test:react": "vitest run --config ./vitest-react.config.ts",
     "coverage": "vitest run --coverage",
     "update-dependencies": "ncu -u"
