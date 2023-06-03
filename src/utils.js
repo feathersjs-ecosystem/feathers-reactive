@@ -1,19 +1,19 @@
+import sift from 'sift';
 import { _ } from '@feathersjs/commons';
 import { sorter as createSorter } from '@feathersjs/adapter-commons';
 import { defer } from 'rxjs';
-import sift from 'sift';
 
-export function getSource(originalMethod, args) {
+function getSource (originalMethod, args) {
   return defer(() => originalMethod(...args));
 }
 
-export function makeSorter(query, options) {
+function makeSorter (query, options) {
   // The sort function (if $sort is set)
   const sorter = query.$sort
     ? createSorter(query.$sort)
     : createSorter({
-        [options.idField]: 1
-      });
+      [options.idField]: 1
+    });
 
   return function (result) {
     const isPaginated = !!result[options.dataField];
@@ -23,10 +23,7 @@ export function makeSorter(query, options) {
       data = data.sort(sorter);
     }
 
-    const limit =
-      typeof result.limit === 'number'
-        ? result.limit
-        : parseInt(query.$limit, 10);
+    const limit = typeof result.limit === 'number' ? result.limit : parseInt(query.$limit, 10);
 
     if (limit && !isNaN(limit) && limit !== -1) {
       data = data.slice(0, limit);
@@ -42,7 +39,7 @@ export function makeSorter(query, options) {
   };
 }
 
-export function getOptions(base, ...others) {
+function getOptions (base, ...others) {
   const options = Object.assign({}, base, ...others);
 
   if (typeof options.listStrategy === 'string') {
@@ -52,7 +49,7 @@ export function getOptions(base, ...others) {
   return options;
 }
 
-export function getPipeStream(stream, options) {
+function getPipeStream (stream, options) {
   if (!options.pipe) {
     return stream;
   } else if (Array.isArray(options.pipe)) {
@@ -62,7 +59,7 @@ export function getPipeStream(stream, options) {
   }
 }
 
-export function getParamsPosition(method) {
+function getParamsPosition (method) {
   // The position of the params parameters for a service method so that we can extend them
   // default is 1
 
@@ -72,14 +69,22 @@ export function getParamsPosition(method) {
     patch: 2
   };
 
-  return method in paramsPositions ? paramsPositions[method] : 1;
+  return (method in paramsPositions) ? paramsPositions[method] : 1;
 }
 
-export function siftMatcher(originalQuery) {
-  const keysToOmit = Object.keys(originalQuery).filter(
-    (key) => key.charCodeAt(0) === 36
-  );
+function siftMatcher (originalQuery) {
+  const keysToOmit = Object.keys(originalQuery).filter(key => key.charCodeAt(0) === 36);
   const query = _.omit(originalQuery, ...keysToOmit);
 
   return sift(query);
 }
+
+Object.assign(exports, {
+  sift,
+  getSource,
+  makeSorter,
+  getOptions,
+  getParamsPosition,
+  siftMatcher,
+  getPipeStream
+});

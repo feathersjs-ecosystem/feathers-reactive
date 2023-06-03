@@ -1,7 +1,15 @@
-import { cacheObservable, getCachedObservable } from './cache';
-import { getOptions, getSource, getPipeStream } from './utils';
+import {
+  getOptions,
+  getSource,
+  getPipeStream
+} from './utils';
 
-export function reactiveList(settings) {
+import {
+  cacheObservable,
+  getCachedObservable
+} from './cache';
+
+module.exports = function (settings) {
   return function (params) {
     const cachedObservable = getCachedObservable(this._cache, 'find', params);
 
@@ -19,4 +27,4 @@ export function reactiveList(settings) {
     // set cache and return cached observable
     return cacheObservable(this._cache, 'find', params, pipeStream);
   };
-}
+};

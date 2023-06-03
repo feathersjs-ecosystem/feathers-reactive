@@ -7,7 +7,7 @@
 
 ## About
 
-`feathers-reactive` adds a `watch()` method to services. The returned object implements all service methods as [RxJS v7](https://github.com/ReactiveX/rxjs) observables that automatically update on [real-time events](https://docs.feathersjs.com/api/events.html#service-events).
+`feathers-reactive` adds a `watch()` method to services. The returned object implements all service methods as [RxJS v6](https://github.com/ReactiveX/rxjs/tree/6.x) observables that automatically update on [real-time events](https://docs.feathersjs.com/api/events.html#service-events).
 
 ## Options
 
@@ -23,10 +23,10 @@ The following options are supported:
 #### Application level
 
 ```js
-import feathers from '@feathersjs/feathers';
-import { rx } from 'feathers-reactive';
+const feathers = require('feathers');
+const reactive = require('feathers-reactive');
 
-const app = feathers().configure(rx(options));
+const app = feathers().configure(reactive(options));
 ```
 
 #### Service level
@@ -60,9 +60,9 @@ List strategies are used to determine how a data stream behaves. Currently there
 ## Usage
 
 ```js
-import {feathers} from '@feathersjs/feathers';
-import memory from 'feathers-memory';
-import { rx } from 'feathers-reactive';
+const feathers = require('@feathersjs/feathers');
+const memory = require('feathers-memory');
+const rx = require('feathers-reactive');
 
 const app = feathers()
   .configure(rx({
@@ -92,7 +92,7 @@ messages.create({
 
 Will output:
 
-```console
+```
 My message { text: 'A test message', id: 0 }
 Message list [ { text: 'A test message', id: 0 } ]
 Message list [ { text: 'A test message', id: 0 },
@@ -109,9 +109,9 @@ Let's assume a simple Feathers Socket.io server in `app.js` like this:
 > npm install @feathersjs/feathers @feathersjs/socketio feathers-memory
 
 ```js
-import {feathers} from '@feathersjs/feathers';
-import socketio from '@feathersjs/socketio';
-import memory from 'feathers-memory';
+const feathers = require('@feathersjs/feathers');
+const socketio = require('@feathersjs/socketio');
+const memory = require('feathers-memory');
 
 const app = feathers()
   .configure(socketio())
@@ -123,7 +123,7 @@ app.publish(() => app.channel('everybody'));
 app.listen(3030).on('listening', () =>
   console.log('Feathers Socket.io server running on localhost:3030')
 );
-```
+````
 
 ### Usage
 
@@ -229,6 +229,6 @@ export default App;
 
 ## License
 
-Copyright (c) 2023
+Copyright (c) 2018
 
 Licensed under the [MIT license](LICENSE).
