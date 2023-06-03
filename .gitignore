@@ -29,6 +29,6 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
-dist/
+# dist/
 lib/
 tmp/
