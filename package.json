@@ -54,7 +54,6 @@
     "lint": "eslint src/**/*.ts test/**/*.ts --fix",
     "vitest": "vitest",
     "test": "node --require ts-node/register --test ./test/*.ts",
-    "test:old": "vitest run && npm run test:react",
     "test:react": "vitest run --config ./vitest-react.config.ts",
     "coverage": "vitest run --coverage",
     "update-dependencies": "ncu -u"
