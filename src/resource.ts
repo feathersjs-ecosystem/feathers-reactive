@@ -2,6 +2,7 @@ import { merge, of } from 'rxjs';
 import { concat, concatMap, filter, mapTo } from 'rxjs/operators';
 
 import { cacheObservable, getCachedObservable } from './cache';
+import type { Options } from './interfaces';
 import {
   getOptions,
   getSource,
@@ -9,7 +10,7 @@ import {
   getPipeStream
 } from './utils';
 
-export function reactiveResource(settings, method) {
+export function reactiveResource(settings: Options, method: string) {
   return function () {
     const position = getParamsPosition(method);
     const params = arguments[position] || {};
@@ -28,9 +29,9 @@ export function reactiveResource(settings, method) {
     const options = getOptions(settings, this._rx, params.rx);
     const source = getSource(this[method].bind(this), arguments);
     const stream = source.pipe(
-      concatMap((data) => {
+      concatMap((data: any) => {
         // Filter only data with the same id
-        const filterFn = (current) =>
+        const filterFn = (current: any) =>
           current[options.idField] === data[options.idField];
         // `removed` events get special treatment
         const filteredRemoves = this.removed$.pipe(filter(filterFn));

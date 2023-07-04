@@ -53,7 +53,8 @@
     "release:major": "npm version major && npm publish",
     "lint": "eslint src/**/*.ts test/**/*.ts --fix",
     "vitest": "vitest",
-    "test": "vitest run && npm run test:react",
+    "test": "node --require ts-node/register --test ./test/*.ts",
+    "test:old": "vitest run && npm run test:react",
     "test:react": "vitest run --config ./vitest-react.config.ts",
     "coverage": "vitest run --coverage",
     "update-dependencies": "ncu -u"
@@ -74,6 +75,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/debug": "^4.1.7",
+    "@types/json-stable-stringify": "^1.0.34",
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.57.0",
@@ -89,8 +91,8 @@
     "ncu": "^0.2.1",
     "npm-check-updates": "^16.0.6",
     "socket.io-client": "^4.5.1",
+    "ts-node": "^10.9.1",
     "vite": "^4.2.1",
-    "vite-plugin-dts": "^2.1.0",
-    "vitest": "^0.29.8"
+    "vite-plugin-dts": "^2.1.0"
   }
 }

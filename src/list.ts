@@ -1,8 +1,10 @@
 import { cacheObservable, getCachedObservable } from './cache';
+import type { Options } from './interfaces';
 import { getOptions, getSource, getPipeStream } from './utils';
 
-export function reactiveList(settings) {
-  return function (params) {
+export function reactiveList(settings: Options) {
+  // TODO: `any` type
+  return function (params: any) {
     const cachedObservable = getCachedObservable(this._cache, 'find', params);
 
     // return cached Observable if it exists

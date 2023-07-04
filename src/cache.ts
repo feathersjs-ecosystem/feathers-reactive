@@ -1,15 +1,15 @@
 import _debug from 'debug';
 import stringify from 'json-stable-stringify';
-import type { Observable } from 'rxjs';
+import type { Observable, TimestampProvider } from 'rxjs';
 import { ReplaySubject } from 'rxjs';
 import { finalize, multicast, refCount } from 'rxjs/operators';
 
 const debug = _debug('feathers-reactive');
 
 export function cacheObservable<T>(
-  cache,
-  method,
-  key,
+  cache: any = {},
+  method: string,
+  key: string,
   observable: Observable<T>
 ) {
   const hash = _hash(key);
@@ -29,21 +29,29 @@ export function cacheObservable<T>(
   return cache[method][hash];
 }
 
-export function getCachedObservable(cache, method, key) {
+export function getCachedObservable(
+  cache: any = {},
+  method: string,
+  key: string
+) {
   const hash = _hash(key);
 
   return cache[method][hash];
 }
 
-function _hash(key) {
+function _hash(key: string) {
   return stringify(key);
 }
 
 // eslint:disable
 /* We relied on faulty behavior fixed in https://github.com/ReactiveX/rxjs/commit/accbcd0c5f9fd5976be3f491d454c4a61f699c4b.
    This is the old shareReplay that tears down when refCount hits 0 */
-function _oldStyleShareReplay(bufferSize, windowTime?, scheduler?) {
-  let subject;
+function _oldStyleShareReplay(
+  bufferSize: number,
+  windowTime?: number,
+  scheduler?: TimestampProvider
+) {
+  let subject: ReplaySubject<any>;
 
   const connectable = multicast(function shareReplaySubjectFactory() {
     if (this._isComplete) {
@@ -52,5 +60,5 @@ function _oldStyleShareReplay(bufferSize, windowTime?, scheduler?) {
       return (subject = new ReplaySubject(bufferSize, windowTime, scheduler));
     }
   });
-  return (source) => refCount()(connectable(source));
+  return (source: Observable<any>) => refCount()(connectable(source));
 }

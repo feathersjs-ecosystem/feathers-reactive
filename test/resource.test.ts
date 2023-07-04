@@ -1,12 +1,15 @@
-import { feathers } from '@feathersjs/feathers';
+import { Application, FeathersService, feathers } from '@feathersjs/feathers';
 import memory from 'feathers-memory';
+import { beforeEach, describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 import { skip, tap, take } from 'rxjs/operators';
-import { beforeEach, describe, expect, it } from 'vitest';
 
 import { rx } from '../src';
 
 describe('reactive resources', () => {
-  let app, id, service;
+  let app: Application;
+  let service: FeathersService<Application>;
+  let id: string;
 
   describe('standard id', function () {
     beforeEach(
@@ -82,7 +85,7 @@ describe('reactive resources', () => {
             before: {
               all: [
                 function (hook) {
-                  hook.params.rx = { idField: 'customId' };
+                  (hook.params as any).rx = { idField: 'customId' }; // TODO: Dirty type cast
                 }
               ]
             }
@@ -101,11 +104,11 @@ describe('reactive resources', () => {
     baseTests('customId');
   });
 
-  function baseTests(customId) {
+  function baseTests(customId: string) {
     it('methods are still Promise compatible', () =>
       new Promise<void>((done) => {
         service.get(id).then((message) => {
-          expect(message).toStrictEqual({
+          assert.deepEqual(message, {
             [customId]: id,
             text: 'A test message'
           });
@@ -120,7 +123,7 @@ describe('reactive resources', () => {
           .get(id)
           .pipe(take(1))
           .subscribe((message) => {
-            expect(message).toStrictEqual({
+            assert.deepEqual(message, {
               [customId]: id,
               text: 'A test message'
             });
@@ -133,7 +136,7 @@ describe('reactive resources', () => {
         let ran = false;
 
         app.use('/dummy', {
-          get(id) {
+          get(id: string) {
             ran = true;
 
             return Promise.resolve({
@@ -145,14 +148,14 @@ describe('reactive resources', () => {
 
         const source = app.service('dummy').watch().get('dishes').pipe(take(1));
 
-        expect(ran).toStrictEqual(false);
+        assert.equal(ran, false);
 
         source.subscribe((data) => {
-          expect(data).toStrictEqual({
+          assert.deepEqual(data, {
             id: 'dishes',
             description: 'Do dishes!'
           });
-          expect(ran).toStrictEqual(true);
+          assert.equal(ran, true);
           done();
         }, done);
       }));
@@ -162,7 +165,7 @@ describe('reactive resources', () => {
         const result = service.watch().get(id);
 
         result.pipe(take(1)).subscribe((message) => {
-          expect(message).toStrictEqual({
+          assert.deepEqual(message, {
             [customId]: id,
             text: 'A test message'
           });
@@ -173,7 +176,7 @@ describe('reactive resources', () => {
         }, done);
 
         result.pipe(skip(1), take(1)).subscribe((message) => {
-          expect(message).toStrictEqual({
+          assert.deepEqual(message, {
             [customId]: id,
             text: 'Updated',
             prop: true
@@ -182,7 +185,7 @@ describe('reactive resources', () => {
         }, done);
 
         result.pipe(skip(2), take(1)).subscribe((message) => {
-          expect(message).toStrictEqual({
+          assert.deepEqual(message, {
             [customId]: id,
             text: 'Updated again',
             prop: true
@@ -201,7 +204,7 @@ describe('reactive resources', () => {
             if (message === null) {
               done();
             } else {
-              expect(message).toStrictEqual({
+              assert.deepEqual(message, {
                 [customId]: id,
                 text: 'A test message'
               });
@@ -227,7 +230,7 @@ describe('reactive resources', () => {
           pipe: [
             tap(() => i++),
             tap(() => {
-              expect(i).toStrictEqual(1);
+              assert.equal(i, 1);
               done();
             })
           ]
@@ -240,7 +243,7 @@ describe('reactive resources', () => {
         const o1 = service.watch().get(0);
         const o2 = service.watch().get(0);
 
-        expect(o2).toStrictEqual(o1);
+        assert.deepEqual(o2, o1);
 
         done();
       }));
@@ -256,8 +259,8 @@ describe('reactive resources', () => {
         sub1.unsubscribe();
         sub2.unsubscribe();
 
-        expect(o2).toStrictEqual(o1);
-        expect(service.watch().get(0)).not.toStrictEqual(o1);
+        assert.deepEqual(o2, o1);
+        assert.notStrictEqual(service.watch().get(0), o1);
 
         done();
       }));

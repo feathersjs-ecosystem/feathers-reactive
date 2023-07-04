@@ -138,7 +138,8 @@ export function strategies<T>() {
             concat(
               events$.pipe(
                 scan(
-                  (current, callback) => sortAndTrim(callback(current as any)), // TODO: Hacky type cast to make typescript happy
+                  (current, callback) =>
+                    sortAndTrim((callback as any)(current)), // TODO: Hacky type cast to make typescript happy
                   data
                 )
               )

@@ -1,5 +1,6 @@
 import type {
   Application,
+  FeathersService,
   Id,
   NullableId,
   Paginated,
@@ -40,7 +41,8 @@ export interface ReactiveServiceMixin<T> {
 declare module '@feathersjs/feathers' {
   interface ServiceAddons<A = Application, S = Service> {
     watch(options?: Partial<Options>): ReactiveService<S>; // TODO: Was <T>, correct?
-    rx(options?: Partial<Options>): Service<S>; // TODO: Was <T>, correct?
+    rx(options?: Partial<Options>): FeathersService; // Service<S>; // TODO: Was <T>, correct?
+    reset(): void; // TODO: TODO: Added during typescript migration - check!
   }
 
   interface ReactiveService<T> {

@@ -1,6 +1,6 @@
 import * as sift_lib_utils from 'sift/lib/utils';
 import * as sift_lib_core from 'sift/lib/core';
-import { Application, Service, Params, Paginated, Id, NullableId } from '@feathersjs/feathers';
+import { Application, Service, FeathersService, Params, Paginated, Id, NullableId } from '@feathersjs/feathers';
 import { Observable, OperatorFunction } from 'rxjs';
 
 type ListStrategy = any;
@@ -31,7 +31,8 @@ interface ReactiveServiceMixin<T> {
 declare module '@feathersjs/feathers' {
     interface ServiceAddons<A = Application, S = Service> {
         watch(options?: Partial<Options>): ReactiveService<S>;
-        rx(options?: Partial<Options>): Service<S>;
+        rx(options?: Partial<Options>): FeathersService;
+        reset(): void;
     }
     interface ReactiveService<T> {
         /**

@@ -7,7 +7,7 @@ import { _ } from '@feathersjs/commons';
 import { sorter } from '@feathersjs/adapter-commons';
 
 const debug$1 = _debug("feathers-reactive");
-function cacheObservable(cache, method, key, observable) {
+function cacheObservable(cache = {}, method, key, observable) {
   const hash = _hash(key);
   const cachedObservable = observable.pipe(
     finalize(() => {
@@ -19,7 +19,7 @@ function cacheObservable(cache, method, key, observable) {
   cache[method][hash] = cachedObservable;
   return cache[method][hash];
 }
-function getCachedObservable(cache, method, key) {
+function getCachedObservable(cache = {}, method, key) {
   const hash = _hash(key);
   return cache[method][hash];
 }

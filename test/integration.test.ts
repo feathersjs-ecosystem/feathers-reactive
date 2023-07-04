@@ -2,20 +2,29 @@ import { feathers } from '@feathersjs/feathers';
 import socketio from '@feathersjs/socketio';
 import socketioClient from '@feathersjs/socketio-client';
 import memory from 'feathers-memory';
+import { Server } from 'node:http';
+import { after, before, describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 import { firstValueFrom } from 'rxjs';
 import io from 'socket.io-client';
-import { beforeAll, describe, expect, it } from 'vitest';
 
 import { rx } from '../src';
 
 const app = feathers().configure(socketio()).use('/messages', memory());
+let server: Server;
 
+// TODO: Check correct types fpr `app` so `.channel` and `.publish` are available.
+// @ts-ignore
 app.on('connection', (connection) => app.channel('everybody').join(connection));
+// @ts-ignore
 app.publish(() => app.channel('everybody'));
 
 describe('feathers-reactive integration', () => {
-  beforeAll(async () => {
-    await app.listen(3030);
+  before(async () => {
+    server = await app.listen(3030);
+  });
+  after(async () => {
+    server.close();
   });
 
   it('works with a client Feathers app initiating service operations', async () => {
@@ -30,7 +39,7 @@ describe('feathers-reactive integration', () => {
       .watch({ listStrategy: 'smart' })
       .find({ query: {} })
       .subscribe((messages) => {
-        expect(messages).toBeDefined();
+        assert(messages);
         callCount++;
       });
 
@@ -47,7 +56,8 @@ describe('feathers-reactive integration', () => {
     await client.service('messages').remove(message.id);
     listener.unsubscribe();
     // We should have 5 calls: first find + 4 events
-    expect(callCount).toBe(5);
+    assert.equal(callCount, 5);
+    socket.disconnect();
   });
 
   it('works with a client Feathers app listening for service operations', async () => {
@@ -62,7 +72,7 @@ describe('feathers-reactive integration', () => {
       .watch({ listStrategy: 'smart' })
       .find({ query: {} });
     const listener = find.subscribe((messages) => {
-      expect(messages).toBeDefined();
+      assert(messages);
       callCount++;
     });
 
@@ -88,7 +98,8 @@ describe('feathers-reactive integration', () => {
 
     listener.unsubscribe();
     // We should have 5 calls: first find + 4 events
-    expect(callCount).toBe(5);
+    assert.equal(callCount, 5);
+    socket.disconnect();
   });
 
   it('works with multiple client Feathers apps', async () => {
@@ -108,7 +119,7 @@ describe('feathers-reactive integration', () => {
       .watch({ listStrategy: 'smart' })
       .find({ query: {} });
     const listener1 = find1.subscribe((messages) => {
-      expect(messages).toBeDefined();
+      assert(messages);
       callCount1++;
     });
     const find2 = client2
@@ -116,7 +127,7 @@ describe('feathers-reactive integration', () => {
       .watch({ listStrategy: 'smart' })
       .find({ query: {} });
     const listener2 = find2.subscribe((messages) => {
-      expect(messages).toBeDefined();
+      assert(messages);
       callCount2++;
     });
 
@@ -142,7 +153,8 @@ describe('feathers-reactive integration', () => {
     listener1.unsubscribe();
     listener2.unsubscribe();
     // We should have 5 calls: first find + 4 events
-    expect(callCount1).toBe(5);
-    expect(callCount2).toBe(5);
+    assert.equal(callCount1, 5);
+    assert.equal(callCount2, 5);
+    socket.disconnect();
   });
 });

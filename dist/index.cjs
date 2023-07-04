@@ -15,7 +15,7 @@ const sift__default = /*#__PURE__*/_interopDefaultCompat(sift);
 const stringify__default = /*#__PURE__*/_interopDefaultCompat(stringify);
 
 const debug$1 = _debug__default("feathers-reactive");
-function cacheObservable(cache, method, key, observable) {
+function cacheObservable(cache = {}, method, key, observable) {
   const hash = _hash(key);
   const cachedObservable = observable.pipe(
     operators.finalize(() => {
@@ -27,7 +27,7 @@ function cacheObservable(cache, method, key, observable) {
   cache[method][hash] = cachedObservable;
   return cache[method][hash];
 }
-function getCachedObservable(cache, method, key) {
+function getCachedObservable(cache = {}, method, key) {
   const hash = _hash(key);
   return cache[method][hash];
 }
