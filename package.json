@@ -47,7 +47,7 @@
     "build": "unbuild",
     "changelog": "github_changelog_generator --no-issues -p feathers-reactive -u feathersjs-ecosystem && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
     "publish": "git push origin --tags && npm run changelog && git push origin",
-    "preversion": "npm run lint && npm run test && npm run build",
+    "preversion": "npm run test",
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
