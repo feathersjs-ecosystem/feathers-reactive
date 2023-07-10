@@ -1,3 +1,4 @@
+import '@feathersjs/transport-commons';
 import { feathers } from '@feathersjs/feathers';
 import socketio from '@feathersjs/socketio';
 import socketioClient from '@feathersjs/socketio-client';
@@ -8,15 +9,13 @@ import assert from 'node:assert/strict';
 import { firstValueFrom } from 'rxjs';
 import io from 'socket.io-client';
 
-import { rx } from '../src';
+import { rx } from '../';
 
 const app = feathers().configure(socketio()).use('/messages', memory());
 let server: Server;
 
 // TODO: Check correct types fpr `app` so `.channel` and `.publish` are available.
-// @ts-ignore
 app.on('connection', (connection) => app.channel('everybody').join(connection));
-// @ts-ignore
 app.publish(() => app.channel('everybody'));
 
 describe('feathers-reactive integration', () => {

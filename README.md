@@ -1,6 +1,6 @@
 # feathers-reactive
 
-[![CI](https://github.com/feathersjs-ecosystem/feathers-reactive/actions/workflows/ci.yml/badge.svg)](https://github.com/feathersjs-ecosystem/feathers-reactive/actions/workflows/ci.yml)
+[![CI](https://github.com/feathersjs-ecosystem/feathers-reactive/actions/workflows/nodejs.yml/badge.svg)](https://github.com/feathersjs-ecosystem/feathers-reactive/actions/workflows/nodejs.yml)
 [![Download Status](https://img.shields.io/npm/dm/feathers-reactive.svg?style=flat-square)](https://www.npmjs.com/package/feathers-reactive)
 
 > Reactive API extensions for Feathers
