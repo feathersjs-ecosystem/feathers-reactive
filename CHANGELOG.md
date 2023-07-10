@@ -2,7 +2,24 @@
 
 ## [Unreleased](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/HEAD)
 
-[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.10.0...HEAD)
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.11.0...HEAD)
+
+**Merged pull requests:**
+
+- Finalise new build and publishing configuration [\#213](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/213) ([daffl](https://github.com/daffl))
+- Migrate to typescript and adjust build step / tests [\#211](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/211) ([bitflower](https://github.com/bitflower))
+- chore\(dependencies\): Update all dependencies [\#196](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/196) ([daffl](https://github.com/daffl))
+- chore\(dependencies\): Update all dependencies [\#195](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/195) ([daffl](https://github.com/daffl))
+- Fix integration tests [\#194](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/194) ([daffl](https://github.com/daffl))
+- Improved integration tests [\#192](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/192) ([claustres](https://github.com/claustres))
+
+## [v0.11.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.11.0) (2023-07-10)
+
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.10.0...v0.11.0)
+
+## [v0.10.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.10.0) (2022-07-05)
+
+[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.9.0...v0.10.0)
 
 **Merged pull requests:**
 
@@ -11,22 +28,9 @@
 - Upgraded to Feathers v5 - aka Dove \(\#179\) [\#188](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/188) ([claustres](https://github.com/claustres))
 - chore\(dependencies\): Update all dependencies [\#187](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/187) ([daffl](https://github.com/daffl))
 
-## [v0.10.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.10.0) (2022-07-05)
-
-[Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.9.0...v0.10.0)
-
-**Closed issues:**
-
-- Cannot call addListener on the client service connection [\#190](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/190)
-
 ## [v0.9.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.9.0) (2022-03-25)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.8.2...v0.9.0)
-
-**Closed issues:**
-
-- Hook generating patched/updated event before created event generates doublons [\#182](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/182)
-- Allow to Re-fetch all data when using smart listStrategy  [\#180](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/180)
 
 **Merged pull requests:**
 
@@ -38,12 +42,6 @@
 ## [v0.8.2](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.8.2) (2020-04-29)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.8.1...v0.8.2)
-
-**Closed issues:**
-
-- How to unsubscribe\(\) ? [\#175](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/175)
-- An in-range update of webpack is breaking the build 🚨 [\#165](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/165)
-- Typings support for feathers-reactive [\#164](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/164)
 
 **Merged pull requests:**
 
@@ -58,10 +56,6 @@
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.8.0...v0.8.1)
 
-**Closed issues:**
-
-- `@feathersjs/adapter-commons` dependency [\#161](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/161)
-
 **Merged pull requests:**
 
 - Fix adapter-commons dependency [\#162](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/162) ([daffl](https://github.com/daffl))
@@ -70,26 +64,6 @@
 ## [v0.8.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.8.0) (2019-06-13)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.7.2...v0.8.0)
-
-**Fixed bugs:**
-
-- Socket reconnect. How to? [\#104](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/104)
-
-**Closed issues:**
-
-- An in-range update of babel-loader is breaking the build 🚨 [\#157](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/157)
-- An in-range update of babel-plugin-add-module-exports is breaking the build 🚨 [\#156](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/156)
-- An in-range update of @types/feathersjs\_\_feathers is breaking the build 🚨 [\#155](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/155)
-- An in-range update of webpack-cli is breaking the build 🚨 [\#154](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/154)
-- An in-range update of webpack is breaking the build 🚨 [\#152](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/152)
-- An in-range update of babel7 is breaking the build 🚨 [\#151](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/151)
-- An in-range update of uglifyjs-webpack-plugin is breaking the build 🚨 [\#150](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/150)
-- An in-range update of mocha is breaking the build 🚨 [\#149](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/149)
-- Does this need to be configured on client only or client and server? [\#147](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/147)
-- An in-range update of babel7 is breaking the build 🚨 [\#137](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/137)
-- How to set idField when using feathers custom ids on services? [\#134](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/134)
-- What is the plus over featherjs channels? [\#132](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/132)
-- Still no full ES5 support? [\#122](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/122)
 
 **Merged pull requests:**
 
@@ -106,10 +80,6 @@
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.7.1...v0.7.2)
 
-**Closed issues:**
-
-- EventEmitter memory leak detected [\#88](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/88)
-
 **Merged pull requests:**
 
 - share\(\) fromEvent Observables [\#126](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/126) ([j2L4e](https://github.com/j2L4e))
@@ -117,10 +87,6 @@
 ## [v0.7.1](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.7.1) (2018-06-23)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.7.0...v0.7.1)
-
-**Closed issues:**
-
-- All declarations of 'observable' must have identical modifiers. [\#120](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/120)
 
 **Merged pull requests:**
 
@@ -134,23 +100,6 @@
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.6.0...v0.7.0)
 
-**Fixed bugs:**
-
-- Transpile fails for client builds [\#103](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/103)
-- Build fails with create-react-app [\#101](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/101)
-- smart strategy + matcher don't filter initial find [\#35](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/35)
-
-**Closed issues:**
-
-- RXJS6 Cannot read property '\_id' of undefined [\#111](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/111)
-- Feathers-reactive es5 compatible [\#109](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/109)
-- Reactive mongodb [\#107](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/107)
-- Update to rxjs6 once final [\#106](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/106)
-- watch function is not working on all methods [\#102](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/102)
-- Subscription doesn't report updates when used with buzzard [\#99](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/99)
-- Using feathers reactive with rxjs 5.5.x breaks angular production builds \(build optimizing\) [\#96](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/96)
-- Use TC39 proposal for Symbol.observable to turn resources into Observables [\#43](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/43)
-
 **Merged pull requests:**
 
 - Update all examples and Readme [\#114](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/114) ([daffl](https://github.com/daffl))
@@ -161,16 +110,6 @@
 ## [v0.6.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.6.0) (2018-02-15)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.5.4...v0.6.0)
-
-**Closed issues:**
-
-- Cannot find module 'feathers' when using @feathersjs/client [\#83](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/83)
-- Error: The RxJS instance does not seem to provide an `Observable` type. [\#81](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/81)
-- Caching is broken with rxjs 5.5.0 [\#77](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/77)
-- Update rxjs to 5.5 [\#76](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/76)
-- subscribing to query with $populate does not see any updates even with listStrategy=always [\#60](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/60)
-- Subscriptions with $client query parameters are not reactive [\#56](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/56)
-- Subscriptions with $contains and $search are not reactive [\#53](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/53)
 
 **Merged pull requests:**
 
@@ -193,13 +132,6 @@
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.5.3...v0.5.4)
 
-**Closed issues:**
-
-- patch subscribe fires twice [\#80](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/80)
-- feathers-reactive not responding to create event with query applied in .find\(\) \(possibly related to \#62\) [\#73](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/73)
-- Link to outdated docs confuses about project state [\#70](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/70)
-- Official query syntax for $gt, $gte does not work [\#62](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/62)
-
 ## [v0.5.3](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.5.3) (2017-09-25)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.5.2...v0.5.3)
@@ -212,10 +144,6 @@
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.5.1...v0.5.2)
 
-**Closed issues:**
-
-- Mixin of watch function into feathers service not working [\#67](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/67)
-
 **Merged pull requests:**
 
 - add mixin.watch\(\) workaround for firefox [\#68](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/68) ([j2L4e](https://github.com/j2L4e))
@@ -223,13 +151,6 @@
 ## [v0.5.1](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.5.1) (2017-08-30)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.5.0...v0.5.1)
-
-**Closed issues:**
-
-- Cannot find module 'feathers-reactive'. [\#52](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/52)
-- Observable.throw\(\) is not subscribable [\#47](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/47)
-- Impossible to type [\#41](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/41)
-- previous data lost when patch/remove with listStrategy='smart' [\#37](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/37)
 
 **Merged pull requests:**
 
@@ -239,11 +160,6 @@
 ## [v0.5.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.5.0) (2017-08-28)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.4.1...v0.5.0)
-
-**Closed issues:**
-
-- Get idField from service.id if available [\#59](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/59)
-- Is there a way to update query params? [\#39](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/39)
 
 **Merged pull requests:**
 
@@ -268,12 +184,6 @@
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.3.2...v0.4.0)
 
-**Closed issues:**
-
-- Other methods should delay until subscription as well [\#31](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/31)
-- Paginated metadata should be updated [\#24](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/24)
-- find\(\) shouldn't be executed before subscribing [\#20](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/20)
-
 **Merged pull requests:**
 
 - Implement lazy subscription mode [\#34](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/34) ([daffl](https://github.com/daffl))
@@ -282,10 +192,6 @@
 ## [v0.3.2](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.3.2) (2016-09-02)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.3.1...v0.3.2)
-
-**Closed issues:**
-
-- requests performed multiple times [\#29](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/29)
 
 **Merged pull requests:**
 
@@ -296,12 +202,6 @@
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.3.0...v0.3.1)
 
-**Closed issues:**
-
-- listStrategy doesn't work as mentioned in readme [\#26](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/26)
-- find\(\) with query [\#25](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/25)
-- Outstanding issues [\#11](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/11)
-
 **Merged pull requests:**
 
 - Update the list strategy for any kind of options [\#27](https://github.com/feathersjs-ecosystem/feathers-reactive/pull/27) ([daffl](https://github.com/daffl))
@@ -309,13 +209,6 @@
 ## [v0.3.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.3.0) (2016-08-06)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.2.0...v0.3.0)
-
-**Closed issues:**
-
-- Merge doesn't work? [\#19](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/19)
-- Several issues on 'update' [\#18](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/18)
-- Problems with React Native [\#16](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/16)
-- React example missing componentWillUnmount [\#14](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/14)
 
 **Merged pull requests:**
 
@@ -337,11 +230,6 @@
 ## [v0.1.1](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.1.1) (2016-05-16)
 
 [Full Changelog](https://github.com/feathersjs-ecosystem/feathers-reactive/compare/v0.1.0...v0.1.1)
-
-**Closed issues:**
-
-- Publish to NPM [\#8](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/8)
-- Feature Request: Browserify feathers-rx for angular2 [\#3](https://github.com/feathersjs-ecosystem/feathers-reactive/issues/3)
 
 ## [v0.1.0](https://github.com/feathersjs-ecosystem/feathers-reactive/tree/v0.1.0) (2016-05-16)
 
