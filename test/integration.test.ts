@@ -33,14 +33,17 @@ describe('feathers-reactive integration', () => {
       .configure(rx({ idField: 'id' }));
 
     let callCount = 0;
-    const listener = client
+    const find = client
       .service('messages')
       .watch({ listStrategy: 'smart' })
-      .find({ query: {} })
-      .subscribe((messages) => {
+      .find({ query: {} });
+    const listener = find.subscribe((messages) => {
         assert(messages);
         callCount++;
       });
+
+    // We need to wait for the first (empty list) response to avoid timing issues
+    await firstValueFrom(find);
 
     const message = await client.service('messages').create({
       text: 'A test message'
