@@ -2,7 +2,7 @@ import type { Application, ServiceAddons } from '@feathersjs/feathers';
 import Debug from 'debug';
 import { fromEvent, Subject } from 'rxjs';
 import { share } from 'rxjs/operators';
-import sift from 'sift';
+import sift from 'sift/lib';
 
 import type { Options, ReactiveServiceMixin } from './interfaces';
 import { reactiveList } from './list';
